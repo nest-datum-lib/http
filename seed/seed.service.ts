@@ -5,11 +5,6 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { CacheService } from '@nest-datum/services';
-import { TypeStatusSeeder } from './type-status.seeder';
-import { TypeOptionSeeder } from './type-option.seeder';
-import { TypeTypeOptionSeeder } from './type-type-option.seeder';
-import { TypeTypeTypeOptionSeeder } from './type-type-type-option.seeder';
-import { TypeSeeder } from './type.seeder';
 import { SettingSeeder } from './setting.seeder';
 
 @Injectable()
@@ -20,31 +15,15 @@ export class SeedService {
 	constructor(
 		private readonly cacheService: CacheService,
 		private readonly connection: Connection,
-		private readonly typeStatus: TypeStatusSeeder,
-		private readonly typeOption: TypeOptionSeeder,
-		private readonly typeTypeOption: TypeTypeOptionSeeder,
-		private readonly typeTypeTypeOption: TypeTypeTypeOptionSeeder,
-		private readonly type: TypeSeeder,
 		private readonly setting: SettingSeeder,
 	) {
 		this.seeders = [
-			this.typeStatus,
-			this.typeOption,
-			this.type,
-			this.typeTypeOption,
-			this.typeTypeTypeOption,
 			this.setting,
 		];
 	}
 
 	async send() {
 		try {
-			await this.cacheService.clear('typeStatus.many');
-			await this.cacheService.clear('typeStatus.one');
-			await this.cacheService.clear('typeOption.many');
-			await this.cacheService.clear('typeOption.one');
-			await this.cacheService.clear('type.many');
-			await this.cacheService.clear('type.one');
 			await this.cacheService.clear('setting.many');
 			await this.cacheService.clear('setting.one');
 
