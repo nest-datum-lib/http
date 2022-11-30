@@ -9,6 +9,7 @@ import {
 } from 'express';
 import { LogsService } from '@nest-datum/services';
 import { TrafficException } from '@nest-datum/exceptions';
+import { AccessToken } from '@nest-datum/common';
 
 @Injectable()
 export class TrafficMiddleware implements NestMiddleware {
@@ -17,7 +18,12 @@ export class TrafficMiddleware implements NestMiddleware {
 	) {
 	}
 
-	use(req: Request, res: Response, next: NextFunction) {
+	use(
+		@AccessToken() accessToken: string,
+		req: Request, 
+		res: Response, 
+		next: NextFunction,
+	) {
 		try {
 			const host = req.get('Host');
 			const referrer = (req['headers'] || {})['referrer'] 
@@ -49,7 +55,7 @@ export class TrafficMiddleware implements NestMiddleware {
 				body,
 				queries,
 				param,
-			}));
+			}), accessToken);
 		}
 		catch (err) {
 			console.error(`Log emit creation.`);
