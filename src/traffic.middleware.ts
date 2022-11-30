@@ -9,7 +9,6 @@ import {
 } from 'express';
 import { LogsService } from '@nest-datum/services';
 import { TrafficException } from '@nest-datum/exceptions';
-import { AccessToken } from '@nest-datum/common';
 
 @Injectable()
 export class TrafficMiddleware implements NestMiddleware {
@@ -18,13 +17,11 @@ export class TrafficMiddleware implements NestMiddleware {
 	) {
 	}
 
-	use(
-		@AccessToken() accessToken: string,
-		req: Request, 
-		res: Response, 
-		next: NextFunction,
-	) {
+	use(req: Request, res: Response, next: NextFunction) {
 		try {
+			const accessToken = req['headers']['access-token']
+				|| req['body']['accessToken']
+				|| req['query']['accessToken'];
 			const host = req.get('Host');
 			const referrer = (req['headers'] || {})['referrer'] 
 				|| (req['headers'] || {})
