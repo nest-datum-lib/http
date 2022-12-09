@@ -106,11 +106,11 @@ import { TrafficMiddleware } from './traffic.middleware';
 		SsoSettingModule,
 
 		// forms
+		FormsFormFieldModule,
 		FormsFieldModule,
 		FormsFieldOptionModule,
 		FormsFieldStatusModule,
 		FormsFormModule,
-		FormsFormFieldModule,
 		FormsFormOptionModule,
 		FormsFormStatusModule,
 		FormsContentStatusModule,
