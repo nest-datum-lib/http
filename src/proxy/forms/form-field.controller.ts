@@ -33,8 +33,6 @@ export class FormFieldController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			console.log('1111111111');
-
 			return await this.balancerService.send({
 				name: process.env.SERVICE_FORMS, 
 				cmd: 'formField.many',
