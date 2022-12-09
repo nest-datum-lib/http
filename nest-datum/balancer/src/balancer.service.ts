@@ -135,25 +135,17 @@ export class BalancerService {
 		const replica =  await this.balancerRepository.selectLessLoaded({
 			name: 'logs',
 		});
-
 		if (replica
 			&& typeof replica === 'object') {
 			const transporter = this.getTransporter(replica);
 
 			if (transporter
 				&& await this.transporterConnected(transporter, replica['id'], replica['serviceResponsLoadingIndicator'])) {
-				
-				console.log('11111111');
-
 				const accessToken = generateAccessToken({
 					id: 'sso-user-admin',
 					roleId: 'sso-role-admin',
 					email: process['USER_ROOT_EMAIL'],
 				}, Date.now());
-
-				console.log('accessToken', accessToken);
-
-				console.log('exception.cmd()', exception.cmd(), exception.data());
 
 				transporter.emit(exception.cmd(), {
 					...exception.data(),
