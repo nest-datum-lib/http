@@ -135,6 +135,9 @@ export class BalancerService {
 		const replica =  await this.balancerRepository.selectLessLoaded({
 			name: 'logs',
 		});
+
+		console.log('replica', replica, exception);
+
 		if (replica
 			&& typeof replica === 'object') {
 			const transporter = this.getTransporter(replica);
