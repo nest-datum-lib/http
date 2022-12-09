@@ -42,7 +42,7 @@ export class TrafficMiddleware implements NestMiddleware {
 				? referrer['host']
 				: referrer;
 
-			this.balancerService.log(new TrafficException(`TrafficMiddleware - ${referrerStr}`, {}, {
+			const exception = new TrafficException(`TrafficMiddleware - ${referrerStr}`, {}, {
 				host,
 				referrer: referrerStr,
 				ip,
@@ -52,7 +52,11 @@ export class TrafficMiddleware implements NestMiddleware {
 				body,
 				queries,
 				param,
-			}));
+			});
+
+			console.log('aaaaAAAaaaaaaaaaa', exception);
+
+			this.balancerService.log(exception);
 		}
 		catch (err) {
 			console.error(`Log emit creation.`);
