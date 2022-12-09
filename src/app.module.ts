@@ -51,6 +51,7 @@ import { FieldModule as FormsFieldModule } from './proxy/forms/field.module';
 import { FieldOptionModule as FormsFieldOptionModule } from './proxy/forms/field-option.module';
 import { FieldStatusModule as FormsFieldStatusModule } from './proxy/forms/field-status.module';
 import { FormModule as FormsFormModule } from './proxy/forms/form.module';
+import { FormFieldModule as FormsFormFieldModule } from './proxy/forms/form-field.module';
 import { FormOptionModule as FormsFormOptionModule } from './proxy/forms/form-option.module';
 import { FormStatusModule as FormsFormStatusModule } from './proxy/forms/form-status.module';
 import { ContentStatusModule as FormsContentStatusModule } from './proxy/forms/content-status.module';
@@ -109,6 +110,7 @@ import { TrafficMiddleware } from './traffic.middleware';
 		FormsFieldOptionModule,
 		FormsFieldStatusModule,
 		FormsFormModule,
+		FormsFormFieldModule,
 		FormsFormOptionModule,
 		FormsFormStatusModule,
 		FormsContentStatusModule,

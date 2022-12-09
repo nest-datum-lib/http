@@ -123,27 +123,6 @@ export class FormController {
 		}
 	}
 
-	@Delete('field')
-	async dropFields(
-		@AccessToken() accessToken: string,
-		@Body('ids') ids: string,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'form.dropFields',
-			}, {
-				accessToken,
-				ids,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
 	@Post()
 	async create(
 		@AccessToken() accessToken: string,
@@ -184,7 +163,7 @@ export class FormController {
 		try {
 			return await this.balancerService.send({
 				name: process.env.SERVICE_FORMS, 
-				cmd: 'form.createFields',
+				cmd: 'formField.create',
 			}, {
 				accessToken,
 				id,

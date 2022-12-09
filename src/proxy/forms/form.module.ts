@@ -41,14 +41,6 @@ export class FormModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/form/field`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/form/:id`,
 				method: RequestMethod.DELETE,
 			});
