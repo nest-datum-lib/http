@@ -18,7 +18,7 @@ import { FormFieldController } from './form-field.controller';
 		BalancerService,
 	],
 })
-export class FormModule implements NestModule {
+export class FormFieldModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 		consumer
 			.apply(

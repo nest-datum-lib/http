@@ -15,7 +15,7 @@ import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_FORMS} ] Fields of form`)
 @Controller(`${process.env.SERVICE_FORMS}/form/field`)
-export class FormController {
+export class FormFieldController {
 	constructor(
 		private readonly balancerService: BalancerService,
 	) {
