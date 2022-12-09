@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_SSO} ] Users`)
 @Controller(`${process.env.SERVICE_SSO}/user`)
 export class UserController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -35,7 +31,10 @@ export class UserController {
 		@Body('repeatedPassword') repeatedPassword: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.register', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.register',
+			}, {
 				email,
 				login,
 				firstname,
@@ -45,7 +44,7 @@ export class UserController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -54,12 +53,15 @@ export class UserController {
 	@Post('verify')
 	async verify(@Body('verifyKey') verifyKey: string): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.verify', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.verify',
+			}, {
 				verifyKey,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -71,7 +73,10 @@ export class UserController {
 		@Body('password') password: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.login', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.login',
+			}, {
 				login,
 				password,
 			});
@@ -79,7 +84,7 @@ export class UserController {
 		catch (err) {
 			console.log('err', err);
 			
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -88,12 +93,15 @@ export class UserController {
 	@Post('recovery')
 	async recovery(@Body('email') email: string): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.recovery', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.recovery',
+			}, {
 				email,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -106,14 +114,17 @@ export class UserController {
 		@Body('verifyKey') verifyKey: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.reset', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.reset',
+			}, {
 				password,
 				repeatedPassword,
 				verifyKey,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -125,13 +136,16 @@ export class UserController {
 		@Body('refreshToken') refreshToken: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.refresh', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.refresh',
+			}, {
 				accessToken,
 				refreshToken,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -149,7 +163,10 @@ export class UserController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -161,7 +178,7 @@ export class UserController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -175,14 +192,17 @@ export class UserController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.one',
+			}, {
 				accessToken,
 				select,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -194,13 +214,16 @@ export class UserController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -221,7 +244,10 @@ export class UserController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -236,7 +262,7 @@ export class UserController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -249,14 +275,17 @@ export class UserController {
 		@Body() data,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.createOptions', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.createOptions',
+			}, {
 				accessToken,
 				id,
 				data,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -279,7 +308,10 @@ export class UserController {
 		@Body('isDeleted') isDeleted: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'user.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'user.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -291,11 +323,12 @@ export class UserController {
 				password,
 				emailVerifyKey,
 				emailVerifiedAt,
+				isDeleted,
 				isNotDelete,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

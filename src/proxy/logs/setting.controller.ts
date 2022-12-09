@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_LOGS} ] Settings`)
 @Controller(`${process.env.SERVICE_LOGS}/setting`)
 export class SettingController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class SettingController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class SettingController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.one', 
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class SettingController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -101,13 +106,16 @@ export class SettingController {
 		@Body('ids') ids: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.dropMany', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.dropMany',
+			}, {
 				accessToken,
 				ids,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -121,27 +129,28 @@ export class SettingController {
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('defaultValue') defaultValue: string,
 		@Body('value') value: string,
 		@Body('regex') regex: string,
 		@Body('isRequired') isRequired: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.create',
+			}, {
 				accessToken,
 				id,
 				userId,
 				name,
 				description,
 				dataTypeId,
-				defaultValue,
 				value,
 				regex,
 				isRequired,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -156,7 +165,6 @@ export class SettingController {
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('defaultValue') defaultValue: string,
 		@Body('value') value: string,
 		@Body('regex') regex: string,
 		@Body('isRequired') isRequired: boolean,
@@ -164,7 +172,10 @@ export class SettingController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'setting.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'setting.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -172,7 +183,6 @@ export class SettingController {
 				name,
 				description,
 				dataTypeId,
-				defaultValue,
 				value,
 				regex,
 				isRequired,
@@ -181,7 +191,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

@@ -5,14 +5,14 @@ import {
 	RequestMethod,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheService } from 'nest-datum/cache/src';
 import { 
-	RegistryService,
-	LogsService,
-	CacheService, 
-} from '@nest-datum/services';
-import { Setting } from './setting.entity';
+	BalancerRepository,
+	BalancerService, 
+} from 'nest-datum/balancer/src';
 import { SettingService } from './setting.service';
 import { SettingController } from './setting.controller';
+import { Setting } from './setting.entity';
 
 @Module({
 	controllers: [ SettingController ],
@@ -20,8 +20,8 @@ import { SettingController } from './setting.controller';
 		TypeOrmModule.forFeature([ Setting ]),
 	],
 	providers: [
-		RegistryService, 
-		LogsService,
+		BalancerRepository, 
+		BalancerService,
 		CacheService,
 		SettingService, 
 	],

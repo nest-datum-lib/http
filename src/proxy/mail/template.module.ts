@@ -5,19 +5,17 @@ import {
 	RequestMethod,
 } from '@nestjs/common';
 import { 
-	RegistryService,
-	LogsService, 
-	CacheService,
-} from '@nest-datum/services';
+	BalancerRepository,
+	BalancerService, 
+} from 'nest-datum/balancer/src';
 import { TemplateController } from './template.controller';
 
 @Module({
 	imports: [],
 	controllers: [ TemplateController ],
 	providers: [ 
-		RegistryService,
-		LogsService,
-		CacheService,
+		BalancerRepository,
+		BalancerService, 
 	],
 })
 export class TemplateModule implements NestModule {

@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_SSO} ] User statuses`)
 @Controller(`${process.env.SERVICE_SSO}/user-status`)
 export class UserStatusController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class UserStatusController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'userStatus.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'userStatus.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class UserStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class UserStatusController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'userStatus.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'userStatus.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class UserStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class UserStatusController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'userStatus.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'userStatus.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -105,7 +110,10 @@ export class UserStatusController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'userStatus.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'userStatus.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -115,7 +123,7 @@ export class UserStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -134,7 +142,10 @@ export class UserStatusController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'userStatus.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'userStatus.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -142,11 +153,12 @@ export class UserStatusController {
 				name,
 				description,
 				isNotDelete,
+				isDeleted,
 				createdAt,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

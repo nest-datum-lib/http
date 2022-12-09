@@ -1,6 +1,5 @@
 import { ApiTags } from '@nestjs/swagger';
 import getCurrentLine from 'get-current-line';
-import * as Validators from '@nest-datum/validators';
 import { 
 	Controller,
 	Get, 
@@ -12,19 +11,16 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import * as Validators from 'nest-datum/validators/src';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 import { SettingService } from './setting.service';
 
-@ApiTags(`[ ${process.env.APP_ID} ] Settings`)
-@Controller(`${process.env.APP_ID}/setting`)
+@ApiTags(`[ ${process.env.APP_NAME} ] Settings`)
+@Controller(`${process.env.APP_NAME}/setting`)
 export class SettingController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 		private readonly settingService: SettingService,
 	) {
 	}
@@ -43,12 +39,8 @@ export class SettingController {
 		try {
 			const many = await this.settingService.many({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_MANY'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				relations: Validators.obj('relations', relations),
 				select: Validators.obj('select', select),
@@ -74,7 +66,7 @@ export class SettingController {
 			};
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}
@@ -90,12 +82,8 @@ export class SettingController {
 		try {
 			return await this.settingService.one({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_ONE'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				relations: Validators.obj('relations', relations),
 				select: Validators.obj('select', select),
@@ -105,7 +93,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}
@@ -119,12 +107,8 @@ export class SettingController {
 		try {
 			await this.settingService.drop({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_DROP'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				id: Validators.id('id', id, {
 					isRequired: true,
@@ -134,7 +118,7 @@ export class SettingController {
 			return true;
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}
@@ -148,12 +132,8 @@ export class SettingController {
 		try {
 			await this.settingService.dropMany({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_DROP_MANY'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				ids: Validators.arr('ids', ids, {
 					isRequired: true,
@@ -164,7 +144,7 @@ export class SettingController {
 			return true;
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}
@@ -186,12 +166,8 @@ export class SettingController {
 		try {
 			return await this.settingService.create({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_CREATE'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				id: Validators.id('id', id),
 				userId: Validators.id('userId', userId),
@@ -218,7 +194,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}
@@ -243,12 +219,8 @@ export class SettingController {
 		try {
 			await this.settingService.update({
 				user: Validators.token('accessToken', accessToken, {
-					secret: process.env.JWT_SECRET_ACCESS_KEY,
-					timeout: process.env.JWT_ACCESS_TIMEOUT,
+					accesses: [ process['ACCESS_HTTP_SETTING_UPDATE'] ],
 					isRequired: true,
-					role: {
-						name: [ 'Admin' ],
-					},
 				}),
 				id: Validators.id('id', id),
 				newId: Validators.id('newId', newId),
@@ -277,7 +249,7 @@ export class SettingController {
 			return true;
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			return err;
 		}

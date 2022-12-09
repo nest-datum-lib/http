@@ -5,19 +5,17 @@ import {
 	RequestMethod,
 } from '@nestjs/common';
 import { 
-	RegistryService,
-	LogsService, 
-	CacheService,
-} from '@nest-datum/services';
+	BalancerRepository,
+	BalancerService, 
+} from 'nest-datum/balancer/src';
 import { LetterController } from './letter.controller';
 
 @Module({
 	imports: [],
 	controllers: [ LetterController ],
 	providers: [ 
-		RegistryService,
-		LogsService,
-		CacheService,
+		BalancerRepository,
+		BalancerService,
 	],
 })
 export class LetterModule implements NestModule {

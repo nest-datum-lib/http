@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_DATA_TYPE} ] Data type statuses`)
 @Controller(`${process.env.SERVICE_DATA_TYPE}/type-status`)
 export class TypeStatusController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class TypeStatusController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_DATA_TYPE, 'typeStatus.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'typeStatus.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class TypeStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class TypeStatusController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_DATA_TYPE, 'typeStatus.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'typeStatus.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class TypeStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class TypeStatusController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_DATA_TYPE, 'typeStatus.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'typeStatus.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -105,7 +110,10 @@ export class TypeStatusController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_DATA_TYPE, 'typeStatus.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'typeStatus.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -115,7 +123,7 @@ export class TypeStatusController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -134,7 +142,10 @@ export class TypeStatusController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_DATA_TYPE, 'typeStatus.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'typeStatus.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -142,11 +153,12 @@ export class TypeStatusController {
 				name,
 				description,
 				isNotDelete,
+				isDeleted,
 				createdAt,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

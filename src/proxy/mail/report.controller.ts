@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_MAIL} ] Reports`)
 @Controller(`${process.env.SERVICE_MAIL}/report`)
 export class ReportController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class ReportController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class ReportController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class ReportController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class ReportController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class ReportController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -101,13 +106,16 @@ export class ReportController {
 		@Body('ids') ids: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.dropMany', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.dropMany',
+			}, {
 				accessToken,
 				ids,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -123,7 +131,10 @@ export class ReportController {
 		@Body('content') content: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -133,7 +144,7 @@ export class ReportController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -150,7 +161,10 @@ export class ReportController {
 		@Body('content') content: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'report.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'report.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -161,7 +175,7 @@ export class ReportController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

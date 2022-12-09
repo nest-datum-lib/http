@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_MAIL} ] Templates`)
 @Controller(`${process.env.SERVICE_MAIL}/template`)
 export class TemplateController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class TemplateController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class TemplateController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class TemplateController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class TemplateController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class TemplateController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -101,13 +106,16 @@ export class TemplateController {
 		@Body('ids') ids: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.dropMany', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.dropMany',
+			}, {
 				accessToken,
 				ids,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -120,14 +128,17 @@ export class TemplateController {
 		@Param('optionId') optionId: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.dropOption', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.dropOption',
+			}, {
 				accessToken,
 				id,
 				optionId,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -146,7 +157,10 @@ export class TemplateController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -159,7 +173,7 @@ export class TemplateController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -173,7 +187,10 @@ export class TemplateController {
 		@Body() data,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.createOption', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.createOption',
+			}, {
 				accessToken,
 				id,
 				optionId,
@@ -181,7 +198,7 @@ export class TemplateController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -194,14 +211,17 @@ export class TemplateController {
 		@Body() data,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.createOptions', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.createOptions',
+			}, {
 				accessToken,
 				id,
 				data,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -222,7 +242,10 @@ export class TemplateController {
 		@Body('isDeleted') isDeleted: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'template.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'template.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -232,11 +255,12 @@ export class TemplateController {
 				description,
 				fromEmail,
 				fromName,
+				isDeleted,
 				isNotDelete,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

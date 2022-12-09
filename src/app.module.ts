@@ -1,4 +1,5 @@
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { ClientsModule } from '@nestjs/microservices';
 import { 
 	Module,
 	NestModule,
@@ -6,11 +7,11 @@ import {
 	RequestMethod,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheService } from 'nest-datum/cache/src';
 import { 
-	RegistryService,
-	LogsService, 
-	CacheService,
-} from '@nest-datum/services';
+	BalancerRepository,
+	BalancerService, 
+} from 'nest-datum/balancer/src';
 import { typeormConfig } from 'config/typeorm';
 import { redisConfig } from 'config/redis';
 import { AppController } from './app.controller';
@@ -46,6 +47,15 @@ import { UserModule as SsoUserModule } from './proxy/sso/user.module';
 import { UserOptionModule as SsoUserOptionModule } from './proxy/sso/user-option.module';
 import { UserStatusModule as SsoUserStatusModule } from './proxy/sso/user-status.module';
 import { SettingModule as SsoSettingModule } from './proxy/sso/setting.module';
+import { FieldModule as FormsFieldModule } from './proxy/forms/field.module';
+import { FieldOptionModule as FormsFieldOptionModule } from './proxy/forms/field-option.module';
+import { FieldStatusModule as FormsFieldStatusModule } from './proxy/forms/field-status.module';
+import { FormModule as FormsFormModule } from './proxy/forms/form.module';
+import { FormOptionModule as FormsFormOptionModule } from './proxy/forms/form-option.module';
+import { FormStatusModule as FormsFormStatusModule } from './proxy/forms/form-status.module';
+import { ContentStatusModule as FormsContentStatusModule } from './proxy/forms/content-status.module';
+import { ContentModule as FormsContentModule } from './proxy/forms/content.module';
+import { SettingModule as FormsSettingModule } from './proxy/forms/setting.module';
 import { TrafficMiddleware } from './traffic.middleware';
 
 @Module({
@@ -93,11 +103,22 @@ import { TrafficMiddleware } from './traffic.middleware';
 		SsoUserOptionModule,
 		SsoUserStatusModule,
 		SsoSettingModule,
+
+		// forms
+		FormsFieldModule,
+		FormsFieldOptionModule,
+		FormsFieldStatusModule,
+		FormsFormModule,
+		FormsFormOptionModule,
+		FormsFormStatusModule,
+		FormsContentStatusModule,
+		FormsContentModule,
+		FormsSettingModule,
 	],
 	controllers: [ AppController ],
 	providers: [ 
-		RegistryService,
-		LogsService,
+		BalancerRepository,
+		BalancerService,
 		CacheService,
 		AppService, 
 	],

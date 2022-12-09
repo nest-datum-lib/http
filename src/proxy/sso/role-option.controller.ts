@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_SSO} ] Role options`)
 @Controller(`${process.env.SERVICE_SSO}/role-option`)
 export class RoleOptionController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class RoleOptionController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'roleOption.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleOption.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class RoleOptionController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class RoleOptionController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'roleOption.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleOption.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class RoleOptionController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class RoleOptionController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'roleOption.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleOption.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -110,7 +115,10 @@ export class RoleOptionController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'roleOption.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleOption.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -125,7 +133,7 @@ export class RoleOptionController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -149,7 +157,10 @@ export class RoleOptionController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_SSO, 'roleOption.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleOption.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -167,7 +178,7 @@ export class RoleOptionController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

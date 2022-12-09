@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_LOGS} ] Notification logs`)
 @Controller(`${process.env.SERVICE_LOGS}/notification`)
 export class NotificationController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class NotificationController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'notification.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'notification.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class NotificationController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class NotificationController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'notification.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'notification.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class NotificationController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class NotificationController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'notification.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'notification.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -107,7 +112,10 @@ export class NotificationController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'notification.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'notification.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -118,7 +126,7 @@ export class NotificationController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -137,7 +145,10 @@ export class NotificationController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'notification.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'notification.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -149,7 +160,7 @@ export class NotificationController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

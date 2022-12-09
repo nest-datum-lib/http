@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_MAIL} ] Settings`)
 @Controller(`${process.env.SERVICE_MAIL}/setting`)
 export class SettingController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class SettingController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class SettingController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.one', 
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class SettingController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -101,13 +106,16 @@ export class SettingController {
 		@Body('ids') ids: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.dropMany', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.dropMany',
+			}, {
 				accessToken,
 				ids,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -126,7 +134,10 @@ export class SettingController {
 		@Body('isRequired') isRequired: boolean,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -139,7 +150,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -161,7 +172,10 @@ export class SettingController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_MAIL, 'setting.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'setting.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -177,7 +191,7 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_LOGS} ] Error logs`)
 @Controller(`${process.env.SERVICE_LOGS}/err`)
 export class ErrController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class ErrController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'err.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'err.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class ErrController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class ErrController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'err.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'err.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class ErrController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class ErrController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'err.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'err.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -109,7 +114,10 @@ export class ErrController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'err.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'err.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -123,7 +131,7 @@ export class ErrController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -144,7 +152,10 @@ export class ErrController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'err.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'err.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -159,7 +170,7 @@ export class ErrController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

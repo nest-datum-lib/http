@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_LOGS} ] Traffic logs`)
 @Controller(`${process.env.SERVICE_LOGS}/traffic`)
 export class TrafficController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class TrafficController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'traffic.many', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'traffic.many',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class TrafficController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class TrafficController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'traffic.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'traffic.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class TrafficController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class TrafficController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'traffic.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'traffic.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -113,7 +118,10 @@ export class TrafficController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'traffic.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'traffic.create',
+			}, {
 				accessToken,
 				id,
 				userId,
@@ -131,7 +139,7 @@ export class TrafficController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -156,7 +164,10 @@ export class TrafficController {
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_LOGS, 'traffic.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_LOGS, 
+				cmd: 'traffic.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -175,7 +186,7 @@ export class TrafficController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

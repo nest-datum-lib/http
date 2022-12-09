@@ -10,18 +10,14 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import { AccessToken } from '@nest-datum/common';
-import { 
-	RegistryService,
-	LogsService, 
-} from '@nest-datum/services';
+import { AccessToken } from 'nest-datum/common/src';
+import { BalancerService } from 'nest-datum/balancer/src';
 
 @ApiTags(`[ ${process.env.SERVICE_REGISTRY} ] List of running services`)
 @Controller(`${process.env.SERVICE_REGISTRY}/serv`)
 export class RegistryController {
 	constructor(
-		private readonly registryService: RegistryService,
-		private readonly logsService: LogsService,
+		private readonly balancerService: BalancerService,
 	) {
 	}
 
@@ -37,7 +33,10 @@ export class RegistryController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_REGISTRY, 'registry.many', {
+			return await this.balancerService.send({
+				cmd: 'registry.many',
+				name: process.env.SERVICE_REGISTRY,
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -49,7 +48,7 @@ export class RegistryController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -63,7 +62,10 @@ export class RegistryController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.registryService.send(process.env.SERVICE_REGISTRY, 'registry.one', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_REGISTRY, 
+				cmd: 'registry.one',
+			}, {
 				accessToken,
 				select,
 				relations,
@@ -71,7 +73,7 @@ export class RegistryController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -83,13 +85,16 @@ export class RegistryController {
 		@Param('id') id: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_REGISTRY, 'registry.drop', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_REGISTRY, 
+				cmd: 'registry.drop',
+			}, {
 				accessToken,
 				id,
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -107,7 +112,10 @@ export class RegistryController {
 		@Body('transport') transport: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_REGISTRY, 'registry.create', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_REGISTRY,
+				cmd: 'registry.create',
+			}, {
 				accessToken,
 				id,
 				name,
@@ -119,7 +127,7 @@ export class RegistryController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}
@@ -138,7 +146,10 @@ export class RegistryController {
 		@Body('transport') transport: string,
 	) {
 		try {
-			return await this.registryService.send(process.env.SERVICE_REGISTRY, 'registry.update', {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_REGISTRY,
+				cmd: 'registry.update',
+			}, {
 				accessToken,
 				id,
 				newId,
@@ -151,7 +162,7 @@ export class RegistryController {
 			});
 		}
 		catch (err) {
-			this.logsService.emit(err, accessToken);
+			this.balancerService.log(err);
 
 			throw new HttpException(err.message, err.httpCode || 500);
 		}

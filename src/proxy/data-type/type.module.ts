@@ -5,19 +5,17 @@ import {
 	RequestMethod,
 } from '@nestjs/common';
 import { 
-	RegistryService,
-	LogsService, 
-	CacheService,
-} from '@nest-datum/services';
+	BalancerRepository,
+	BalancerService, 
+} from 'nest-datum/balancer/src';
 import { TypeController } from './type.controller';
 
 @Module({
 	imports: [],
 	controllers: [ TypeController ],
 	providers: [ 
-		RegistryService,
-		LogsService,
-		CacheService,
+		BalancerRepository,
+		BalancerService,
 	],
 })
 export class TypeModule implements NestModule {
@@ -27,7 +25,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type`,
 				method: RequestMethod.GET,
 			});
 		consumer
@@ -35,7 +33,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id`,
 				method: RequestMethod.GET,
 			});
 		consumer
@@ -43,7 +41,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id`,
 				method: RequestMethod.DELETE,
 			});
 		consumer
@@ -51,7 +49,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id/options/:optionId`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id/options/:optionId`,
 				method: RequestMethod.DELETE,
 			});
 		consumer
@@ -59,7 +57,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type`,
 				method: RequestMethod.POST,
 			});
 		consumer
@@ -67,7 +65,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id/options`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id/options`,
 				method: RequestMethod.POST,
 			});
 		consumer
@@ -75,7 +73,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id/options/:optionId`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id/options/:optionId`,
 				method: RequestMethod.POST,
 			});
 		consumer
@@ -83,7 +81,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id`,
 				method: RequestMethod.PATCH,
 			});
 		consumer
@@ -91,7 +89,7 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/type/:id/options/:optionId`,
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id/options/:optionId`,
 				method: RequestMethod.PATCH,
 			});
 	}
