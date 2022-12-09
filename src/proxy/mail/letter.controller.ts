@@ -32,6 +32,8 @@ export class LetterController {
 		@Query('filter') filter: string,
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
+		console.log('111');
+
 		try {
 			return await this.balancerService.send({
 				name: process.env.SERVICE_MAIL, 
