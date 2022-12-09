@@ -54,8 +54,6 @@ export class TrafficMiddleware implements NestMiddleware {
 				param,
 			});
 
-			console.log('aaaaAAAaaaaaaaaaa', exception);
-
 			this.balancerService.log(exception);
 		}
 		catch (err) {
