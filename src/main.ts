@@ -14,7 +14,7 @@ import { getEnvValue } from 'nest-datum/common/src';
 import { AppModule } from './app.module';
 
 process.on('uncaughtException', (err) => {
-	console.log('vvvvvvvvvvv', err);
+	console.error(err);
 });
 
 async function createApp() {

@@ -20,6 +20,10 @@ export class Exception {
 	}
 
 	public data(): any {
+		if (typeof this.options['file'] !== 'string') {
+			console.log('this.options', this.options);
+		}
+
 		return {
 			projectId: process['PROJECT_ID'],
 			appId: process['APP_ID'],
