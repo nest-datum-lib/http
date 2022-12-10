@@ -154,6 +154,29 @@ export class RoleController {
 		}
 	}
 
+	@Post(':id/field')
+	async createAccesses(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('accessId') accessId: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_SSO, 
+				cmd: 'roleAccess.create',
+			}, {
+				accessToken,
+				roleId: id,
+				accessId,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Post(':id/options/:optionId')
 	async createOption(
 		@AccessToken() accessToken: string,

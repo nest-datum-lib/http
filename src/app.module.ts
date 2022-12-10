@@ -41,6 +41,7 @@ import { AccessModule as SsoAccessModule } from './proxy/sso/access.module';
 import { AccessOptionModule as SsoAccessOptionModule } from './proxy/sso/access-option.module';
 import { AccessStatusModule as SsoAccessStatusModule } from './proxy/sso/access-status.module';
 import { RoleModule as SsoRoleModule } from './proxy/sso/role.module';
+import { RoleAccessModule as SsoRoleAccessModule } from './proxy/sso/role-access.module';
 import { RoleOptionModule as SsoRoleOptionModule } from './proxy/sso/role-option.module';
 import { RoleStatusModule as SsoRoleStatusModule } from './proxy/sso/role-status.module';
 import { UserModule as SsoUserModule } from './proxy/sso/user.module';
@@ -94,6 +95,7 @@ import { TrafficMiddleware } from './traffic.middleware';
 		MailSettingModule,
 
 		// sso
+		SsoRoleAccessModule,
 		SsoAccessModule,
 		SsoAccessOptionModule,
 		SsoAccessStatusModule,

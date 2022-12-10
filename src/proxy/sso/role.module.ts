@@ -65,6 +65,14 @@ export class RoleModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/role/:id/access`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/role/:id/options`,
 				method: RequestMethod.POST,
 			});
