@@ -13,6 +13,10 @@ import {
 import { getEnvValue } from 'nest-datum/common/src';
 import { AppModule } from './app.module';
 
+process.on('uncaughtException', (err) => {
+	console.log('vvvvvvvvvvv', err);
+});
+
 async function createApp() {
 	const port = Number(process.env.APP_PORT);
 	const app = await NestFactory.create(AppModule);
