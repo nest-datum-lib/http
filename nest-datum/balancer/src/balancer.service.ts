@@ -78,9 +78,11 @@ export class BalancerService {
 
 			delete _clients[replicaId];
 
-			console.log('getCurrentLine()', getCurrentLine());
+			const lineInfo = getCurrentLine();
 
-			this.log(new ErrorException(err.message, getCurrentLine(), { replicaId, serviceResponsLoadingIndicator }));
+			console.log('getCurrentLine()', lineInfo);
+
+			this.log(new ErrorException(err.message, lineInfo, { replicaId, serviceResponsLoadingIndicator }));
 			this.balancerRepository.update(replicaId, {
 				active: false,
 			});
@@ -159,6 +161,10 @@ export class BalancerService {
 				}, Date.now());
 				const cmd = exception.cmd();
 				const data = exception.data();
+
+				if (cmd === 'err.create') {
+					console.log('exception.data()', cmd, data);
+				}
 
 				transporter.emit(cmd, {
 					...data,

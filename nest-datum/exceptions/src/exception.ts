@@ -9,6 +9,7 @@ export class Exception {
 		public readonly options,
 		public readonly payload: any,
 	) {
+		console.log('options', options);
 	}
 
 	public cmd(): string {
