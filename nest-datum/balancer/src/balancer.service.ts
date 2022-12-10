@@ -158,6 +158,10 @@ export class BalancerService {
 				const cmd = exception.cmd();
 				const data = exception.data();
 
+				if (cmd === 'err.create') {
+					console.log('exception.data()', cmd, data);
+				}
+
 				transporter.emit(cmd, {
 					...data,
 					accessToken, 
