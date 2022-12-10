@@ -158,7 +158,7 @@ export class FormController {
 	async createFields(
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
-		@Body('data') data: string,
+		@Body('fieldId') fieldId: string,
 	) {
 		try {
 			return await this.balancerService.send({
@@ -166,8 +166,8 @@ export class FormController {
 				cmd: 'formField.create',
 			}, {
 				accessToken,
-				id,
-				data,
+				formId: id,
+				fieldId,
 			});
 		}
 		catch (err) {
