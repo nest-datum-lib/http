@@ -20,7 +20,8 @@ export class Exception {
 	}
 
 	public data(): any {
-		if (typeof this.options['file'] !== 'string') {
+		if (!this.options['file']
+			|| typeof this.options['file'] !== 'string') {
 			console.log('this.options', this.options);
 		}
 
