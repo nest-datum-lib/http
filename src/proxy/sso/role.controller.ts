@@ -154,7 +154,7 @@ export class RoleController {
 		}
 	}
 
-	@Post(':id/field')
+	@Post(':id/access')
 	async createAccesses(
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
