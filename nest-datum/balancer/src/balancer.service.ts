@@ -60,7 +60,7 @@ export class BalancerService {
 						else if (index >= transporterAttemptsNum) {
 							clearInterval(interval);
 							console.log('transporterConnected replicaId', replicaId);
-							reject(new Error('Service is unavailable'));
+							reject(new Error(`Service "${replicaId}" is unavailable`));
 							return;
 						}
 						index += 1;
