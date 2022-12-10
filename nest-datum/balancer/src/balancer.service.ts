@@ -156,6 +156,10 @@ export class BalancerService {
 					email: process['USER_ROOT_EMAIL'],
 				}, Date.now());
 
+				if (exception.cmd() === 'err.create') {
+					console.log('exception.data()', exception.data());
+				}
+
 				transporter.emit(exception.cmd(), {
 					...exception.data(),
 					accessToken, 
