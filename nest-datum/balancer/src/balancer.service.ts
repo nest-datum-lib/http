@@ -155,15 +155,22 @@ export class BalancerService {
 					roleId: 'sso-role-admin',
 					email: process['USER_ROOT_EMAIL'],
 				}, Date.now());
+				const cmd = exception.cmd();
+				const data = exception.data();
 
-				if (exception.cmd() === 'err.create') {
-					console.log('exception.data()', transporter, exception.data());
+				if (cmd === 'err.create') {
+					console.log('exception.data()', cmd, data);
 				}
 
-				transporter.emit(exception.cmd(), {
-					...exception.data(),
-					accessToken, 
-				});
+				try {
+					await transporter.emit(cmd, {
+						...data,
+						accessToken, 
+					});
+				}
+				catch (err) {
+					console.log('________', err);
+				}
 			}
 		}
 	}
