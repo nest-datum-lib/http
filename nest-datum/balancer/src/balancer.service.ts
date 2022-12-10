@@ -76,8 +76,6 @@ export class BalancerService {
 		catch (err) {
 			console.error(err);
 
-			console.log('???--???');
-
 			delete _clients[replicaId];
 
 			this.log(new ErrorException(err.message, getCurrentLine(), { replicaId, serviceResponsLoadingIndicator }));
@@ -135,8 +133,6 @@ export class BalancerService {
 	}
 
 	async log(exception) {
-		console.log('XXXXXXXxxx', exception);
-
 		if (!exception
 			|| typeof exception !== 'object'
 			|| typeof exception['cmd'] !== 'function'
@@ -148,14 +144,9 @@ export class BalancerService {
 		const replica =  await this.balancerRepository.selectLessLoaded({
 			name: 'logs',
 		});
-
-		console.log('qqqqqqqqqqqqqq', replica);
-
 		if (replica
 			&& typeof replica === 'object') {
 			const transporter = this.getTransporter(replica);
-
-			console.log('transportertransportertransportertransporter', transporter);
 
 			if (transporter
 				&& await this.transporterConnected(transporter, replica['id'], replica['serviceResponsLoadingIndicator'])) {
@@ -164,10 +155,6 @@ export class BalancerService {
 					roleId: 'sso-role-admin',
 					email: process['USER_ROOT_EMAIL'],
 				}, Date.now());
-
-				console.log('accessTokenaccessTokenaccessToken', accessToken);
-				console.log('exception.cmd()', exception.cmd());
-				console.log('exception.data()', exception.data());
 
 				transporter.emit(exception.cmd(), {
 					...exception.data(),
