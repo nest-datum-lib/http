@@ -9,7 +9,6 @@ export class Exception {
 		public readonly options,
 		public readonly payload: any,
 	) {
-		console.log('options', options);
 	}
 
 	public cmd(): string {
@@ -21,11 +20,6 @@ export class Exception {
 	}
 
 	public data(): any {
-		if (!this.options['file']
-			|| typeof this.options['file'] !== 'string') {
-			console.log('this.options', this.options);
-		}
-
 		return {
 			projectId: process['PROJECT_ID'],
 			appId: process['APP_ID'],
@@ -45,8 +39,8 @@ export class Exception {
 				&& typeof this.options['method'] === 'string')
 				? this.options['method']
 				: '',
-			file: (typeof this.options['file']
-				&& this.options['file'] === 'string')
+			file: (this.options['file']
+				&& typeof this.options['file'] === 'string')
 				? this.options['file']
 				: '',
 			line: (this.options['line'] >= 0)
