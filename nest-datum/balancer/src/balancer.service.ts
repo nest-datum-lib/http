@@ -159,7 +159,7 @@ export class BalancerService {
 				const data = exception.data();
 
 				if (cmd === 'err.create') {
-					console.log('exception.data()', cmd, data);
+					console.log('exception.data()', cmd, data, exception);
 				}
 
 				transporter.emit(cmd, {
