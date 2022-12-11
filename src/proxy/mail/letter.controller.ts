@@ -21,6 +21,108 @@ export class LetterController {
 	) {
 	}
 
+	@Get('option')
+	async optionMany(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Query('page') page: number,
+		@Query('limit') limit: number,
+		@Query('query') query: string,
+		@Query('filter') filter: string,
+		@Query('sort') sort: string,
+	): Promise<any> {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'letterOptionRelation.many',
+			}, {
+				accessToken,
+				select,
+				relations,
+				page,
+				limit,
+				query,
+				filter,
+				sort,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Get('option/:id')
+	async optionOne(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Param('id') id: string,
+	): Promise<any> {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'letterOptionRelation.one',
+			}, {
+				accessToken,
+				select,
+				relations,
+				id,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Delete('option/:id')
+	async optionDrop(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'letterOptionRelation.drop',
+			}, {
+				accessToken,
+				id,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Post(':id/option')
+	async optionCreate(
+		@AccessToken() accessToken: string,
+		@Param('id') letterOptionId: string,
+		@Body('letterId') letterId: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_MAIL, 
+				cmd: 'letterOptionRelation.create',
+			}, {
+				accessToken,
+				letterOptionId,
+				letterId,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Get()
 	async many(
 		@AccessToken() accessToken: string,
@@ -121,29 +223,6 @@ export class LetterController {
 		}
 	}
 
-	@Delete(':id/options/:optionId')
-	async dropOption(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Param('optionId') optionId: string,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_MAIL, 
-				cmd: 'letter.dropOption',
-			}, {
-				accessToken,
-				id,
-				optionId,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
 	@Post()
 	async create(
 		@AccessToken() accessToken: string,
@@ -172,54 +251,6 @@ export class LetterController {
 				subject,
 				textPart,
 				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
-	@Post(':id/options/:optionId')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Param('optionId') optionId: string,
-		@Body() data,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_MAIL, 
-				cmd: 'letter.createOption',
-			}, {
-				accessToken,
-				id,
-				optionId,
-				data,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_MAIL, 
-				cmd: 'letter.createOptions',
-			}, {
-				accessToken,
-				id,
-				data,
 			});
 		}
 		catch (err) {
