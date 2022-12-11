@@ -103,23 +103,17 @@ export class TypeController {
 	@Post(':id/option')
 	async optionCreate(
 		@AccessToken() accessToken: string,
-		@Param('id') systemOptionId: string,
-		@Body('systemId') systemId: string,
+		@Param('id') typeOptionId: string,
+		@Body('typeId') typeId: string,
 	) {
 		try {
-			console.log('====================', {
-				accessToken,
-				systemOptionId,
-				systemId,
-			});
-
 			return await this.balancerService.send({
 				name: process.env.SERVICE_DATA_TYPE, 
 				cmd: 'typeOptionRelation.create',
 			}, {
 				accessToken,
-				systemOptionId,
-				systemId,
+				typeOptionId,
+				typeId,
 			});
 		}
 		catch (err) {
