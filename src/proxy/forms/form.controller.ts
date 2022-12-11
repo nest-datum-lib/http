@@ -107,6 +107,12 @@ export class FormController {
 		@Body('formId') formId: string,
 	) {
 		try {
+			console.log('?????/', {
+				accessToken,
+				formOptionId,
+				formId,
+			});
+
 			return await this.balancerService.send({
 				name: process.env.SERVICE_FORMS, 
 				cmd: 'formOptionRelation.create',
