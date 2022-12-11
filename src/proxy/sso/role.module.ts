@@ -25,6 +25,38 @@ export class RoleModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/role/option`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/role/option/:id`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/role/option/:id`,
+				method: RequestMethod.DELETE,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/role/:id/option`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/role`,
 				method: RequestMethod.GET,
 			});
@@ -42,14 +74,6 @@ export class RoleModule implements NestModule {
 			)
 			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/role/:id`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/role/:id/options/:optionId`,
 				method: RequestMethod.DELETE,
 			});
 		consumer
@@ -73,31 +97,7 @@ export class RoleModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/role/:id/options`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/role/:id/options/:optionId`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/role/:id`,
-				method: RequestMethod.PATCH,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/role/:id/options/:optionId`,
 				method: RequestMethod.PATCH,
 			});
 	}

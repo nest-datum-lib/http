@@ -25,6 +25,38 @@ export class AccessModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/access/option`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/access/option/:id`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/access/option/:id`,
+				method: RequestMethod.DELETE,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_SSO}/access/:id/option`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/access`,
 				method: RequestMethod.GET,
 			});
@@ -49,14 +81,6 @@ export class AccessModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/access/:id/options/:optionId`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/access`,
 				method: RequestMethod.POST,
 			});
@@ -65,31 +89,7 @@ export class AccessModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/access/:id/options`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/access/:id/options/:optionId`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_SSO}/access/:id`,
-				method: RequestMethod.PATCH,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_SSO}/access/:id/options/:optionId`,
 				method: RequestMethod.PATCH,
 			});
 	}
