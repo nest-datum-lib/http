@@ -105,7 +105,6 @@ export class TypeController {
 		@AccessToken() accessToken: string,
 		@Param('id') systemOptionId: string,
 		@Body('systemId') systemId: string,
-		@Body('id') id: string,
 	) {
 		try {
 			return await this.balancerService.send({
@@ -113,7 +112,6 @@ export class TypeController {
 				cmd: 'typeOptionRelation.create',
 			}, {
 				accessToken,
-				id,
 				systemOptionId,
 				systemId,
 			});
