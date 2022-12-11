@@ -107,6 +107,12 @@ export class TypeController {
 		@Body('systemId') systemId: string,
 	) {
 		try {
+			console.log('====================', {
+				accessToken,
+				systemOptionId,
+				systemId,
+			});
+
 			return await this.balancerService.send({
 				name: process.env.SERVICE_DATA_TYPE, 
 				cmd: 'typeOptionRelation.create',
