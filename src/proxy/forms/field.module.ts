@@ -57,6 +57,14 @@ export class FieldModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/field/:id/options`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/field`,
 				method: RequestMethod.GET,
 			});

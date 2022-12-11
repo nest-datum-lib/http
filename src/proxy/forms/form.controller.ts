@@ -233,6 +233,29 @@ export class FormController {
 		}
 	}
 
+	@Post(':id/options')
+	async createOptions(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body() data,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'form.createOptions',
+			}, {
+				accessToken,
+				id,
+				data,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Post(':id/field')
 	async createFields(
 		@AccessToken() accessToken: string,

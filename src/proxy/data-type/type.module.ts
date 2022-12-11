@@ -57,6 +57,14 @@ export class TypeModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_DATA_TYPE}/type/:id/options`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_DATA_TYPE}/type`,
 				method: RequestMethod.GET,
 			});

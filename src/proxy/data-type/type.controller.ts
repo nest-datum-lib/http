@@ -254,6 +254,29 @@ export class TypeController {
 		}
 	}
 
+	@Post(':id/options')
+	async createOptions(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body() data,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_DATA_TYPE, 
+				cmd: 'type.createOptions',
+			}, {
+				accessToken,
+				id,
+				data,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Patch(':id')
 	async update(
 		@AccessToken() accessToken: string,
