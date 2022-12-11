@@ -25,6 +25,38 @@ export class FormModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/form/option`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/form/option/:id`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/form/option/:id`,
+				method: RequestMethod.DELETE,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/form/:id/option`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/form`,
 				method: RequestMethod.GET,
 			});
@@ -42,14 +74,6 @@ export class FormModule implements NestModule {
 			)
 			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/form/:id`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/form/:id/options/:optionId`,
 				method: RequestMethod.DELETE,
 			});
 		consumer
@@ -73,31 +97,7 @@ export class FormModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/form/:id/options`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/form/:id/options/:optionId`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/form/:id`,
-				method: RequestMethod.PATCH,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/form/:id/options/:optionId`,
 				method: RequestMethod.PATCH,
 			});
 	}

@@ -25,6 +25,38 @@ export class FieldModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/field/option`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/field/option/:id`,
+				method: RequestMethod.GET,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/field/option/:id`,
+				method: RequestMethod.DELETE,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
+				path: `${process.env.SERVICE_FORMS}/field/:id/option`,
+				method: RequestMethod.POST,
+			});
+		consumer
+			.apply(
+				// ExampleMiddleware,
+			)
+			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/field`,
 				method: RequestMethod.GET,
 			});
@@ -49,14 +81,6 @@ export class FieldModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/field/:id/options/:optionId`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/field`,
 				method: RequestMethod.POST,
 			});
@@ -65,31 +89,7 @@ export class FieldModule implements NestModule {
 				// ExampleMiddleware,
 			)
 			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/field/:id/options`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/field/:id/options/:optionId`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
 				path: `${process.env.SERVICE_FORMS}/field/:id`,
-				method: RequestMethod.PATCH,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.SERVICE_FORMS}/field/:id/options/:optionId`,
 				method: RequestMethod.PATCH,
 			});
 	}

@@ -21,6 +21,108 @@ export class FormController {
 	) {
 	}
 
+	@Get('option')
+	async optionMany(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Query('page') page: number,
+		@Query('limit') limit: number,
+		@Query('query') query: string,
+		@Query('filter') filter: string,
+		@Query('sort') sort: string,
+	): Promise<any> {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.many',
+			}, {
+				accessToken,
+				select,
+				relations,
+				page,
+				limit,
+				query,
+				filter,
+				sort,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Get('option/:id')
+	async optionOne(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Param('id') id: string,
+	): Promise<any> {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.one',
+			}, {
+				accessToken,
+				select,
+				relations,
+				id,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Delete('option/:id')
+	async optionDrop(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.drop',
+			}, {
+				accessToken,
+				id,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
+	@Post(':id/option')
+	async optionCreate(
+		@AccessToken() accessToken: string,
+		@Param('id') formOptionId: string,
+		@Body('formId') formId: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.create',
+			}, {
+				accessToken,
+				formOptionId,
+				formId,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Get()
 	async many(
 		@AccessToken() accessToken: string,
@@ -100,29 +202,6 @@ export class FormController {
 		}
 	}
 
-	@Delete(':id/options/:optionId')
-	async dropOption(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Param('optionId') optionId: string,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'form.dropOption',
-			}, {
-				accessToken,
-				id,
-				optionId,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
 	@Post()
 	async create(
 		@AccessToken() accessToken: string,
@@ -168,54 +247,6 @@ export class FormController {
 				accessToken,
 				formId: id,
 				fieldId,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
-	@Post(':id/options/:optionId')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Param('optionId') optionId: string,
-		@Body() data,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'form.createOption',
-			}, {
-				accessToken,
-				id,
-				optionId,
-				data,
-			});
-		}
-		catch (err) {
-			this.balancerService.log(err);
-
-			throw new HttpException(err.message, err.httpCode || 500);
-		}
-	}
-
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.balancerService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'form.createOptions',
-			}, {
-				accessToken,
-				id,
-				data,
 			});
 		}
 		catch (err) {
