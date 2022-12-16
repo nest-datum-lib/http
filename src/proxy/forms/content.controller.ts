@@ -157,6 +157,7 @@ export class ContentController {
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
 		@Body('fieldId') fieldId: string,
+		@Body('fieldName') fieldName: string,
 		@Body('value') value: string,
 	) {
 		try {
@@ -167,6 +168,7 @@ export class ContentController {
 				accessToken,
 				contentId: id,
 				fieldId,
+				fieldName,
 				value,
 			});
 		}
