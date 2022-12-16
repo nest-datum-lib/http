@@ -113,6 +113,7 @@ import { TrafficMiddleware } from './traffic.middleware';
 
 		// forms
 		FormsFormFieldModule,
+		FormsFieldContentModule,
 		FormsFieldModule,
 		FormsFieldOptionModule,
 		FormsFieldStatusModule,
@@ -121,7 +122,6 @@ import { TrafficMiddleware } from './traffic.middleware';
 		FormsFormStatusModule,
 		FormsContentStatusModule,
 		FormsContentModule,
-		FormsFieldContentModule,
 		FormsSettingModule,
 
 		// cv

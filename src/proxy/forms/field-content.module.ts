@@ -36,14 +36,6 @@ export class FieldContentModule implements NestModule {
 				path: `${process.env.SERVICE_FORMS}/content/field/:id`,
 				method: RequestMethod.GET,
 			});
-		// consumer
-		// 	.apply(
-		// 		// ExampleMiddleware,
-		// 	)
-		// 	.forRoutes({
-		// 		path: `${process.env.SERVICE_FORMS}/content/field`,
-		// 		method: RequestMethod.DELETE,
-		// 	});
 		consumer
 			.apply(
 				// ExampleMiddleware,
@@ -52,13 +44,5 @@ export class FieldContentModule implements NestModule {
 				path: `${process.env.SERVICE_FORMS}/content/field/:id`,
 				method: RequestMethod.DELETE,
 			});
-		// consumer
-		// 	.apply(
-		// 		// ExampleMiddleware,
-		// 	)
-		// 	.forRoutes({
-		// 		path: `${process.env.SERVICE_FORMS}/content/:id/field`,
-		// 		method: RequestMethod.POST,
-		// 	});
 	}
 }
