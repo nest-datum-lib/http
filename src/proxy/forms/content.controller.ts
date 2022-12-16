@@ -152,6 +152,31 @@ export class ContentController {
 		}
 	}
 
+	@Post(':id/field')
+	async createFields(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('fieldId') fieldId: string,
+		@Body('value') value: string,
+	) {
+		try {
+			return await this.balancerService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'fieldContent.create',
+			}, {
+				accessToken,
+				contentId: id,
+				fieldId,
+				value,
+			});
+		}
+		catch (err) {
+			this.balancerService.log(err);
+
+			throw new HttpException(err.message, err.httpCode || 500);
+		}
+	}
+
 	@Patch(':id')
 	async update(
 		@AccessToken() accessToken: string,

@@ -57,6 +57,7 @@ import { FormOptionModule as FormsFormOptionModule } from './proxy/forms/form-op
 import { FormStatusModule as FormsFormStatusModule } from './proxy/forms/form-status.module';
 import { ContentStatusModule as FormsContentStatusModule } from './proxy/forms/content-status.module';
 import { ContentModule as FormsContentModule } from './proxy/forms/content.module';
+import { FieldContentModule as FormsFieldContentModule } from './proxy/forms/field-content.module';
 import { SettingModule as FormsSettingModule } from './proxy/forms/setting.module';
 import { ReportModule as CvReportModule } from './proxy/cv/report.module';
 import { ReportStatusModule as CvReportStatusModule } from './proxy/cv/report-status.module';
@@ -120,6 +121,7 @@ import { TrafficMiddleware } from './traffic.middleware';
 		FormsFormStatusModule,
 		FormsContentStatusModule,
 		FormsContentModule,
+		FormsFieldContentModule,
 		FormsSettingModule,
 
 		// cv
