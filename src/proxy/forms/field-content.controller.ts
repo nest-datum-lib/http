@@ -33,6 +33,8 @@ export class FieldContentController {
 		@Query('sort') sort: string,
 	): Promise<Array<any>> {
 		try {
+			console.log('=======');
+
 			return await this.balancerService.send({
 				name: process.env.SERVICE_FORMS, 
 				cmd: 'fieldContent.many',
