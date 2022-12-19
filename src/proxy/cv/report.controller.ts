@@ -126,6 +126,7 @@ export class ReportController {
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
 		@Body('userId') userId: string,
+		@Body('contentId') contentId: string,
 		@Body('reportStatusId') reportStatusId: string,
 		@Body('file') file: string,
 	) {
@@ -137,6 +138,7 @@ export class ReportController {
 				accessToken,
 				id,
 				userId,
+				contentId,
 				reportStatusId,
 				file,
 			});
@@ -154,6 +156,7 @@ export class ReportController {
 		@Param('id') id: string,
 		@Body('newId') newId: string,
 		@Body('userId') userId: string,
+		@Body('contentId') contentId: string,
 		@Body('reportStatusId') reportStatusId: string,
 		@Body('file') file: string,
 	) {
@@ -166,6 +169,7 @@ export class ReportController {
 				id,
 				newId,
 				userId,
+				contentId,
 				reportStatusId,
 				file,
 			});

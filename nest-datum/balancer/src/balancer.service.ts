@@ -59,7 +59,7 @@ export class BalancerService {
 						}
 						else if (index >= transporterAttemptsNum) {
 							clearInterval(interval);
-							console.log('transporterConnected replicaId', replicaId, index, transporter);
+							console.log('transporterConnected replicaId', replicaId);
 							reject(new Error(`Service "${replicaId}" is unavailable`));
 							return;
 						}
@@ -175,6 +175,10 @@ export class BalancerService {
 			id,
 			name,
 		});
+
+		if (!replica) {
+			throw new NotFoundException(`Service replica ${name} not found`, getCurrentLine(), { name, cmd, payload });
+		}
 		const transporter = this.getTransporter(replica);
 
 		if (transporter
