@@ -181,12 +181,6 @@ export class BalancerService {
 		}
 		const transporter = this.getTransporter(replica);
 
-		if (cmd === 'reportStatus.many') {
-			console.log('cmd', cmd, payload);
-			console.log('transporter', transporter);
-			console.log('replica', replica);
-		}
-
 		if (transporter
 			&& await this.transporterConnected(transporter, replica['id'], replica['serviceResponsLoadingIndicator'])) {
 			const isCreate = cmd.includes('.create')
