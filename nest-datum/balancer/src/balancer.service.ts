@@ -181,15 +181,25 @@ export class BalancerService {
 		}
 		const transporter = this.getTransporter(replica);
 
+		if (cmd === 'reportStatus.many') {
+			console.log('cmd', cmd, payload);
+			console.log('transporter', transporter);
+			console.log('replica', replica);
+		}
+
 		if (transporter
 			&& await this.transporterConnected(transporter, replica['id'], replica['serviceResponsLoadingIndicator'])) {
-			if (cmd.includes('.create')
+			const isCreate = cmd.includes('.create')
+				|| cmd.includes('.send');
+
+			if (isCreate
 				&& typeof payload === 'object'
 				&& (typeof payload['id'] !== 'string'
 					|| !payload['id'])) {
 				payload['id'] = uuidv4();
+				payload['createdAt'] = (new Date()).toISOString();
 			}
-			if (cmd.includes('.create')
+			if (isCreate
 				|| cmd.includes('.update')
 				|| cmd.includes('.drop')) {
 				transporter.emit(cmd, { ...payload });
