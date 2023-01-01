@@ -128,7 +128,7 @@ export class ReportController {
 		@Body('userId') userId: string,
 		@Body('contentId') contentId: string,
 		@Body('reportStatusId') reportStatusId: string,
-		@Body('file') file: string,
+		@Body('fileId') fileId: string,
 	) {
 		try {
 			return await this.balancerService.send({
@@ -140,7 +140,7 @@ export class ReportController {
 				userId,
 				contentId,
 				reportStatusId,
-				file,
+				fileId,
 			});
 		}
 		catch (err) {
@@ -158,7 +158,7 @@ export class ReportController {
 		@Body('userId') userId: string,
 		@Body('contentId') contentId: string,
 		@Body('reportStatusId') reportStatusId: string,
-		@Body('file') file: string,
+		@Body('fileId') fileId: string,
 	) {
 		try {
 			return await this.balancerService.send({
@@ -171,7 +171,7 @@ export class ReportController {
 				userId,
 				contentId,
 				reportStatusId,
-				file,
+				fileId,
 			});
 		}
 		catch (err) {
