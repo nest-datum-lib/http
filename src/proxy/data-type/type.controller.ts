@@ -227,6 +227,7 @@ export class TypeController {
 	async create(
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
+		@Body('parentId') parentId: string,
 		@Body('userId') userId: string,
 		@Body('typeStatusId') typeStatusId: string,
 		@Body('name') name: string,
@@ -240,6 +241,7 @@ export class TypeController {
 			}, {
 				accessToken,
 				id,
+				parentId,
 				userId,
 				typeStatusId,
 				name,
@@ -281,6 +283,7 @@ export class TypeController {
 	async update(
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
+		@Body('parentId') parentId: string,
 		@Body('newId') newId: string,
 		@Body('userId') userId: string,
 		@Body('typeStatusId') typeStatusId: string,
@@ -296,6 +299,7 @@ export class TypeController {
 			}, {
 				accessToken,
 				id,
+				parentId,
 				newId,
 				userId,
 				typeStatusId,
