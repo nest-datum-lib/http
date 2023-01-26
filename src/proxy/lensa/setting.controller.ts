@@ -13,8 +13,8 @@ import {
 import { AccessToken } from 'nest-datum/common/src';
 import { BalancerService } from 'nest-datum/balancer/src';
 
-@ApiTags(`[ ${process.env.SERVICE_CV} ] Settings`)
-@Controller(`${process.env.SERVICE_CV}/setting`)
+@ApiTags(`[ ${process.env.SERVICE_LENSA} ] Settings`)
+@Controller(`${process.env.SERVICE_LENSA}/setting`)
 export class SettingController {
 	constructor(
 		private readonly balancerService: BalancerService,
@@ -34,7 +34,7 @@ export class SettingController {
 	): Promise<Array<any>> {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.many',
 			}, {
 				accessToken,
@@ -63,7 +63,7 @@ export class SettingController {
 	): Promise<any> {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.one', 
 			}, {
 				accessToken,
@@ -86,7 +86,7 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.drop',
 			}, {
 				accessToken,
@@ -107,7 +107,7 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.dropMany',
 			}, {
 				accessToken,
@@ -136,7 +136,7 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.create',
 			}, {
 				accessToken,
@@ -176,7 +176,7 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
+				name: process.env.SERVICE_LENSA, 
 				cmd: 'setting.update',
 			}, {
 				accessToken,

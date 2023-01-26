@@ -62,6 +62,8 @@ import { SettingModule as FormsSettingModule } from './proxy/forms/setting.modul
 import { ReportModule as CvReportModule } from './proxy/cv/report.module';
 import { ReportStatusModule as CvReportStatusModule } from './proxy/cv/report-status.module';
 import { SettingModule as CvSettingModule } from './proxy/cv/setting.module';
+import { ReportModule as LensaReportModule } from './proxy/lensa/report.module';
+import { SettingModule as LensaSettingModule } from './proxy/lensa/setting.module';
 import { TrafficMiddleware } from './traffic.middleware';
 
 @Module({
@@ -128,6 +130,10 @@ import { TrafficMiddleware } from './traffic.middleware';
 		CvReportStatusModule,
 		CvReportModule,
 		CvSettingModule,
+
+		// lensa
+		LensaReportModule,
+		LensaSettingModule,
 	],
 	controllers: [ AppController ],
 	providers: [ 

@@ -13,9 +13,9 @@ import {
 import { AccessToken } from 'nest-datum/common/src';
 import { BalancerService } from 'nest-datum/balancer/src';
 
-@ApiTags(`[ ${process.env.SERVICE_CV} ] Settings`)
-@Controller(`${process.env.SERVICE_CV}/setting`)
-export class SettingController {
+@ApiTags(`[ ${process.env.SERVICE_LENSA} ] Reports`)
+@Controller(`${process.env.SERVICE_LENSA}/report`)
+export class ReportController {
 	constructor(
 		private readonly balancerService: BalancerService,
 	) {
@@ -34,8 +34,8 @@ export class SettingController {
 	): Promise<Array<any>> {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.many',
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.many',
 			}, {
 				accessToken,
 				select,
@@ -63,8 +63,8 @@ export class SettingController {
 	): Promise<any> {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.one', 
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.one',
 			}, {
 				accessToken,
 				select,
@@ -86,8 +86,8 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.drop',
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.drop',
 			}, {
 				accessToken,
 				id,
@@ -107,8 +107,8 @@ export class SettingController {
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.dropMany',
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.dropMany',
 			}, {
 				accessToken,
 				ids,
@@ -126,29 +126,21 @@ export class SettingController {
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
 		@Body('userId') userId: string,
-		@Body('name') name: string,
-		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
-		@Body('isRequired') isRequired: boolean,
-		@Body('isNotDelete') isNotDelete: boolean,
+		@Body('contentId') contentId: string,
+		@Body('reportStatusId') reportStatusId: string,
+		@Body('fileId') fileId: string,
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.create',
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.create',
 			}, {
 				accessToken,
 				id,
 				userId,
-				name,
-				description,
-				dataTypeId,
-				value,
-				regex,
-				isRequired,
-				isNotDelete,
+				contentId,
+				reportStatusId,
+				fileId,
 			});
 		}
 		catch (err) {
@@ -164,34 +156,22 @@ export class SettingController {
 		@Param('id') id: string,
 		@Body('newId') newId: string,
 		@Body('userId') userId: string,
-		@Body('name') name: string,
-		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
-		@Body('isRequired') isRequired: boolean,
-		@Body('isDeleted') isDeleted: boolean,
-		@Body('isNotDelete') isNotDelete: boolean,
-		@Body('createdAt') createdAt: string,
+		@Body('contentId') contentId: string,
+		@Body('reportStatusId') reportStatusId: string,
+		@Body('fileId') fileId: string,
 	) {
 		try {
 			return await this.balancerService.send({
-				name: process.env.SERVICE_CV, 
-				cmd: 'setting.update',
+				name: process.env.SERVICE_LENSA, 
+				cmd: 'report.update',
 			}, {
 				accessToken,
 				id,
 				newId,
 				userId,
-				name,
-				description,
-				dataTypeId,
-				value,
-				regex,
-				isRequired,
-				isDeleted,
-				isNotDelete,
-				createdAt,
+				contentId,
+				reportStatusId,
+				fileId,
 			});
 		}
 		catch (err) {
