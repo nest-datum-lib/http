@@ -39,6 +39,9 @@ export class Setting {
 	@Column('boolean', { default: false })
 	public isDeleted: boolean = false;
 
+	@Column('boolean', { default: false })
+	public isNotDelete: boolean = false;
+
 	@CreateDateColumn({ 
 		type: 'timestamp', 
 		precision: null,

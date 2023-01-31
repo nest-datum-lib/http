@@ -191,6 +191,7 @@ export class SettingController {
 				}),
 				regex: Validators.regex('regex', regex),
 				isRequired: Validators.bool('isRequired', isRequired),
+				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
 			});
 		}
 		catch (err) {
@@ -243,6 +244,7 @@ export class SettingController {
 				regex: Validators.regex('regex', regex),
 				isRequired: Validators.bool('isRequired', isRequired),
 				isDeleted: Validators.bool('isDeleted', isDeleted),
+				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
 				createdAt: Validators.date('createdAt', createdAt),
 			});
 
