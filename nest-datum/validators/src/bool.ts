@@ -2,7 +2,7 @@ import getCurrentLine from 'get-current-line';
 import { WarningException } from 'nest-datum/exceptions/src';
 
 export const bool = (propertyName: string, value, options = {}) => {
-	if (typeof value !== 'undefined') {
+	if (typeof value !== 'undefined' && value !== null) {
 		if (typeof value === 'boolean') {
 			return value;
 		}
