@@ -191,7 +191,7 @@ export class SettingController {
 				}),
 				regex: Validators.regex('regex', regex),
 				isRequired: Validators.bool('isRequired', isRequired),
-				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
+				isNotDelete: Validators.bool('isNotDelete', isNotDelete),
 			});
 		}
 		catch (err) {
@@ -233,18 +233,18 @@ export class SettingController {
 				description: Validators.str('description', description, {
 					min: 1,
 					max: 255,
-				}),
+				}) || '',
 				dataTypeId: Validators.id('dataTypeId', dataTypeId),
 				defaultValue: Validators.valueWithDataType('defaultValue', defaultValue, {
 					dataTypeId: dataTypeId,
-				}),
+				}) || '',
 				value: Validators.valueWithDataType('value', value, {
 					dataTypeId: dataTypeId,
-				}),
-				regex: Validators.regex('regex', regex),
+				}) || '',
+				regex: Validators.regex('regex', regex) || '',
 				isRequired: Validators.bool('isRequired', isRequired),
 				isDeleted: Validators.bool('isDeleted', isDeleted),
-				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
+				isNotDelete: Validators.bool('isNotDelete', isNotDelete),
 				createdAt: Validators.date('createdAt', createdAt),
 			});
 
