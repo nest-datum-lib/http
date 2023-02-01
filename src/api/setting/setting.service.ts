@@ -174,6 +174,8 @@ export class SettingService extends SqlService {
 			
 			this.cacheService.clear([ 'setting', 'many' ]);
 			this.cacheService.clear([ 'setting', 'one' ]);
+
+			console.log('payload', payload);
 			
 			await this.updateWithId(this.settingRepository, payload);
 			
