@@ -162,6 +162,7 @@ export class SettingController {
 		@Body('value') value: string,
 		@Body('regex') regex: string,
 		@Body('isRequired') isRequired: boolean,
+		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
 			return await this.settingService.create({
@@ -215,6 +216,7 @@ export class SettingController {
 		@Body('regex') regex: string,
 		@Body('isRequired') isRequired: boolean,
 		@Body('isDeleted') isDeleted: boolean,
+		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('createdAt') createdAt: string,
 	) {
 		try {
