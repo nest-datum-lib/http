@@ -165,8 +165,6 @@ export class SettingController {
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			console.log('isNotDelete', isNotDelete);
-
 			return await this.settingService.create({
 				user: Validators.token('accessToken', accessToken, {
 					accesses: [ process['ACCESS_HTTP_SETTING_CREATE'] ],
@@ -198,8 +196,6 @@ export class SettingController {
 			});
 		}
 		catch (err) {
-			console.log('err', err);
-
 			this.balancerService.log(err);
 
 			return err;
