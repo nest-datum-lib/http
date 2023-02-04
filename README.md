@@ -1,2 +1,2 @@
-# http
-## Handling HTTP requests and proxying to service.
+# @nest-datum-lib/http
+## Http API gateway..

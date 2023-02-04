@@ -1,15 +1,21 @@
-import { 
-	Module,
-	NestModule,
-	MiddlewareConsumer, 
-	RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheService } from 'nest-datum/cache/src';
 import { 
-	BalancerRepository,
-	BalancerService, 
-} from 'nest-datum/balancer/src';
+	ReplicaModule,
+	ReplicaService, 
+} from '@nest-datum/replica';
+import { 
+	TransportModule,
+	TransportService, 
+} from '@nest-datum/transport';
+import {
+	CacheModule, 
+	CacheService, 
+} from '@nest-datum/cache';
+import { 
+	SqlModule,
+	SqlService, 
+} from '@nest-datum/sql';
 import { SettingService } from './setting.service';
 import { SettingController } from './setting.controller';
 import { Setting } from './setting.entity';
@@ -18,64 +24,19 @@ import { Setting } from './setting.entity';
 	controllers: [ SettingController ],
 	imports: [
 		TypeOrmModule.forFeature([ Setting ]),
+		ReplicaModule,
+		TransportModule,
+		CacheModule,
+		SqlModule,
 	],
 	providers: [
-		BalancerRepository, 
-		BalancerService,
+		ReplicaService,
+		TransportService,
 		CacheService,
+		SqlService,
 		SettingService, 
 	],
 })
 export class SettingModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting`,
-				method: RequestMethod.GET,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting/:id`,
-				method: RequestMethod.GET,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting/:id`,
-				method: RequestMethod.DELETE,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting`,
-				method: RequestMethod.POST,
-			});
-		consumer
-			.apply(
-				// ExampleMiddleware,
-			)
-			.forRoutes({
-				path: `${process.env.APP_NAME}/setting/:id`,
-				method: RequestMethod.PATCH,
-			});
-	}
 }
 

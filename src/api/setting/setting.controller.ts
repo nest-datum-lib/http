@@ -1,5 +1,3 @@
-import { ApiTags } from '@nestjs/swagger';
-import getCurrentLine from 'get-current-line';
 import { 
 	Controller,
 	Get, 
@@ -11,18 +9,143 @@ import {
 	Query,
 	HttpException,
 } from '@nestjs/common';
-import * as Validators from 'nest-datum/validators/src';
-import { AccessToken } from 'nest-datum/common/src';
-import { BalancerService } from 'nest-datum/balancer/src';
+import { WarningException } from '@nest-datum-common/exceptions';
+import {
+	obj as utilsCheckObj,
+	strId as utilsCheckStrId,
+	strDescription as utilsCheckStrDescription,
+	strRegex as utilsCheckStrRegex,
+	numericInt as utilsCheckNumericInt,
+} from '@nest-datum-utils/check';
+import { 
+	checkToken,
+	getUser, 
+} from '@nest-datum/jwt';
+import { TransportService } from '@nest-datum/transport';
+import { AccessToken } from '@nest-datum-common/decorators';
+import { HttpController as NestDatumHttpController } from '@nest-datum-common/controller';
 import { SettingService } from './setting.service';
 
-@ApiTags(`[ ${process.env.APP_NAME} ] Settings`)
-@Controller(`${process.env.APP_NAME}/setting`)
-export class SettingController {
+@Controller(`${process.env.SERVICE_HTTP}/setting`)
+export class SettingController extends NestDatumHttpController {
+	public serviceName = process.env.SERVICE_HTTP;
+	public entityName = 'setting';
+
 	constructor(
-		private readonly balancerService: BalancerService,
-		private readonly settingService: SettingService,
+		public transportService: TransportService,
+		public service: SettingService,
 	) {
+		super();
+	}
+
+	validateMany(options: object = {}) {
+		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
+			throw new WarningException(`User is undefined or token is not valid.`);
+		}
+		const user = getUser(options['accessToken']);
+
+		try {
+			options['select'] = JSON.parse(options['select']);
+		}
+		catch (err) {
+		}
+		try {
+			options['relations'] = JSON.parse(options['relations']);
+		}
+		catch (err) {
+		}
+		try {
+			options['sort'] = JSON.parse(options['sort']);
+		}
+		catch (err) {
+		}
+		try {
+			options['filter'] = JSON.parse(options['filter']);
+		}
+		catch (err) {
+		}
+		return {
+			user,
+			...utilsCheckNumericInt(options['page'])
+				? { page: Number(options['page'] || 1) }
+				: { page: 1 },
+			...utilsCheckNumericInt(options['limit'])
+				? { limit: Number(options['limit'] || 20) }
+				: { limit: 20 },
+			...utilsCheckObj(options['select']) 
+				? { select: options['select'] } 
+				: {},
+			...utilsCheckObj(options['relations']) 
+				? { relations: options['relations'] } 
+				: {},
+			...utilsCheckObj(options['sort']) 
+				? { sort: options['sort'] } 
+				: {},
+			...utilsCheckObj(options['filter']) 
+				? { filter: options['filter'] } 
+				: {},
+			...utilsCheckStrDescription(options['query']) 
+				? { query: options['query'] } 
+				: {},
+		};
+	}
+
+	validateOne(options: object = {}) {
+		if (!utilsCheckStrId(options['id'])) {
+			throw new WarningException(`Property "id" is not valid.`);
+		}
+		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
+			throw new WarningException(`User is undefined or token is not valid.`);
+		}
+		const user = getUser(options['accessToken']);
+
+		try {
+			options['select'] = JSON.parse(options['select']);
+		}
+		catch (err) {
+		}
+		try {
+			options['relations'] = JSON.parse(options['relations']);
+		}
+		catch (err) {
+		}
+		return {
+			user,
+			id: options['id'],
+			...utilsCheckObj(options['select']) 
+				? { select: options['select'] } 
+				: {},
+			...utilsCheckObj(options['relations']) 
+				? { relations: options['relations'] } 
+				: {},
+		};
+	}
+
+	validateDrop(options: object = {}) {
+		if (!utilsCheckStrId(options['id'])) {
+			throw new WarningException(`Property "id" is not valid.`);
+		}
+		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
+			throw new WarningException(`User is undefined or token is not valid.`);
+		}
+		const user = getUser(options['accessToken']);
+
+		return {
+			user,
+			id: options['id'],
+		};
+	}
+
+	validateDropMany(options: object = {}) {
+		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
+			throw new WarningException(`User is undefined or token is not valid.`);
+		}
+		const user = getUser(options['accessToken']);
+
+		return {
+			user,
+			ids: JSON.parse(options['ids']),
+		};
 	}
 
 	@Get()
@@ -37,28 +160,16 @@ export class SettingController {
 		@Query('sort') sort: string,
 	): Promise<any> {
 		try {
-			const many = await this.settingService.many({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_MANY'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', relations),
-				select: Validators.obj('select', select),
-				sort: Validators.obj('sort', sort),
-				filter: Validators.obj('filter', filter),
-				query: Validators.str('query', query, {
-					min: 1,
-					max: 255,
-				}),
-				page: Validators.int('page', page, {
-					min: 1,
-					default: 1,
-				}),
-				limit: Validators.int('limit', limit, {
-					min: 1,
-					default: 20,
-				}),
-			});
+			const many = await this.service.many(this.validateMany({
+				accessToken,
+				select,
+				relations,
+				page,
+				limit,
+				query,
+				filter,
+				sort,
+			}));
 
 			return {
 				total: many[1],
@@ -66,9 +177,9 @@ export class SettingController {
 			};
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 
@@ -80,22 +191,17 @@ export class SettingController {
 		@Param('id') id: string,
 	): Promise<any> {
 		try {
-			return await this.settingService.one({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_ONE'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', relations),
-				select: Validators.obj('select', select),
-				id: Validators.id('id', id, {
-					isRequired: true,
-				}),
-			});
+			return await this.service.one(this.validateOne({
+				accessToken,
+				select,
+				relations,
+				id,
+			}));
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 
@@ -105,100 +211,65 @@ export class SettingController {
 		@Param('id') id: string,
 	) {
 		try {
-			await this.settingService.drop({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_DROP'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', id, {
-					isRequired: true,
-				}),
-			});
-
-			return true;
+			return await this.service.drop(this.validateDrop({
+				accessToken,
+				id,
+			}));
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 
-	@Delete()
+	@Delete(':id')
 	async dropMany(
 		@AccessToken() accessToken: string,
-		@Query('ids') ids: string,
+		@Param('ids') ids: string,
 	) {
 		try {
-			await this.settingService.dropMany({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_DROP_MANY'] ],
-					isRequired: true,
-				}),
-				ids: Validators.arr('ids', ids, {
-					isRequired: true,
-					min: 1,
-				}),
-			});
-
-			return true;
+			return await this.service.dropMany(this.validateDropMany({
+				accessToken,
+				ids,
+			}));
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 
 	@Post()
 	async create(
 		@AccessToken() accessToken: string,
-		@Body('id') id: string,
+		@Param('id') id: string,
 		@Body('userId') userId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('defaultValue') defaultValue: string,
 		@Body('value') value: string,
 		@Body('regex') regex: string,
-		@Body('isRequired') isRequired: boolean,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
-			return await this.settingService.create({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_CREATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', id),
-				userId: Validators.id('userId', userId),
-				name: Validators.str('name', name, {
-					isRequired: true,
-					min: 1,
-					max: 255,
-				}),
-				description: Validators.str('description', description, {
-					min: 1,
-					max: 255,
-				}),
-				dataTypeId: Validators.id('dataTypeId', dataTypeId, {
-					isRequired: true,
-				}),
-				defaultValue: Validators.valueWithDataType('defaultValue', defaultValue, {
-					dataTypeId: dataTypeId,
-				}),
-				value: Validators.valueWithDataType('value', value, {
-					dataTypeId: dataTypeId,
-				}),
-				regex: Validators.regex('regex', regex),
-				isRequired: Validators.bool('isRequired', isRequired),
-				isNotDelete: Validators.bool('isNotDelete', isNotDelete),
+			return await this.service.create({
+				accessToken,
+				id,
+				userId,
+				name,
+				description,
+				dataTypeId,
+				value,
+				regex,
+				isNotDelete,
 			});
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 
@@ -206,56 +277,35 @@ export class SettingController {
 	async update(
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
-		@Body('newId') newId: string,
+		@Body('id') newId: string,
 		@Body('userId') userId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('defaultValue') defaultValue: string,
 		@Body('value') value: string,
 		@Body('regex') regex: string,
-		@Body('isRequired') isRequired: boolean,
-		@Body('isDeleted') isDeleted: boolean,
 		@Body('isNotDelete') isNotDelete: boolean,
-		@Body('createdAt') createdAt: string,
+		@Body('isDeleted') isDeleted: boolean,
 	) {
 		try {
-			await this.settingService.update({
-				user: Validators.token('accessToken', accessToken, {
-					accesses: [ process['ACCESS_HTTP_SETTING_UPDATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', id),
-				newId: Validators.id('newId', newId),
-				userId: Validators.id('userId', userId),
-				name: Validators.str('name', name, {
-					min: 1,
-					max: 255,
-				}),
-				description: Validators.str('description', description, {
-					min: 1,
-					max: 255,
-				}) || '',
-				dataTypeId: Validators.id('dataTypeId', dataTypeId),
-				defaultValue: Validators.valueWithDataType('defaultValue', defaultValue, {
-					dataTypeId: dataTypeId,
-				}) || '',
-				value: Validators.valueWithDataType('value', value, {
-					dataTypeId: dataTypeId,
-				}) || '',
-				regex: Validators.regex('regex', regex) || '',
-				isRequired: Validators.bool('isRequired', isRequired),
-				isDeleted: Validators.bool('isDeleted', isDeleted),
-				isNotDelete: Validators.bool('isNotDelete', isNotDelete),
-				createdAt: Validators.date('createdAt', createdAt),
+			return await this.service.update({
+				accessToken,
+				id,
+				newId,
+				userId,
+				name,
+				description,
+				dataTypeId,
+				value,
+				regex,
+				isNotDelete,
+				isDeleted,
 			});
-
-			return true;
 		}
 		catch (err) {
-			this.balancerService.log(err);
+			this.log(err);
 
-			return err;
+			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
 }
