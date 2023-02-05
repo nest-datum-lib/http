@@ -55,12 +55,6 @@ export class TypeController extends HttpController {
 		@Body() data,
 	) {
 		try {
-			console.log('???????????', {
-				accessToken,
-				id,
-				data,
-			});
-
 			return await this.transportService.send({
 				name: this.serviceName, 
 				cmd: `${this.entityName}.createOptions`,
