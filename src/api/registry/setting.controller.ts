@@ -87,6 +87,7 @@ export class SettingController extends HttpController {
 				dataTypeId,
 				value,
 				regex,
+				isNotDelete,
 				isDeleted,
 			});
 		}
