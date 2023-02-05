@@ -27,10 +27,10 @@ import { SettingModule as ApiRegistrySettingModule } from './api/registry/settin
 import { ServModule as ApiRegistryServModule } from './api/registry/serv.module';
 
 import { SettingModule as ApiSsoSettingModule } from './api/sso/setting.module';
-import { AccessModule as ApiSsoAccessModule } from './api/sso/type.module';
-import { AccessStatusModule as ApiSsoAccessStatusModule } from './api/sso/type-status.module';
-import { AccessOptionModule as ApiSsoAccessOptionModule } from './api/sso/type-option.module';
-import { AccessAccessOptionModule as ApiSsoAccessAccessOptionModule } from './api/sso/type-type-option.module';
+import { AccessModule as ApiSsoAccessModule } from './api/sso/access.module';
+import { AccessStatusModule as ApiSsoAccessStatusModule } from './api/sso/access-status.module';
+import { AccessOptionModule as ApiSsoAccessOptionModule } from './api/sso/access-option.module';
+import { AccessAccessOptionModule as ApiSsoAccessAccessOptionModule } from './api/sso/access-access-option.module';
 import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
 
 import { SettingModule as ApiDataTypeSettingModule } from './api/data-type/setting.module';
