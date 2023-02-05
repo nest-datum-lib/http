@@ -108,6 +108,8 @@ export class TransportService extends RedisService {
 		else if (utilsCheckStrId(id)) {
 			prefix += `${id}|`;
 		}
+		console.log('prefix', prefix);
+
 		const dataProcessed = (await this.redisScanStream(prefix));
 		let i = 0;
 
