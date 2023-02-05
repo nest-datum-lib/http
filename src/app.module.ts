@@ -37,6 +37,8 @@ import { RoleOptionModule as ApiSsoRoleOptionModule } from './api/sso/role-optio
 import { RoleRoleOptionModule as ApiSsoRoleRoleOptionModule } from './api/sso/role-role-option.module';
 import { RoleAccessModule as ApiSsoRoleAccessModule } from './api/sso/role-access.module';
 import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
+import { UserStatusModule as ApiSsoUserStatusModule } from './api/sso/user-status.module';
+import { UserOptionModule as ApiSsoUserOptionModule } from './api/sso/user-option.module';
 
 import { SettingModule as ApiDataTypeSettingModule } from './api/data-type/setting.module';
 import { TypeModule as ApiDataTypeTypeModule } from './api/data-type/type.module';
@@ -69,6 +71,8 @@ import { AppController } from './app.controller';
 		ApiSsoRoleRoleOptionModule,
 		ApiSsoRoleModule,
 		ApiSsoRoleAccessModule,
+		ApiSsoUserStatusModule,
+		ApiSsoUserOptionModule,
 		ApiSsoUserModule,
 		
 		ApiDataTypeSettingModule,

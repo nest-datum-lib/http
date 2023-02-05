@@ -151,4 +151,107 @@ export class UserController extends HttpController {
 			throw new HttpException(err.message, err.errorCode || 500);
 		}
 	}
+
+	@Post(':id/options')
+	async createOptions(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body() data,
+	) {
+		try {
+			return await this.transportService.send({
+				name: this.serviceName, 
+				cmd: `${this.entityName}.createOptions`,
+			}, {
+				accessToken,
+				id,
+				data,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
+	@Post()
+	async create(
+		@AccessToken() accessToken: string,
+		@Body('id') id: string,
+		@Body('userId') userId: string,
+		@Body('roleId') roleId: string,
+		@Body('userStatusId') userStatusId: string,
+		@Body('login') login: string,
+		@Body('email') email: string,
+		@Body('password') password: string,
+		@Body('emailVerifyKey') emailVerifyKey: string,
+		@Body('emailVerifiedAt') emailVerifiedAt: string,
+		@Body('isNotDelete') isNotDelete: boolean,
+	) {
+		try {
+			return await this.transportService.send({
+				name: this.serviceName, 
+				cmd: `${this.entityName}.create`,
+			}, {
+				accessToken,
+				id,
+				userId,
+				roleId,
+				userStatusId,
+				login,
+				email,
+				password,
+				emailVerifyKey,
+				emailVerifiedAt,
+				isNotDelete,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
+	@Patch(':id')
+	async update(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('id') newId: string,
+		@Body('roleId') roleId: string,
+		@Body('userStatusId') userStatusId: string,
+		@Body('login') login: string,
+		@Body('email') email: string,
+		@Body('password') password: string,
+		@Body('emailVerifyKey') emailVerifyKey: string,
+		@Body('emailVerifiedAt') emailVerifiedAt: string,
+		@Body('isNotDelete') isNotDelete: boolean,
+		@Body('isDeleted') isDeleted: boolean,
+	) {
+		try {
+			return await this.transportService.send({
+				name: this.serviceName, 
+				cmd: `${this.entityName}.update`,
+			}, {
+				accessToken,
+				id,
+				newId,
+				roleId,
+				userStatusId,
+				login,
+				email,
+				password,
+				emailVerifyKey,
+				emailVerifiedAt,
+				isNotDelete,
+				isDeleted,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
 }
