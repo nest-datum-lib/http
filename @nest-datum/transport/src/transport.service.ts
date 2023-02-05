@@ -108,8 +108,6 @@ export class TransportService extends RedisService {
 		else if (utilsCheckStrId(id)) {
 			prefix += `${id}|`;
 		}
-		console.log('prefix', prefix);
-
 		const dataProcessed = (await this.redisScanStream(prefix));
 		let i = 0;
 
@@ -232,8 +230,6 @@ export class TransportService extends RedisService {
 
 	async send({ id, cmd, name }: { id?: string; cmd: string, name?: string }, payload: any): Promise<any> {
 		const replicaData =  await this.lessLoadedConnection({ id, name });
-
-		console.log('??????replicaData', { id, cmd, name }, replicaData);
 
 		if (!replicaData) {
 			throw new NotFoundException(`Replica "${id || name}" not found [1].`);

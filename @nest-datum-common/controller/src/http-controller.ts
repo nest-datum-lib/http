@@ -43,8 +43,6 @@ export class HttpController {
 		@Query('sort') sort: string,
 	): Promise<any> {
 		try {
-			console.log('this.serviceName', this.serviceName, `${this.entityName}.many`);
-
 			return await this.transportService.send({
 				name: this.serviceName, 
 				cmd: `${this.entityName}.many`,
