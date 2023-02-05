@@ -12,20 +12,20 @@ import {
 	TransportModule,
 	TransportService, 
 } from '@nest-datum/transport';
-import { AccessController } from './access.controller';
+import { AccessAccessOptionController } from './access-access-option.controller';
 
 @Module({
 	imports: [ 
 		ReplicaModule,
 		TransportModule, 
 	],
-	controllers: [ AccessController ],
+	controllers: [ AccessAccessOptionController ],
 	providers: [ 
 		ReplicaService,
 		TransportService, 
 	],
 })
-export class AccessModule implements NestModule {
+export class AccessAccessOptionModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 	}
 }

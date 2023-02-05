@@ -26,6 +26,11 @@ import { SettingModule as ApiSettingModule } from './api/setting/setting.module'
 import { SettingModule as ApiRegistrySettingModule } from './api/registry/setting.module';
 import { ServModule as ApiRegistryServModule } from './api/registry/serv.module';
 
+import { SettingModule as ApiSsoSettingModule } from './api/sso/setting.module';
+import { AccessModule as ApiSsoAccessModule } from './api/sso/type.module';
+import { AccessStatusModule as ApiSsoAccessStatusModule } from './api/sso/type-status.module';
+import { AccessOptionModule as ApiSsoAccessOptionModule } from './api/sso/type-option.module';
+import { AccessAccessOptionModule as ApiSsoAccessAccessOptionModule } from './api/sso/type-type-option.module';
 import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
 
 import { SettingModule as ApiDataTypeSettingModule } from './api/data-type/setting.module';
@@ -49,6 +54,11 @@ import { AppController } from './app.controller';
 		ApiRegistrySettingModule,
 		ApiRegistryServModule,
 
+		ApiSsoSettingModule,
+		ApiSsoAccessStatusModule,
+		ApiSsoAccessOptionModule,
+		ApiSsoAccessAccessOptionModule,
+		ApiSsoAccessModule,
 		ApiSsoUserModule,
 		
 		ApiDataTypeSettingModule,
