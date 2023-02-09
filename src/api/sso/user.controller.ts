@@ -56,6 +56,8 @@ export class UserController extends HttpController {
 	@Post('verify')
 	async verify(@Body('verifyKey') verifyKey: string): Promise<any> {
 		try {
+			console.log('http', verifyKey);
+
 			return await this.transportService.send({
 				name: this.serviceName, 
 				cmd: `${this.entityName}.verify`,
