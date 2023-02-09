@@ -104,6 +104,29 @@ export class FormController extends HttpController {
 		}
 	}
 
+	@Post(':id/field')
+	async createFields(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('fieldId') fieldId: string,
+	) {
+		try {
+			return await this.transportService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formField.create',
+			}, {
+				accessToken,
+				formId: id,
+				fieldId,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
 	@Post(':id/option')
 	async createOption(
 		@AccessToken() accessToken: string,
