@@ -30,6 +30,7 @@ export class ReportController extends HttpController {
 		@Body('id') id: string,
 		@Body('userId') userId: string,
 		@Body('reportStatusId') reportStatusId: string,
+		@Body('letterId') letterId: string,
 		@Body('action') action: string,
 		@Body('content') content: string,
 	) {
@@ -42,6 +43,7 @@ export class ReportController extends HttpController {
 				id,
 				userId,
 				reportStatusId,
+				letterId,
 				action,
 				content,
 			});
@@ -60,6 +62,7 @@ export class ReportController extends HttpController {
 		@Body('id') newId: string,
 		@Body('userId') userId: string,
 		@Body('reportStatusId') reportStatusId: string,
+		@Body('letterId') letterId: string,
 		@Body('action') action: string,
 		@Body('content') content: string,
 	) {
@@ -73,6 +76,7 @@ export class ReportController extends HttpController {
 				newId,
 				userId,
 				reportStatusId,
+				letterId,
 				action,
 				content,
 			});
