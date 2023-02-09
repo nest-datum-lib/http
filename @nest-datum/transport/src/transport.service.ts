@@ -258,6 +258,8 @@ export class TransportService extends RedisService {
 				.send({ cmd }, payload)
 				.pipe(map(response => response)));
 
+			console.log('connectionInstanceResponse', connectionInstanceResponse);
+
 			if (!utilsCheckObj(connectionInstanceResponse)) {
 				throw new NotFoundException(`Resource not found.`);
 			}
