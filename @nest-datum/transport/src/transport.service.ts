@@ -16,7 +16,7 @@ import {
 	Exception,
 } from '@nest-datum-common/exceptions';
 import {
-	arr as utilsCheckArr,
+	exists as utilsCheckExists,
 	obj as utilsCheckObj,
 	strId as utilsCheckStrId,
 	strHost as utilsCheckStrHost,
@@ -261,11 +261,11 @@ export class TransportService extends RedisService {
 
 			console.log('connectionInstanceResponse', connectionInstanceResponse, typeof connectionInstanceResponse);
 
-			if (!utilsCheckObj(connectionInstanceResponse)
-				&& !utilsCheckArr(connectionInstanceResponse)) {
+			if (!utilsCheckExists(connectionInstanceResponse)) {
 				throw new NotFoundException(`Resource not found.`);
 			}
-			else if (utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
+			else if (utilsCheckObj(connectionInstanceResponse) 
+				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
 				switch (connectionInstanceResponse['errorCode']) {
 					case 404:
 						throw new NotFoundException(connectionInstanceResponse['message']);
