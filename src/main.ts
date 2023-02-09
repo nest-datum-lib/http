@@ -24,7 +24,7 @@ async function bootstrap() {
 	try {
 		app.enableCors();
 
-		await transportService.create()
+		await transportService.create();
 		await app.listen(Number(process.env.APP_PORT), () => console.log('Replica listening on port:', process.env.APP_PORT))
 		await transport.close();
 	}

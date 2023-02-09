@@ -46,6 +46,18 @@ import { TypeStatusModule as ApiDataTypeTypeStatusModule } from './api/data-type
 import { TypeOptionModule as ApiDataTypeTypeOptionModule } from './api/data-type/type-option.module';
 import { TypeTypeOptionModule as ApiDataTypeTypeTypeOptionModule } from './api/data-type/type-type-option.module';
 
+import { SettingModule as ApiMailSettingModule } from './api/mail/setting.module';
+import { LetterModule as ApiMailLetterModule } from './api/mail/letter.module';
+import { LetterOptionModule as ApiMailLetterOptionModule } from './api/mail/letter-option.module';
+import { LetterLetterOptionModule as ApiMailLetterLetterOptionModule } from './api/mail/letter-letter-option.module';
+import { LetterStatusModule as ApiMailLetterStatusModule } from './api/mail/letter-status.module';
+import { TemplateModule as ApiMailTemplateModule } from './api/mail/template.module';
+import { TemplateOptionModule as ApiMailTemplateOptionModule } from './api/mail/template-option.module';
+import { TemplateTemplateOptionModule as ApiMailTemplateTemplateOptionModule } from './api/mail/template-template-option.module';
+import { TemplateStatusModule as ApiMailTemplateStatusModule } from './api/mail/template-status.module';
+import { ReportModule as ApiMailReportModule } from './api/mail/report.module';
+import { ReportStatusModule as ApiMailReportStatusModule } from './api/mail/report-status.module';
+
 import { AppController } from './app.controller';
 
 @Module({
@@ -80,6 +92,18 @@ import { AppController } from './app.controller';
 		ApiDataTypeTypeOptionModule,
 		ApiDataTypeTypeTypeOptionModule,
 		ApiDataTypeTypeModule,
+
+		ApiMailSettingModule,
+		ApiMailLetterStatusModule,
+		ApiMailLetterOptionModule,
+		ApiMailLetterLetterOptionModule,
+		ApiMailLetterModule,
+		ApiMailReportModule,
+		ApiMailReportStatusModule,
+		ApiMailTemplateStatusModule,
+		ApiMailTemplateOptionModule,
+		ApiMailTemplateTemplateOptionModule,
+		ApiMailTemplateModule,
 	],
 	controllers: [ AppController ],
 	providers: [
