@@ -13,9 +13,9 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_MAIL}/report-status`)
+@Controller(`${process.env.SERVICE_FORMS}/report-status`)
 export class ReportStatusController extends HttpController {
-	public serviceName = process.env.SERVICE_MAIL;
+	public serviceName = process.env.SERVICE_FORMS;
 	public entityName = 'reportStatus';
 
 	constructor(

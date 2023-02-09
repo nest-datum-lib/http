@@ -13,10 +13,10 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_FORMS}/setting`)
-export class SettingController extends HttpController {
+@Controller(`${process.env.SERVICE_FORMS}/field-status`)
+export class FieldStatusController extends HttpController {
 	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'setting';
+	public entityName = 'fieldStatus';
 
 	constructor(
 		public transportService: TransportService,
@@ -31,9 +31,6 @@ export class SettingController extends HttpController {
 		@Body('userId') userId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
@@ -46,9 +43,6 @@ export class SettingController extends HttpController {
 				userId,
 				name,
 				description,
-				dataTypeId,
-				value,
-				regex,
 				isNotDelete,
 			});
 		}
@@ -67,9 +61,6 @@ export class SettingController extends HttpController {
 		@Body('userId') userId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
@@ -84,9 +75,6 @@ export class SettingController extends HttpController {
 				userId,
 				name,
 				description,
-				dataTypeId,
-				value,
-				regex,
 				isNotDelete,
 				isDeleted,
 			});

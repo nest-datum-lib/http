@@ -58,6 +58,18 @@ import { TemplateStatusModule as ApiMailTemplateStatusModule } from './api/mail/
 import { ReportModule as ApiMailReportModule } from './api/mail/report.module';
 import { ReportStatusModule as ApiMailReportStatusModule } from './api/mail/report-status.module';
 
+import { FieldModule as ApiFormsFieldModule } from './api/forms/field.module';
+import { FieldOptionModule as ApiFormsFieldOptionModule } from './api/forms/field-option.module';
+import { FieldStatusModule as ApiFormsFieldStatusModule } from './api/forms/field-status.module';
+import { FormModule as ApiFormsFormModule } from './api/forms/form.module';
+import { FormFieldModule as ApiFormsFormFieldModule } from './api/forms/form-field.module';
+import { FormOptionModule as ApiFormsFormOptionModule } from './api/forms/form-option.module';
+import { FormStatusModule as ApiFormsFormStatusModule } from './api/forms/form-status.module';
+import { ContentStatusModule as ApiFormsContentStatusModule } from './api/forms/content-status.module';
+import { ContentModule as ApiFormsContentModule } from './api/forms/content.module';
+import { FieldContentModule as ApiFormsFieldContentModule } from './api/forms/field-content.module';
+import { SettingModule as ApiFormsSettingModule } from './api/forms/setting.module';
+
 import { AppController } from './app.controller';
 
 @Module({
@@ -104,6 +116,18 @@ import { AppController } from './app.controller';
 		ApiMailTemplateOptionModule,
 		ApiMailTemplateTemplateOptionModule,
 		ApiMailTemplateModule,
+
+		ApiFormsFormFieldModule,
+		ApiFormsFieldContentModule,
+		ApiFormsFieldModule,
+		ApiFormsFieldOptionModule,
+		ApiFormsFieldStatusModule,
+		ApiFormsFormModule,
+		ApiFormsFormOptionModule,
+		ApiFormsFormStatusModule,
+		ApiFormsContentStatusModule,
+		ApiFormsContentModule,
+		ApiFormsSettingModule,
 	],
 	controllers: [ AppController ],
 	providers: [

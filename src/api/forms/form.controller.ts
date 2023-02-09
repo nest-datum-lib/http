@@ -13,11 +13,11 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_FORMS}/letter`)
-export class LetterController extends HttpController {
+@Controller(`${process.env.SERVICE_FORMS}/form`)
+export class FormController extends HttpController {
 	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'letter';
-	public entityNameRelation = 'letterOptionRelation';
+	public entityName = 'form';
+	public entityNameRelation = 'formOptionRelation';
 
 	constructor(
 		public transportService: TransportService,
@@ -25,11 +25,90 @@ export class LetterController extends HttpController {
 		super();
 	}
 
+	@Get('option')
+	async optionMany(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Query('page') page: number,
+		@Query('limit') limit: number,
+		@Query('query') query: string,
+		@Query('filter') filter: string,
+		@Query('sort') sort: string,
+	): Promise<any> {
+		try {
+			return await this.transportService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.many',
+			}, {
+				accessToken,
+				select,
+				relations,
+				page,
+				limit,
+				query,
+				filter,
+				sort,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
+	@Get('option/:id')
+	async optionOne(
+		@AccessToken() accessToken: string,
+		@Query('select') select: string,
+		@Query('relations') relations: string,
+		@Param('id') id: string,
+	): Promise<any> {
+		try {
+			return await this.transportService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.one',
+			}, {
+				accessToken,
+				select,
+				relations,
+				id,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
+	@Delete('option/:id')
+	async optionDrop(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+	) {
+		try {
+			return await this.transportService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'formOptionRelation.drop',
+			}, {
+				accessToken,
+				id,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
 	@Post(':id/option')
 	async createOption(
 		@AccessToken() accessToken: string,
-		@Param('id') reportOptionId: string,
-		@Body('reportId') reportId: string,
+		@Param('id') formOptionId: string,
+		@Body('formId') formId: string,
 	) {
 		try {
 			return await this.transportService.send({
@@ -37,8 +116,8 @@ export class LetterController extends HttpController {
 				cmd: `${this.entityNameRelation}.create`,
 			}, {
 				accessToken,
-				reportOptionId,
-				reportId,
+				formOptionId,
+				formId,
 			});
 		}
 		catch (err) {
@@ -76,12 +155,9 @@ export class LetterController extends HttpController {
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
 		@Body('userId') userId: string,
-		@Body('letterStatusId') letterStatusId: string,
+		@Body('formStatusId') formStatusId: string,
 		@Body('name') name: string,
-		@Body('templateId') templateId: string,
 		@Body('description') description: string,
-		@Body('subject') subject: string,
-		@Body('textPart') textPart: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
@@ -92,12 +168,9 @@ export class LetterController extends HttpController {
 				accessToken,
 				id,
 				userId,
-				letterStatusId,
-				templateId,
+				formStatusId,
 				name,
 				description,
-				subject,
-				textPart,
 				isNotDelete,
 			});
 		}
@@ -114,12 +187,9 @@ export class LetterController extends HttpController {
 		@Param('id') id: string,
 		@Body('id') newId: string,
 		@Body('userId') userId: string,
-		@Body('letterStatusId') letterStatusId: string,
-		@Body('templateId') templateId: string,
+		@Body('formStatusId') formStatusId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
-		@Body('subject') subject: string,
-		@Body('textPart') textPart: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
@@ -132,12 +202,9 @@ export class LetterController extends HttpController {
 				id,
 				newId,
 				userId,
-				letterStatusId,
-				templateId,
+				formStatusId,
 				name,
 				description,
-				subject,
-				textPart,
 				isNotDelete,
 				isDeleted,
 			});

@@ -13,10 +13,10 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_FORMS}/setting`)
-export class SettingController extends HttpController {
+@Controller(`${process.env.SERVICE_FORMS}/content`)
+export class ContentController extends HttpController {
 	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'setting';
+	public entityName = 'content';
 
 	constructor(
 		public transportService: TransportService,
@@ -24,16 +24,40 @@ export class SettingController extends HttpController {
 		super();
 	}
 
+	@Post(':id/field')
+	async createFields(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('fieldId') fieldId: string,
+		@Body('fieldName') fieldName: string,
+		@Body('value') value: string,
+	) {
+		try {
+			return await this.transportService.send({
+				name: process.env.SERVICE_FORMS, 
+				cmd: 'fieldContent.create',
+			}, {
+				accessToken,
+				contentId: id,
+				fieldId,
+				fieldName,
+				value,
+			});
+		}
+		catch (err) {
+			this.log(err);
+
+			throw new HttpException(err.message, err.errorCode || 500);
+		}
+	}
+
 	@Post()
 	async create(
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
 		@Body('userId') userId: string,
-		@Body('name') name: string,
-		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
+		@Body('contentStatusId') contentStatusId: string,
+		@Body('formId') formId: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
@@ -44,11 +68,8 @@ export class SettingController extends HttpController {
 				accessToken,
 				id,
 				userId,
-				name,
-				description,
-				dataTypeId,
-				value,
-				regex,
+				contentStatusId,
+				formId,
 				isNotDelete,
 			});
 		}
@@ -65,11 +86,8 @@ export class SettingController extends HttpController {
 		@Param('id') id: string,
 		@Body('id') newId: string,
 		@Body('userId') userId: string,
-		@Body('name') name: string,
-		@Body('description') description: string,
-		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
-		@Body('regex') regex: string,
+		@Body('contentStatusId') contentStatusId: string,
+		@Body('formId') formId: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
@@ -82,11 +100,8 @@ export class SettingController extends HttpController {
 				id,
 				newId,
 				userId,
-				name,
-				description,
-				dataTypeId,
-				value,
-				regex,
+				contentStatusId,
+				formId,
 				isNotDelete,
 				isDeleted,
 			});

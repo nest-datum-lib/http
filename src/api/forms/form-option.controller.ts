@@ -13,10 +13,10 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_FORMS}/setting`)
-export class SettingController extends HttpController {
+@Controller(`${process.env.SERVICE_FORMS}/form-option`)
+export class FormOptionController extends HttpController {
 	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'setting';
+	public entityName = 'formOption';
 
 	constructor(
 		public transportService: TransportService,
@@ -32,8 +32,10 @@ export class SettingController extends HttpController {
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
 		@Body('regex') regex: string,
+		@Body('defaultValue') defaultValue: string,
+		@Body('isRequired') isRequired: boolean,
+		@Body('isMultiline') isMultiline: boolean,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
 		try {
@@ -47,8 +49,10 @@ export class SettingController extends HttpController {
 				name,
 				description,
 				dataTypeId,
-				value,
 				regex,
+				defaultValue,
+				isRequired,
+				isMultiline,
 				isNotDelete,
 			});
 		}
@@ -68,8 +72,10 @@ export class SettingController extends HttpController {
 		@Body('name') name: string,
 		@Body('description') description: string,
 		@Body('dataTypeId') dataTypeId: string,
-		@Body('value') value: string,
 		@Body('regex') regex: string,
+		@Body('defaultValue') defaultValue: string,
+		@Body('isRequired') isRequired: boolean,
+		@Body('isMultiline') isMultiline: boolean,
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
@@ -85,8 +91,10 @@ export class SettingController extends HttpController {
 				name,
 				description,
 				dataTypeId,
-				value,
 				regex,
+				defaultValue,
+				isRequired,
+				isMultiline,
 				isNotDelete,
 				isDeleted,
 			});

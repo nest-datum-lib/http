@@ -9,8 +9,8 @@ import {
 	HttpException,
 } from '@nestjs/common';
 import {
-	func as utilsCheckFunc, 
-	obj as utilsCheckObj, 
+	func as utilsCheckFunc,
+	obj as utilsCheckObj,
 	strName as utilsCheckStrName,
 } from '@nest-datum-utils/check';
 import { AccessToken } from '@nest-datum-common/decorators';
