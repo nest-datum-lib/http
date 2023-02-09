@@ -235,12 +235,9 @@ export class TransportService extends RedisService {
 			throw new NotFoundException(`Replica "${id || name}" not found [1].`);
 		}
 		const connectionInstance = this.connection(replicaData);
-		const a = !(await this.isConnected(connectionInstance, { id: replicaData['id'] }));
-
-		console.log('>>>', { id, name }, replicaData, !connectionInstance, a);
 
 		if (!connectionInstance
-			|| a) {
+			|| !(await this.isConnected(connectionInstance, { id: replicaData['id'] }))) {
 			throw new NotFoundException(`Replica "${id || name}" not found [2].`);
 		}
 		const cmdIsPostAction = cmd.includes('.create') || cmd.includes('.send');
