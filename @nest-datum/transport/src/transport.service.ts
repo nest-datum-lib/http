@@ -259,14 +259,11 @@ export class TransportService extends RedisService {
 				.send({ cmd }, payload)
 				.pipe(map(response => response)));
 
-			console.log('ccccccccccccc', connectionInstanceResponse, !!connectionInstanceResponse, typeof connectionInstanceResponse, !utilsCheckObj(connectionInstanceResponse), Array.isArray(connectionInstanceResponse))
-
-			if (!utilsCheckObj(connectionInstanceResponse)) {
+			if (!utilsCheckObj(connectionInstanceResponse)
+				&& !utilsCheckArr(connectionInstanceResponse)) {
 				throw new NotFoundException(`Resource not found.`);
 			}
 			else if (utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
-				console.log('bbbbbbbbbb', connectionInstanceResponse['message']);
-
 				switch (connectionInstanceResponse['errorCode']) {
 					case 404:
 						throw new NotFoundException(connectionInstanceResponse['message']);
@@ -276,7 +273,6 @@ export class TransportService extends RedisService {
 						throw new ErrorException(connectionInstanceResponse['message']);
 				}
 			}
-			console.log('dddddddddddd', connectionInstanceResponse);
 			return connectionInstanceResponse;
 		}
 		if (utilsCheckObj(payload)) {
