@@ -13,9 +13,9 @@ import { HttpController } from '@nest-datum-common/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 
-@Controller(`${process.env.SERVICE_FORMS}/template`)
+@Controller(`${process.env.SERVICE_MAIL}/template`)
 export class TemplateController extends HttpController {
-	public serviceName = process.env.SERVICE_FORMS;
+	public serviceName = process.env.SERVICE_MAIL;
 	public entityName = 'template';
 	public entityNameRelation = 'templateOptionRelation';
 
