@@ -243,6 +243,8 @@ export class TransportService extends RedisService {
 		}
 		const cmdIsPostAction = cmd.includes('.create') || cmd.includes('.send');
 
+		console.log('-----------------------', cmd, payload);
+
 		if (cmdIsPostAction
 			&& utilsCheckObj(payload)
 			&& !utilsCheckStrId(payload['id'])) {
@@ -258,6 +260,8 @@ export class TransportService extends RedisService {
 			const connectionInstanceResponse = await lastValueFrom(connectionInstance
 				.send({ cmd }, payload)
 				.pipe(map(response => response)));
+
+			console.log('??????????????????', connectionInstanceResponse);
 
 			if (!utilsCheckExists(connectionInstanceResponse)) {
 				throw new NotFoundException(`Resource not found.`);
