@@ -7,147 +7,51 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import {
+	strName as utilsCheckStrName,
+	strId as utilsCheckStrId,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_FORMS}/field`)
-export class FieldController extends HttpController {
-	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'field';
-	public entityNameRelation = 'fieldOptionRelation';
+export class FieldController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_FORMS;
+	protected entityName = 'field';
+	protected entityOptionContentName = 'fieldOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Get('option')
-	async optionMany(
-		@AccessToken() accessToken: string,
-		@Query('select') select: string,
-		@Query('relations') relations: string,
-		@Query('page') page: number,
-		@Query('limit') limit: number,
-		@Query('query') query: string,
-		@Query('filter') filter: string,
-		@Query('sort') sort: string,
-	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'fieldOptionRelation.many',
-			}, {
-				accessToken,
-				select,
-				relations,
-				page,
-				limit,
-				query,
-				filter,
-				sort,
-			});
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['name'])) {
+			throw new ForbiddenException(`Property "name" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
+		if (!utilsCheckStrId(options['fieldStatusId'])) {
+			throw new ForbiddenException(`Property "fieldStatusId" is not valid.`);
 		}
+		if (!utilsCheckStrId(options['dataTypeId'])) {
+			throw new ForbiddenException(`Property "dataTypeId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
 	}
 
-	@Get('option/:id')
-	async optionOne(
-		@AccessToken() accessToken: string,
-		@Query('select') select: string,
-		@Query('relations') relations: string,
-		@Param('id') id: string,
-	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'fieldOptionRelation.one',
-			}, {
-				accessToken,
-				select,
-				relations,
-				id,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
-	}
-
-	@Delete('option/:id')
-	async optionDrop(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'fieldOptionRelation.drop',
-			}, {
-				accessToken,
-				id,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
-	}
-
-	@Post(':id/option')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') fieldOptionId: string,
-		@Body('fieldId') fieldId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityNameRelation}.create`,
-			}, {
-				accessToken,
-				fieldOptionId,
-				fieldId,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
-	}
-
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['fieldStatusId'] && utilsCheckStrId(options['fieldStatusId'])) 
+				? { fieldStatusId: options['fieldStatusId'] } 
+				: {},
+			...(options['dataTypeId'] && utilsCheckStrId(options['dataTypeId'])) 
+				? { dataTypeId: options['dataTypeId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -162,27 +66,20 @@ export class FieldController extends HttpController {
 		@Body('isRequired') isRequired: boolean,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				fieldStatusId,
-				dataTypeId,
-				name,
-				description,
-				isRequired,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			fieldStatusId,
+			dataTypeId,
+			name,
+			description,
+			isRequired,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -199,28 +96,21 @@ export class FieldController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				fieldStatusId,
-				dataTypeId,
-				name,
-				description,
-				isNotDelete,
-				isRequired,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			fieldStatusId,
+			dataTypeId,
+			name,
+			description,
+			isNotDelete,
+			isRequired,
+			isDeleted,
+		})));
 	}
 }

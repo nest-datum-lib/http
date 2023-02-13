@@ -7,68 +7,64 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import { 
+	strId as utilsCheckStrId,
+	strName as utilsCheckStrName,
+	strDescription as utilsCheckStrDescription,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_MAIL}/letter`)
-export class LetterController extends HttpController {
-	public serviceName = process.env.SERVICE_MAIL;
-	public entityName = 'letter';
-	public entityNameRelation = 'letterOptionRelation';
+export class LetterController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_MAIL;
+	protected entityName = 'letter';
+	protected entityOptionContentName = 'letterOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Post(':id/option')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') reportOptionId: string,
-		@Body('reportId') reportId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityNameRelation}.create`,
-			}, {
-				accessToken,
-				reportOptionId,
-				reportId,
-			});
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['name'])) {
+			throw new ForbiddenException(`Property "name" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
+		if (!utilsCheckStrDescription(options['subject'])) {
+			throw new ForbiddenException(`Property "subject" is not valid.`);
 		}
+		if (!utilsCheckStrDescription(options['textPart'])) {
+			throw new ForbiddenException(`Property "textPart" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['templateId'])) {
+			throw new ForbiddenException(`Property "templateId" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['letterStatusId'])) {
+			throw new ForbiddenException(`Property "letterStatusId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
 	}
 
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['subject'] && utilsCheckStrDescription(options['subject'])) 
+				? { subject: options['subject'] } 
+				: {},
+			...(options['textPart'] && utilsCheckStrDescription(options['textPart'])) 
+				? { textPart: options['textPart'] } 
+				: {},
+			...(options['letterStatusId'] && utilsCheckStrId(options['letterStatusId'])) 
+				? { letterStatusId: options['letterStatusId'] } 
+				: {},
+			...(options['templateId'] && utilsCheckStrId(options['templateId'])) 
+				? { templateId: options['templateId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -84,28 +80,21 @@ export class LetterController extends HttpController {
 		@Body('textPart') textPart: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				letterStatusId,
-				templateId,
-				name,
-				description,
-				subject,
-				textPart,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			letterStatusId,
+			templateId,
+			name,
+			description,
+			subject,
+			textPart,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -123,29 +112,22 @@ export class LetterController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				letterStatusId,
-				templateId,
-				name,
-				description,
-				subject,
-				textPart,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			letterStatusId,
+			templateId,
+			name,
+			description,
+			subject,
+			textPart,
+			isNotDelete,
+			isDeleted,
+		})));
 	}
 }

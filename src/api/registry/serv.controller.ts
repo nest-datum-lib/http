@@ -1,25 +1,14 @@
-import { 
-	Controller,
-	Get, 
-	Delete,
-	Post,
-	Patch,
-	Body,
-	Param,
-	Query,
-	HttpException,
-} from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
-import { AccessToken } from '@nest-datum-common/decorators';
+import { Controller } from '@nestjs/common';
+import { HttpTcpController } from '@nest-datum/controller';
 import { TransportService } from '@nest-datum/transport';
 
 @Controller(`${process.env.SERVICE_REGISTRY}/serv`)
-export class ServController extends HttpController {
-	public serviceName = process.env.SERVICE_REGISTRY;
-	public entityName = 'registry';
+export class ServController extends HttpTcpController {
+	protected serviceName = process.env.SERVICE_REGISTRY;
+	protected entityName = 'registry';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}

@@ -7,91 +7,45 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import {
+	strName as utilsCheckStrName,
+	strId as utilsCheckStrId,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_SSO}/role`)
-export class RoleController extends HttpController {
-	public serviceName = process.env.SERVICE_SSO;
-	public entityName = 'role';
-	public entityNameRelation = 'roleOptionRelation';
+export class RoleController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_SSO;
+	protected entityName = 'role';
+	protected entityOptionContentName = 'roleOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Post(':id/option')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') roleOptionId: string,
-		@Body('roleId') roleId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityNameRelation}.create`,
-			}, {
-				accessToken,
-				roleOptionId,
-				roleId,
-			});
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['name'])) {
+			throw new ForbiddenException(`Property "name" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
+		if (!utilsCheckStrId(options['roleStatusId'])) {
+			throw new ForbiddenException(`Property "roleStatusId" is not valid.`);
 		}
+		return await this.validateUpdate(options);
 	}
 
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
-	}
-
-	@Post(':id/access')
-	async createAccesses(
-		@AccessToken() accessToken: string,
-		@Param('id') roleId: string,
-		@Body('accessId') accessId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName,
-				cmd: 'roleAccess.create',
-			}, {
-				accessToken,
-				roleId,
-				accessId,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['roleStatusId'] && utilsCheckStrId(options['roleStatusId'])) 
+				? { roleStatusId: options['roleStatusId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -104,25 +58,18 @@ export class RoleController extends HttpController {
 		@Body('description') description: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				roleStatusId,
-				name,
-				description,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			roleStatusId,
+			name,
+			description,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -137,26 +84,19 @@ export class RoleController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				roleStatusId,
-				name,
-				description,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			roleStatusId,
+			name,
+			description,
+			isNotDelete,
+			isDeleted,
+		})));
 	}
 }

@@ -7,21 +7,181 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import { 
+	bool as utilsCheckBool,
+	exists as utilsCheckExists,
+	str as utilsCheckStr,
+	strId as utilsCheckStrId,
+	strName as utilsCheckStrName,
+	strEmail as utilsCheckStrEmail,
+	strPassword as utilsCheckStrPassword,
+	strDescription as utilsCheckStrDescription,
+	strRegex as utilsCheckStrRegex,
+	strDate as utilsCheckStrDate,
+} from '@nest-datum-utils/check';
+import { 
+	checkToken,
+	getUser, 
+} from '@nest-datum/jwt';
 
 @Controller(`${process.env.SERVICE_SSO}/user`)
-export class UserController extends HttpController {
-	public serviceName = process.env.SERVICE_SSO;
-	public entityName = 'user';
+export class UserController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_SSO;
+	protected entityName = 'user';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
+	}
+
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['login'])) {
+			throw new ForbiddenException(`Property "login" is not valid.`);
+		}
+		if (!utilsCheckStrEmail(options['email'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+		if (!utilsCheckStrPassword(options['password'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['roleId'])) {
+			throw new ForbiddenException(`Property "roleId" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['userStatusId'])) {
+			throw new ForbiddenException(`Property "userStatusId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
+		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
+			throw new ForbiddenException(`User is undefined or token is not valid.`);
+		}
+		if (options['login'] && !utilsCheckStrName(options['login'])) {
+			throw new ForbiddenException(`Property "login" is not valid.`);
+		}
+		if (options['email'] && !utilsCheckStrEmail(options['email'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+		if (options['password'] && !utilsCheckStrPassword(options['password'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+		if (options['roleId'] && !utilsCheckStrId(options['roleId'])) {
+			throw new ForbiddenException(`Property "roleId" is not valid.`);
+		}
+		if (options['userStatusId'] && !utilsCheckStrId(options['userStatusId'])) {
+			throw new ForbiddenException(`Property "userStatusId" is not valid.`);
+		}
+		return {
+			...await super.validateUpdate(options),
+			...(options['userStatusId'] && utilsCheckStrId(options['userStatusId'])) 
+				? { userStatusId: options['userStatusId'] } 
+				: {},
+			...(options['roleId'] && utilsCheckStrId(options['roleId'])) 
+				? { roleId: options['roleId'] } 
+				: {},
+			...(options['email'] && utilsCheckStrEmail(options['email'])) 
+				? { email: options['email'] } 
+				: {},
+			...(options['password'] && utilsCheckStrPassword(options['password'])) 
+				? { password: options['password'] } 
+				: {},
+			...utilsCheckStr(options['emailVerifyKey']) 
+				? { emailVerifyKey: options['emailVerifyKey'] } 
+				: { emailVerifyKey: '' },
+			...(options['login'] && utilsCheckStrName(options['login'])) 
+				? { login: options['login'] } 
+				: {},
+		};
+	}
+
+	async validateLogin(options) {
+		if (!utilsCheckStrName(options['login'])) {
+			throw new ForbiddenException(`Property "login" is not valid.`);
+		}
+		if (!utilsCheckStrPassword(options['password'])) {
+			throw new ForbiddenException(`Property "password" is not valid.`);
+		}
+		return {
+			login: options['login'],
+			password: options['password'],
+		};
+	}
+
+	async validateRegister(options) {
+		if (!utilsCheckStrName(options['login'])) {
+			throw new ForbiddenException(`Property "login" is not valid.`);
+		}
+		if (!utilsCheckStrName(options['firstname'])) {
+			throw new ForbiddenException(`Property "firstname" is not valid.`);
+		}
+		if (!utilsCheckStrName(options['lastname'])) {
+			throw new ForbiddenException(`Property "lastname" is not valid.`);
+		}
+		if (!utilsCheckStrEmail(options['email'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+		if (!utilsCheckStrPassword(options['password']) || options['password'] !== options['repeatedPassword']) {
+			throw new ForbiddenException(`Property "password" is not valid.`);
+		}
+
+		return {
+			login: options['login'],
+			firstname: options['firstname'],
+			lastname: options['lastname'],
+			email: options['email'],
+			password: options['password'],
+			repeatedPassword: options['repeatedPassword'],
+			roleId: 'sso-role-member',
+			userStatusId: 'sso-user-status-new',
+		};
+	}
+
+	async validateRecovery(options) {
+		if (!utilsCheckStrEmail(options['email'])) {
+			throw new ForbiddenException(`Property "email" is not valid.`);
+		}
+
+		return {
+			email: options['email'],
+		};
+	}
+
+	async validateReset(options) {
+		if (!utilsCheckStrPassword(options['password']) || options['password'] !== options['repeatedPassword']) {
+			throw new ForbiddenException(`Property "password" is not valid.`);
+		}
+
+		return {
+			password: options['password'],
+			repeatedPassword: options['repeatedPassword'],
+			...await this.validateVerifyKey(options),
+		};
+	}
+
+	async validateToken(options) {
+		if (!utilsCheckStr(options['accessToken'])) {
+			throw new ForbiddenException(`User is undefined or access token is not valid.`);
+		}
+		if (!utilsCheckStr(options['refreshToken'])) {
+			throw new ForbiddenException(`User is undefined or refresh token is not valid.`);
+		}
+		return { ...options };
+	}
+
+	async validateVerifyKey(options) {
+		if (!utilsCheckStr(options['verifyKey'])) {
+			throw new ForbiddenException(`Property "verifyKey" is not valid.`);
+		}
+		return {
+			verifyKey: options['verifyKey'],
+		};
 	}
 
 	@Post('register')
@@ -33,41 +193,25 @@ export class UserController extends HttpController {
 		@Body('password') password: string,
 		@Body('repeatedPassword') repeatedPassword: string,
 	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.register`,
-			}, {
-				email,
-				login,
-				firstname,
-				lastname,
-				password,
-				repeatedPassword,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.register`,
+		}, await this.validateRegister({
+			email,
+			login,
+			firstname,
+			lastname,
+			password,
+			repeatedPassword,
+		})));
 	}
 
 	@Post('verify')
 	async verify(@Body('verifyKey') verifyKey: string): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.verify`,
-			}, {
-				verifyKey,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.verify`,
+		}, await this.validateVerifyKey({ verifyKey })));
 	}
 
 	@Post('login')
@@ -75,37 +219,21 @@ export class UserController extends HttpController {
 		@Body('login') login: string,
 		@Body('password') password: string,
 	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.login`,
-			}, {
-				login,
-				password,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.login`,
+		}, await this.validateLogin({
+			login,
+			password,
+		})));
 	}
 
 	@Post('recovery')
 	async recovery(@Body('email') email: string): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.recovery`,
-			}, {
-				email,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.recovery`,
+		}, await this.validateRecovery({ email })));
 	}
 
 	@Post('reset')
@@ -114,21 +242,14 @@ export class UserController extends HttpController {
 		@Body('repeatedPassword') repeatedPassword: string,
 		@Body('verifyKey') verifyKey: string,
 	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.reset`,
-			}, {
-				password,
-				repeatedPassword,
-				verifyKey,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.reset`,
+		}, await this.validateReset({
+			password,
+			repeatedPassword,
+			verifyKey,
+		})));
 	}
 
 	@Post('refresh')
@@ -136,43 +257,13 @@ export class UserController extends HttpController {
 		@Body('accessToken') accessToken: string,
 		@Body('refreshToken') refreshToken: string,
 	): Promise<any> {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.refresh`,
-			}, {
-				accessToken,
-				refreshToken,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
-	}
-
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.refresh`,
+		}, await this.validateToken({
+			accessToken,
+			refreshToken,
+		})));
 	}
 
 	@Post()
@@ -189,29 +280,22 @@ export class UserController extends HttpController {
 		@Body('emailVerifiedAt') emailVerifiedAt: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				roleId,
-				userStatusId,
-				login,
-				email,
-				password,
-				emailVerifyKey,
-				emailVerifiedAt,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			roleId,
+			userStatusId,
+			login,
+			email,
+			password,
+			emailVerifyKey,
+			emailVerifiedAt,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -229,29 +313,22 @@ export class UserController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				roleId,
-				userStatusId,
-				login,
-				email,
-				password,
-				emailVerifyKey,
-				emailVerifiedAt,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			roleId,
+			userStatusId,
+			login,
+			email,
+			password,
+			emailVerifyKey,
+			emailVerifiedAt,
+			isNotDelete,
+			isDeleted,
+		})));
 	}
 }

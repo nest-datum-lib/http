@@ -7,68 +7,45 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import {
+	strName as utilsCheckStrName,
+	strId as utilsCheckStrId,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_SSO}/access`)
-export class AccessController extends HttpController {
-	public serviceName = process.env.SERVICE_SSO;
-	public entityName = 'access';
-	public entityNameRelation = 'accessOptionRelation';
+export class AccessController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_SSO;
+	protected entityName = 'access';
+	protected entityOptionContentName = 'accessOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Post(':id/option')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') accessOptionId: string,
-		@Body('accessId') accessId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityNameRelation}.create`,
-			}, {
-				accessToken,
-				accessOptionId,
-				accessId,
-			});
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['name'])) {
+			throw new ForbiddenException(`Property "name" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
+		if (!utilsCheckStrId(options['accessStatusId'])) {
+			throw new ForbiddenException(`Property "accessStatusId" is not valid.`);
 		}
+		return await this.validateUpdate(options);
 	}
 
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['accessStatusId'] && utilsCheckStrId(options['accessStatusId'])) 
+				? { accessStatusId: options['accessStatusId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -81,25 +58,18 @@ export class AccessController extends HttpController {
 		@Body('description') description: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				accessStatusId,
-				name,
-				description,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			accessStatusId,
+			name,
+			description,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -114,26 +84,19 @@ export class AccessController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				accessStatusId,
-				name,
-				description,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			accessStatusId,
+			name,
+			description,
+			isNotDelete,
+			isDeleted,
+		})));
 	}
 }

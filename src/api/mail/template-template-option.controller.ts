@@ -1,25 +1,14 @@
-import { 
-	Controller,
-	Get, 
-	Delete,
-	Post,
-	Patch,
-	Body,
-	Param,
-	Query,
-	HttpException,
-} from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
-import { AccessToken } from '@nest-datum-common/decorators';
+import { Controller } from '@nestjs/common';
+import { HttpTcpController } from '@nest-datum/controller';
 import { TransportService } from '@nest-datum/transport';
 
 @Controller(`${process.env.SERVICE_MAIL}/template/option`)
-export class TemplateTemplateOptionController extends HttpController {
-	public serviceName = process.env.SERVICE_MAIL;
-	public entityName = 'templateOptionRelation';
+export class TemplateTemplateOptionController extends HttpTcpController {
+	protected serviceName = process.env.SERVICE_MAIL;
+	protected entityName = 'templateOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}

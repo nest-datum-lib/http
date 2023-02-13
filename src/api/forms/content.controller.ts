@@ -7,48 +7,69 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import {
+	strName as utilsCheckStrName,
+	strId as utilsCheckStrId,
+	exists as utilsCheckExists,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_FORMS}/content`)
-export class ContentController extends HttpController {
-	public serviceName = process.env.SERVICE_FORMS;
-	public entityName = 'content';
+export class ContentController extends HttpTcpController {
+	protected serviceName = process.env.SERVICE_FORMS;
+	protected entityName = 'content';
+	protected entityOptionContentName = 'contentOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Post(':id/field')
-	async createFields(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body('fieldId') fieldId: string,
-		@Body('fieldName') fieldName: string,
-		@Body('value') value: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: process.env.SERVICE_FORMS, 
-				cmd: 'fieldContent.create',
-			}, {
-				accessToken,
-				contentId: id,
-				fieldId,
-				fieldName,
-				value,
-			});
+	async validateFields(options) {
+		if (!utilsCheckStrId(options['contentId'])) {
+			throw new ForbiddenException(`Property "contentId" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
+		if (!utilsCheckStrId(options['fieldId'])) {
+			throw new ForbiddenException(`Property "fieldId" is not valid.`);
+		}
+		return {
+			...await super.validateCreate(options),
+			contentId: options['contentId'],
+			fieldId: options['fieldId'],
+			...(options['fieldName'] && utilsCheckStrName(options['fieldName'])) 
+				? { fieldName: options['fieldName'] } 
+				: {},
+			...utilsCheckExists(options['value'])
+				? { value: String(options['value']) } 
+				: {},
+		};
+	}
 
-			throw new HttpException(err.message, err.errorCode || 500);
+	async validateCreate(options) {
+		if (!utilsCheckStrId(options['formId'])) {
+			throw new ForbiddenException(`Property "formId" is not valid.`);
 		}
+		if (!utilsCheckStrId(options['contentStatusId'])) {
+			throw new ForbiddenException(`Property "contentStatusId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['formId'] && utilsCheckStrId(options['formId'])) 
+				? { formId: options['formId'] } 
+				: {},
+			...(options['contentStatusId'] && utilsCheckStrId(options['contentStatusId'])) 
+				? { contentStatusId: options['contentStatusId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -60,24 +81,17 @@ export class ContentController extends HttpController {
 		@Body('formId') formId: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				contentStatusId,
-				formId,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			contentStatusId,
+			formId,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -91,25 +105,38 @@ export class ContentController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				contentStatusId,
-				formId,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			contentStatusId,
+			formId,
+			isNotDelete,
+			isDeleted,
+		})));
+	}
 
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	@Post(':id/field')
+	async createFields(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body('fieldId') fieldId: string,
+		@Body('fieldName') fieldName: string,
+		@Body('value') value: string,
+	) {
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `fieldContent.create`,
+		}, await this.validateFields({
+			accessToken,
+			contentId: id,
+			fieldId,
+			fieldName,
+			value,
+		})));
 	}
 }

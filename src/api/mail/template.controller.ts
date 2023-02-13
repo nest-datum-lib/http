@@ -7,68 +7,58 @@ import {
 	Body,
 	Param,
 	Query,
-	HttpException,
+	ForbiddenException,
 } from '@nestjs/common';
-import { HttpController } from '@nest-datum-common/controller';
+import { HttpTcpOptionController } from '@nest-datum/controller';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
+import { 
+	strId as utilsCheckStrId,
+	strName as utilsCheckStrName,
+	strEmail as utilsCheckStrEmail,
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_MAIL}/template`)
-export class TemplateController extends HttpController {
-	public serviceName = process.env.SERVICE_MAIL;
-	public entityName = 'template';
-	public entityNameRelation = 'templateOptionRelation';
+export class TemplateController extends HttpTcpOptionController {
+	protected serviceName = process.env.SERVICE_MAIL;
+	protected entityName = 'template';
+	protected entityOptionContentName = 'templateOptionRelation';
 
 	constructor(
-		public transportService: TransportService,
+		protected transportService: TransportService,
 	) {
 		super();
 	}
 
-	@Post(':id/option')
-	async createOption(
-		@AccessToken() accessToken: string,
-		@Param('id') templateOptionId: string,
-		@Body('templateId') templateId: string,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityNameRelation}.create`,
-			}, {
-				accessToken,
-				templateOptionId,
-				templateId,
-			});
+	async validateCreate(options) {
+		if (!utilsCheckStrName(options['name'])) {
+			throw new ForbiddenException(`Property "name" is not valid.`);
 		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
+		if (!utilsCheckStrEmail(options['fromEmail'])) {
+			throw new ForbiddenException(`Property "fromEmail" is not valid.`);
 		}
+		if (!utilsCheckStrName(options['fromName'])) {
+			throw new ForbiddenException(`Property "fromName" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['templateStatusId'])) {
+			throw new ForbiddenException(`Property "templateStatusId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
 	}
 
-	@Post(':id/options')
-	async createOptions(
-		@AccessToken() accessToken: string,
-		@Param('id') id: string,
-		@Body() data,
-	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.createOptions`,
-			}, {
-				accessToken,
-				id,
-				data,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['fromEmail'] && utilsCheckStrEmail(options['fromEmail'])) 
+				? { fromEmail: options['fromEmail'] } 
+				: {},
+			...(options['fromName'] && utilsCheckStrName(options['fromName'])) 
+				? { fromName: options['fromName'] } 
+				: {},
+			...(options['templateStatusId'] && utilsCheckStrId(options['templateStatusId'])) 
+				? { templateStatusId: options['templateStatusId'] } 
+				: {},
+		};
 	}
 
 	@Post()
@@ -83,27 +73,20 @@ export class TemplateController extends HttpController {
 		@Body('fromName') fromName: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.create`,
-			}, {
-				accessToken,
-				id,
-				userId,
-				templateStatusId,
-				name,
-				description,
-				fromEmail,
-				fromName,
-				isNotDelete,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			id,
+			userId,
+			templateStatusId,
+			name,
+			description,
+			fromEmail,
+			fromName,
+			isNotDelete,
+		})));
 	}
 
 	@Patch(':id')
@@ -120,28 +103,21 @@ export class TemplateController extends HttpController {
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
 	) {
-		try {
-			return await this.transportService.send({
-				name: this.serviceName, 
-				cmd: `${this.entityName}.update`,
-			}, {
-				accessToken,
-				id,
-				newId,
-				userId,
-				templateStatusId,
-				name,
-				description,
-				fromEmail,
-				fromName,
-				isNotDelete,
-				isDeleted,
-			});
-		}
-		catch (err) {
-			this.log(err);
-
-			throw new HttpException(err.message, err.errorCode || 500);
-		}
+		return await this.serviceHandlerWrapper(async () => await this.transportService.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			newId,
+			userId,
+			templateStatusId,
+			name,
+			description,
+			fromEmail,
+			fromName,
+			isNotDelete,
+			isDeleted,
+		})));
 	}
 }
