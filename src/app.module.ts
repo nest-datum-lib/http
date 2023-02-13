@@ -70,6 +70,14 @@ import { ContentModule as ApiFormsContentModule } from './api/forms/content.modu
 import { FieldContentModule as ApiFormsFieldContentModule } from './api/forms/field-content.module';
 import { SettingModule as ApiFormsSettingModule } from './api/forms/setting.module';
 
+import { ReportModule as CvReportModule } from './api/cv/report.module';
+import { ReportStatusModule as CvReportStatusModule } from './api/cv/report-status.module';
+import { SettingModule as CvSettingModule } from './api/cv/setting.module';
+
+import { ReportModule as LensaReportModule } from './api/lensa/report.module';
+import { ReportStatusModule as LensaReportStatusModule } from './api/cv/report-status.module';
+import { SettingModule as LensaSettingModule } from './api/lensa/setting.module';
+
 import { AppController } from './app.controller';
 
 @Module({
@@ -128,6 +136,14 @@ import { AppController } from './app.controller';
 		ApiFormsContentStatusModule,
 		ApiFormsContentModule,
 		ApiFormsSettingModule,
+
+		CvSettingModule,
+		CvReportStatusModule,
+		CvReportModule,
+
+		LensaSettingModule,
+		LensaReportStatusModule,
+		LensaReportModule,
 	],
 	controllers: [ AppController ],
 	providers: [
