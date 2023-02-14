@@ -36,9 +36,6 @@ export class ReportController extends HttpTcpController {
 	}
 
 	async validateCreate(options) {
-		if (!utilsCheckStrId(options['contentId'])) {
-			throw new ForbiddenException(`Property "contentId" is not valid.`);
-		}
 		if (!utilsCheckStrId(options['fileId'])) {
 			throw new ForbiddenException(`Property "fileId" is not valid.`);
 		}
