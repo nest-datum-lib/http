@@ -4,7 +4,7 @@ import { TransportService } from '@nest-datum/transport';
 
 @Controller(`${process.env.SERVICE_FORMS}/form/field`)
 export class FormFieldController extends HttpTcpController {
-	protected serviceName = process.env.SERVICE_SSO;
+	protected serviceName = process.env.SERVICE_FORMS;
 	protected entityName = 'formField';
 
 	constructor(
