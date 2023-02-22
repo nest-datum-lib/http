@@ -75,7 +75,7 @@ import { ReportStatusModule as CvReportStatusModule } from './api/cv/report-stat
 import { SettingModule as CvSettingModule } from './api/cv/setting.module';
 
 import { ReportModule as LensaReportModule } from './api/lensa/report.module';
-import { ReportStatusModule as LensaReportStatusModule } from './api/cv/report-status.module';
+import { ReportStatusModule as LensaReportStatusModule } from './api/lensa/report-status.module';
 import { SettingModule as LensaSettingModule } from './api/lensa/setting.module';
 
 import { AppController } from './app.controller';
