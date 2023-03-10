@@ -261,7 +261,8 @@ export class SqlService {
 			return cachedData;
 		}
 		const processedPayload = await this.manyProperties(payload);
-		const many = await this.entityRepository.findAndCount(await this.findMany(processedPayload));
+		const condition = await this.findMany(processedPayload);
+		const many = await this.entityRepository.findAndCount(condition);
 		const output = {
 			rows: many[0],
 			total: many[1],

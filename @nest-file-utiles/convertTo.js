@@ -11,7 +11,7 @@ const converTo = async (attempt = 0) => {
 			console.log(`convertTo error: libreoffice-convert does not answer.`);
 
 			if (attempt < 5) {
-				await (new Promise((resolve, reject) => setTimeout(() => resolve(true), 5000)));
+				await (new Promise((resolve, reject) => setTimeout(() => resolve(true), 10000)));
 				return await converTo(attempt + 1);
 			}
 			throw err;
