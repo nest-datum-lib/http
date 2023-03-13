@@ -40,11 +40,7 @@ import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
 import { UserStatusModule as ApiSsoUserStatusModule } from './api/sso/user-status.module';
 import { UserOptionModule as ApiSsoUserOptionModule } from './api/sso/user-option.module';
 
-import { SettingModule as ApiDataTypeSettingModule } from './api/data-type/setting.module';
-import { TypeModule as ApiDataTypeTypeModule } from './api/data-type/type.module';
-import { TypeStatusModule as ApiDataTypeTypeStatusModule } from './api/data-type/type-status.module';
-import { TypeOptionModule as ApiDataTypeTypeOptionModule } from './api/data-type/type-option.module';
-import { TypeTypeOptionModule as ApiDataTypeTypeTypeOptionModule } from './api/data-type/type-type-option.module';
+import * as dataType from './api/data-type';
 
 import { SettingModule as ApiMailSettingModule } from './api/mail/setting.module';
 import { LetterModule as ApiMailLetterModule } from './api/mail/letter.module';
@@ -107,11 +103,7 @@ import { AppController } from './app.controller';
 		ApiSsoUserOptionModule,
 		ApiSsoUserModule,
 		
-		ApiDataTypeSettingModule,
-		ApiDataTypeTypeStatusModule,
-		ApiDataTypeTypeOptionModule,
-		ApiDataTypeTypeTypeOptionModule,
-		ApiDataTypeTypeModule,
+		...Object.keys(dataType).map((key) => dataType[key]),
 
 		ApiMailSettingModule,
 		ApiMailLetterStatusModule,
