@@ -1,11 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { HttpTcpController } from '@nest-datum/controller';
+import { AccessAccessOptionHttpTcpController } from '@nest-datum/access';
 import { TransportService } from '@nest-datum/transport';
 
 @Controller(`${process.env.SERVICE_DATA_TYPE}/access/option`)
-export class AccessAccessOptionController extends HttpTcpController {
+export class AccessAccessOptionController extends AccessAccessOptionHttpTcpController {
 	protected serviceName = process.env.SERVICE_DATA_TYPE;
-	protected entityName = 'accessOptionRelation';
 
 	constructor(
 		protected transportService: TransportService,
