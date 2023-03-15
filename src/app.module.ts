@@ -40,7 +40,7 @@ import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
 import { UserStatusModule as ApiSsoUserStatusModule } from './api/sso/user-status.module';
 import { UserOptionModule as ApiSsoUserOptionModule } from './api/sso/user-option.module';
 
-import * as dataType from './api/data-type';
+import { HttpTcp as DataTypeModules } from './api/data-type';
 
 import { SettingModule as ApiMailSettingModule } from './api/mail/setting.module';
 import { LetterModule as ApiMailLetterModule } from './api/mail/letter.module';
@@ -103,7 +103,7 @@ import { AppController } from './app.controller';
 		ApiSsoUserOptionModule,
 		ApiSsoUserModule,
 		
-		...Object.keys(dataType).map((key) => dataType[key]),
+		...Object.keys(DataTypeModules).map((key) => DataTypeModules[key]),
 
 		ApiMailSettingModule,
 		ApiMailLetterStatusModule,

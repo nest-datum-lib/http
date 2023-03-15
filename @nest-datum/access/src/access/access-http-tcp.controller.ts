@@ -48,6 +48,7 @@ export class AccessHttpTcpController extends HttpTcpOptionController {
 		@Body('userId') userId: string,
 		@Body('accessStatusId') accessStatusId: string,
 		@Body('name') name: string,
+		@Body('envKey') envKey: string,
 		@Body('description') description: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 	) {
@@ -60,6 +61,7 @@ export class AccessHttpTcpController extends HttpTcpOptionController {
 			userId,
 			accessStatusId,
 			name,
+			envKey,
 			description,
 			isNotDelete,
 		})));
@@ -73,6 +75,7 @@ export class AccessHttpTcpController extends HttpTcpOptionController {
 		@Body('userId') userId: string,
 		@Body('accessStatusId') accessStatusId: string,
 		@Body('name') name: string,
+		@Body('envKey') envKey: string,
 		@Body('description') description: string,
 		@Body('isNotDelete') isNotDelete: boolean,
 		@Body('isDeleted') isDeleted: boolean,
@@ -87,6 +90,7 @@ export class AccessHttpTcpController extends HttpTcpOptionController {
 			userId,
 			accessStatusId,
 			name,
+			envKey,
 			description,
 			isNotDelete,
 			isDeleted,
