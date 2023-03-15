@@ -23,6 +23,7 @@ import {
 	strDescription as utilsCheckStrDescription,
 	strRegex as utilsCheckStrRegex,
 	strDate as utilsCheckStrDate,
+	strFilled as utilsCheckStrFilled,
 } from '@nest-datum-utils/check';
 import { 
 	checkToken,
@@ -41,7 +42,7 @@ export class UserController extends HttpTcpOptionController {
 	}
 
 	async validateCreate(options) {
-		if (!utilsCheckStrName(options['login'])) {
+		if (!utilsCheckStrFilled(options['login'])) {
 			throw new ForbiddenException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrEmail(options['email'])) {
@@ -63,7 +64,7 @@ export class UserController extends HttpTcpOptionController {
 		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
 			throw new ForbiddenException(`User is undefined or token is not valid.`);
 		}
-		if (options['login'] && !utilsCheckStrName(options['login'])) {
+		if (options['login'] && !utilsCheckStrFilled(options['login'])) {
 			throw new ForbiddenException(`Property "login" is not valid.`);
 		}
 		if (options['email'] && !utilsCheckStrEmail(options['email'])) {
@@ -95,14 +96,14 @@ export class UserController extends HttpTcpOptionController {
 			...utilsCheckStr(options['emailVerifyKey']) 
 				? { emailVerifyKey: options['emailVerifyKey'] } 
 				: { emailVerifyKey: '' },
-			...(options['login'] && utilsCheckStrName(options['login'])) 
+			...(options['login'] && utilsCheckStrFilled(options['login'])) 
 				? { login: options['login'] } 
 				: {},
 		};
 	}
 
 	async validateLogin(options) {
-		if (!utilsCheckStrName(options['login'])) {
+		if (!utilsCheckStrFilled(options['login'])) {
 			throw new ForbiddenException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrPassword(options['password'])) {
@@ -115,7 +116,7 @@ export class UserController extends HttpTcpOptionController {
 	}
 
 	async validateRegister(options) {
-		if (!utilsCheckStrName(options['login'])) {
+		if (!utilsCheckStrFilled(options['login'])) {
 			throw new ForbiddenException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrName(options['firstname'])) {
