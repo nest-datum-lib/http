@@ -263,20 +263,9 @@ export class SqlService {
 		if (cachedData) {
 			return cachedData;
 		}
-		console.log('11111111', payload);
-
 		const processedPayload = await this.manyProperties(payload);
-
-		console.log('22222222', processedPayload);
-
 		const condition = await this.findMany(processedPayload);
-
-		console.log('33333333', condition);
-
 		const many = await this.entityRepository.findAndCount(condition);
-
-		console.log('44444444', many);
-
 		const output = {
 			rows: many[0],
 			total: many[1],
