@@ -40,7 +40,7 @@ import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
 import { UserStatusModule as ApiSsoUserStatusModule } from './api/sso/user-status.module';
 import { UserOptionModule as ApiSsoUserOptionModule } from './api/sso/user-option.module';
 
-import { HttpTcp as DataTypeModules } from './api/data-type';
+import { HttpTcp as DataTypeModules } from '@nest-datum-lib/data-type';
 
 import { SettingModule as ApiMailSettingModule } from './api/mail/setting.module';
 import { LetterModule as ApiMailLetterModule } from './api/mail/letter.module';

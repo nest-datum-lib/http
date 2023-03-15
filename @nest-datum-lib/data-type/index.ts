@@ -39,7 +39,34 @@ import {
 	SettingTcpModule, 
 } from './src/api/setting';
 
+const HttpTcp = {
+	AccessAccessOptionHttpTcpModule,
+	AccessOptionHttpTcpModule,
+	AccessStatusHttpTcpModule,
+	AccessHttpTcpModule,
+	RoleAccessHttpTcpModule,
+	TypeTypeOptionHttpTcpModule,
+	TypeOptionHttpTcpModule,
+	TypeStatusHttpTcpModule,
+	TypeHttpTcpModule,
+	SettingHttpTcpModule,
+};
+const Tcp = {
+	AccessAccessOptionTcpModule,
+	AccessOptionTcpModule,
+	AccessStatusTcpModule,
+	AccessTcpModule,
+	RoleAccessTcpModule,
+	TypeTypeOptionTcpModule,
+	TypeOptionTcpModule,
+	TypeStatusTcpModule,
+	TypeTcpModule,
+	SettingTcpModule,
+};
+
 export {
+	HttpTcp,
+	Tcp,
 	AccessAccessOptionHttpTcpModule,
 	AccessOptionHttpTcpModule,
 	AccessStatusHttpTcpModule,
