@@ -26,20 +26,7 @@ import { SettingModule as ApiSettingModule } from './api/setting/setting.module'
 import { SettingModule as ApiRegistrySettingModule } from './api/registry/setting.module';
 import { ServModule as ApiRegistryServModule } from './api/registry/serv.module';
 
-import { SettingModule as ApiSsoSettingModule } from './api/sso/setting.module';
-import { AccessModule as ApiSsoAccessModule } from './api/sso/access.module';
-import { AccessStatusModule as ApiSsoAccessStatusModule } from './api/sso/access-status.module';
-import { AccessOptionModule as ApiSsoAccessOptionModule } from './api/sso/access-option.module';
-import { AccessAccessOptionModule as ApiSsoAccessAccessOptionModule } from './api/sso/access-access-option.module';
-import { RoleModule as ApiSsoRoleModule } from './api/sso/role.module';
-import { RoleStatusModule as ApiSsoRoleStatusModule } from './api/sso/role-status.module';
-import { RoleOptionModule as ApiSsoRoleOptionModule } from './api/sso/role-option.module';
-import { RoleRoleOptionModule as ApiSsoRoleRoleOptionModule } from './api/sso/role-role-option.module';
-import { RoleAccessModule as ApiSsoRoleAccessModule } from './api/sso/role-access.module';
-import { UserModule as ApiSsoUserModule } from './api/sso/user.module';
-import { UserStatusModule as ApiSsoUserStatusModule } from './api/sso/user-status.module';
-import { UserOptionModule as ApiSsoUserOptionModule } from './api/sso/user-option.module';
-
+import { HttpTcp as SsoModules } from '@nest-datum-lib/sso';
 import { HttpTcp as DataTypeModules } from '@nest-datum-lib/data-type';
 
 import { SettingModule as ApiMailSettingModule } from './api/mail/setting.module';
@@ -103,6 +90,7 @@ import { AppController } from './app.controller';
 		ApiSsoUserOptionModule,
 		ApiSsoUserModule,
 		
+		...Object.keys(SsoModules).map((key) => SsoModules[key]),
 		...Object.keys(DataTypeModules).map((key) => DataTypeModules[key]),
 
 		ApiMailSettingModule,
