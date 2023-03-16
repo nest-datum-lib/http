@@ -76,20 +76,6 @@ import { AppController } from './app.controller';
 		ApiRegistrySettingModule,
 		ApiRegistryServModule,
 
-		ApiSsoSettingModule,
-		ApiSsoAccessStatusModule,
-		ApiSsoAccessOptionModule,
-		ApiSsoAccessAccessOptionModule,
-		ApiSsoAccessModule,
-		ApiSsoRoleStatusModule,
-		ApiSsoRoleOptionModule,
-		ApiSsoRoleRoleOptionModule,
-		ApiSsoRoleModule,
-		ApiSsoRoleAccessModule,
-		ApiSsoUserStatusModule,
-		ApiSsoUserOptionModule,
-		ApiSsoUserModule,
-		
 		...Object.keys(SsoModules).map((key) => SsoModules[key]),
 		...Object.keys(DataTypeModules).map((key) => DataTypeModules[key]),
 
