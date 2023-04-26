@@ -13,6 +13,7 @@ import {
 } from 'class-validator';
 import { PostPostPostOption } from '../post-post-post-option/post-post-post-option.entity';
 import { PostPostOption } from '../post-post-option/post-post-option.entity';
+import { Category } from '../category/category.entity';
 
 @Entity()
 export class Post {
@@ -29,8 +30,8 @@ export class Post {
 	@Column({ default: '' })
 	public categoryId: string;
 
-	@Column({ default: '' })
-	public tagId: string;
+	@ManyToOne(() => Category, (category) => category.posts)
+	public category: Category;
 
 	@Column({ default: '' })
 	public postStatusId: string;

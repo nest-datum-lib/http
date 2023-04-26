@@ -49,46 +49,25 @@ import {
 	RegionTcpModule, 
 } from './api/region';
 import { 
-	CityCityOptionHttpModule,
-	CityCityOptionHttpTcpModule, 
-	CityCityOptionTcpModule, 
-} from './api/city-city-option';
+	TypeTypeOptionHttpModule,
+	TypeTypeOptionHttpTcpModule, 
+	TypeTypeOptionTcpModule, 
+} from './api/type-type-option';
 import { 
-	CityOptionHttpModule,
-	CityOptionHttpTcpModule, 
-	CityOptionTcpModule, 
-} from './api/city-option';
+	TypeOptionHttpModule,
+	TypeOptionHttpTcpModule, 
+	TypeOptionTcpModule, 
+} from './api/type-option';
 import { 
-	CityStatusHttpModule,
-	CityStatusHttpTcpModule,
-	CityStatusTcpModule, 
-} from './api/city-status';
+	TypeStatusHttpModule,
+	TypeStatusHttpTcpModule,
+	TypeStatusTcpModule, 
+} from './api/type-status';
 import { 
-	CityHttpModule,
-	CityHttpTcpModule,
-	CityTcpModule, 
-} from './api/city';
-import { 
-	CountryCountryOptionHttpModule,
-	CountryCountryOptionHttpTcpModule, 
-	CountryCountryOptionTcpModule, 
-} from './api/country-country-option';
-import { 
-	CountryOptionHttpModule,
-	CountryOptionHttpTcpModule, 
-	CountryOptionTcpModule, 
-} from './api/country-option';
-import { 
-	CountryStatusHttpModule,
-	CountryStatusHttpTcpModule,
-	CountryStatusTcpModule, 
-} from './api/country-status';
-import { 
-	CountryHttpModule,
-	CountryHttpTcpModule,
-	CountryTcpModule, 
-} from './api/country';
-
+	TypeHttpModule,
+	TypeHttpTcpModule,
+	TypeTcpModule, 
+} from './api/type';
 
 const Http = {
 	AccessAccessOptionHttpModule,
@@ -101,14 +80,10 @@ const Http = {
 	RegionOptionHttpModule,
 	RegionStatusHttpModule,
 	RegionHttpModule,
-	CityCityOptionHttpModule,
-	CityOptionHttpModule,
-	CityStatusHttpModule,
-	CityHttpModule,
-	CountryCountryOptionHttpModule,
-	CountryOptionHttpModule,
-	CountryStatusHttpModule,
-	CountryHttpModule,
+	TypeTypeOptionHttpModule,
+	TypeOptionHttpModule,
+	TypeStatusHttpModule,
+	TypeHttpModule,
 };
 const HttpTcp = {
 	AccessAccessOptionHttpTcpModule,
@@ -121,14 +96,10 @@ const HttpTcp = {
 	RegionOptionHttpTcpModule,
 	RegionStatusHttpTcpModule,
 	RegionHttpTcpModule,
-	CityCityOptionHttpTcpModule,
-	CityOptionHttpTcpModule,
-	CityStatusHttpTcpModule,
-	CityHttpTcpModule,
-	CountryCountryOptionHttpTcpModule,
-	CountryOptionHttpTcpModule,
-	CountryStatusHttpTcpModule,
-	CountryHttpTcpModule,
+	TypeTypeOptionHttpTcpModule,
+	TypeOptionHttpTcpModule,
+	TypeStatusHttpTcpModule,
+	TypeHttpTcpModule,
 };
 const Tcp = {
 	AccessAccessOptionTcpModule,
@@ -141,14 +112,10 @@ const Tcp = {
 	RegionOptionTcpModule,
 	RegionStatusTcpModule,
 	RegionTcpModule,
-	CityCityOptionTcpModule,
-	CityOptionTcpModule,
-	CityStatusTcpModule,
-	CityTcpModule,
-	CountryCountryOptionTcpModule,
-	CountryOptionTcpModule,
-	CountryStatusTcpModule,
-	CountryTcpModule,
+	TypeTypeOptionTcpModule,
+	TypeOptionTcpModule,
+	TypeStatusTcpModule,
+	TypeTcpModule,
 };
 
 export {
@@ -185,4 +152,16 @@ export {
 	RegionOptionHttpModule,
 	RegionStatusHttpModule,
 	RegionHttpModule,
+	TypeTypeOptionTcpModule,
+	TypeOptionTcpModule,
+	TypeStatusTcpModule,
+	TypeTcpModule,
+	TypeTypeOptionHttpTcpModule,
+	TypeOptionHttpTcpModule,
+	TypeStatusHttpTcpModule,
+	TypeHttpTcpModule,
+	TypeTypeOptionHttpModule,
+	TypeOptionHttpModule,
+	TypeStatusHttpModule,
+	TypeHttpModule,
 };

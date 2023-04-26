@@ -44,12 +44,6 @@ export class PostTcpController extends TcpController {
 			}
 			output['categoryId'] = options['categoryId'];
 		}
-		if (utilsCheckExists(options['tagId'])) {
-			if (!utilsCheckStrId(options['tagId'])) {
-				throw new MethodNotAllowedException(`Property "tagId" is not valid.`);
-			}
-			output['tagId'] = options['tagId'];
-		}
 		if (utilsCheckExists(options['postStatusId'])) {
 			if (!utilsCheckStrId(options['postStatusId'])) {
 				throw new MethodNotAllowedException(`Property "postStatusId" is not valid.`);

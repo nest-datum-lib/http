@@ -13,8 +13,7 @@ import {
 } from 'class-validator';
 import { RegionRegionRegionOption } from '../region-region-region-option/region-region-region-option.entity';
 import { RegionRegionOption } from '../region-region-option/region-region-option.entity';
-import { Country } from '../country/country.entity';
-import { City } from '../city/city.entity';
+import { Type } from '../type/type.entity';
 
 @Entity()
 export class Region {
@@ -24,6 +23,15 @@ export class Region {
 	@Column({ default: '' })
 	@Index()
 	public userId: string;
+
+	@Column({ default: '' })
+	public typeId: string;
+
+	@ManyToOne(() => Type, (type) => type.regions)
+	public type: Type;
+
+	@Column({ default: '' })
+	public categoryId: string;
 
 	@Column({ default: '' })
 	public parentId: string;
@@ -65,10 +73,4 @@ export class Region {
 
 	@OneToMany(() => RegionRegionRegionOption, (regionRegionRegionOption) => regionRegionRegionOption.region)
 	public regionRegionRegionOptions: RegionRegionRegionOption[];
-
-	@OneToMany(() => Country, (country) => country.region)
-	public countries: Country[];
-
-	@OneToMany(() => City, (city) => city.region)
-	public cities: City[];
 }

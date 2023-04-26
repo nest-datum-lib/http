@@ -6,7 +6,6 @@ import {
 	Param,
 	MethodNotAllowedException,
 } from '@nestjs/common';
-import { checkToken } from '@nest-datum-common/jwt';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { MainHttpController } from '@nest-datum/main';
 import { 
@@ -55,12 +54,6 @@ export class PostHttpController extends MainHttpController {
 			}
 			output['categoryId'] = options['categoryId'];
 		}
-		if (utilsCheckExists(options['tagId'])) {
-			if (!utilsCheckStrId(options['tagId'])) {
-				throw new MethodNotAllowedException(`Property "tagId" is not valid.`);
-			}
-			output['tagId'] = options['tagId'];
-		}
 		if (utilsCheckExists(options['postStatusId'])) {
 			if (!utilsCheckStrId(options['postStatusId'])) {
 				throw new MethodNotAllowedException(`Property "postStatusId" is not valid.`);
@@ -91,7 +84,6 @@ export class PostHttpController extends MainHttpController {
 		@Body('id') id: string,
 		@Body('userId') userId: string,
 		@Body('categoryId') categoryId: string,
-		@Body('tagId') tagId: string,
 		@Body('postStatusId') postStatusId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
@@ -102,7 +94,6 @@ export class PostHttpController extends MainHttpController {
 			id,
 			userId,
 			categoryId,
-			tagId,
 			postStatusId,
 			name,
 			description,
@@ -117,7 +108,6 @@ export class PostHttpController extends MainHttpController {
 		@Body('id') newId: string,
 		@Body('userId') userId: string,
 		@Body('categoryId') categoryId: string,
-		@Body('tagId') tagId: string,
 		@Body('postStatusId') postStatusId: string,
 		@Body('name') name: string,
 		@Body('description') description: string,
@@ -130,7 +120,6 @@ export class PostHttpController extends MainHttpController {
 			newId,
 			userId,
 			categoryId,
-			tagId,
 			postStatusId,
 			name,
 			description,

@@ -31,6 +31,8 @@ export class RegionService extends MainService {
 		return ({
 			...super.manyGetColumns(customColumns),
 			userId: true,
+			typeId: true,
+			categoryId: true,
 			parentId: true,
 			regionStatusId: true,
 			name: true,
@@ -42,6 +44,8 @@ export class RegionService extends MainService {
 		return ({
 			...super.oneGetColumns(customColumns),
 			userId: true,
+			typeId: true,
+			categoryId: true,
 			parentId: true,
 			regionStatusId: true,
 			name: true,

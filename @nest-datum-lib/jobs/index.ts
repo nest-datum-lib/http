@@ -48,6 +48,41 @@ import {
 	PostHttpTcpModule as JobsPostHttpTcpModule,
 	PostTcpModule as JobsPostTcpModule, 
 } from './src/api/post';
+import { 
+	CategoryCategoryOptionHttpModule as JobsCategoryCategoryOptionHttpModule,
+	CategoryCategoryOptionHttpTcpModule as JobsCategoryCategoryOptionHttpTcpModule, 
+	CategoryCategoryOptionTcpModule as JobsCategoryCategoryOptionTcpModule, 
+} from './src/api/category-category-option';
+import { 
+	CategoryOptionHttpModule as JobsCategoryOptionHttpModule,
+	CategoryOptionHttpTcpModule as JobsCategoryOptionHttpTcpModule, 
+	CategoryOptionTcpModule as JobsCategoryOptionTcpModule, 
+} from './src/api/category-option';
+import { 
+	CategoryStatusHttpModule as JobsCategoryStatusHttpModule,
+	CategoryStatusHttpTcpModule as JobsCategoryStatusHttpTcpModule,
+	CategoryStatusTcpModule as JobsCategoryStatusTcpModule, 
+} from './src/api/category-status';
+import { 
+	CategoryHttpModule as JobsCategoryHttpModule,
+	CategoryHttpTcpModule as JobsCategoryHttpTcpModule,
+	CategoryTcpModule as JobsCategoryTcpModule, 
+} from './src/api/category';
+import { 
+	TagOptionHttpModule as JobsTagOptionHttpModule,
+	TagOptionHttpTcpModule as JobsTagOptionHttpTcpModule,
+	TagOptionTcpModule as JobsTagOptionTcpModule, 
+} from './src/api/tag-option';
+import { 
+	TagStatusHttpModule as JobsTagStatusHttpModule,
+	TagStatusHttpTcpModule as JobsTagStatusHttpTcpModule,
+	TagStatusTcpModule as JobsTagStatusTcpModule, 
+} from './src/api/tag-status';
+import { 
+	TagHttpModule as JobsTagHttpModule,
+	TagHttpTcpModule as JobsTagHttpTcpModule,
+	TagTcpModule as JobsTagTcpModule, 
+} from './src/api/tag';
 
 const Http = {
 	JobsAccessAccessOptionHttpModule,
@@ -60,6 +95,13 @@ const Http = {
 	JobsPostOptionHttpModule,
 	JobsPostStatusHttpModule,
 	JobsPostHttpModule,
+	JobsCategoryCategoryOptionHttpModule,
+	JobsCategoryOptionHttpModule,
+	JobsCategoryStatusHttpModule,
+	JobsCategoryHttpModule,
+	JobsTagOptionHttpModule,
+	JobsTagStatusHttpModule,
+	JobsTagHttpModule,
 };
 const HttpTcp = {
 	JobsAccessAccessOptionHttpTcpModule,
@@ -72,6 +114,13 @@ const HttpTcp = {
 	JobsPostOptionHttpTcpModule,
 	JobsPostStatusHttpTcpModule,
 	JobsPostHttpTcpModule,
+	JobsCategoryCategoryOptionHttpTcpModule,
+	JobsCategoryOptionHttpTcpModule,
+	JobsCategoryStatusHttpTcpModule,
+	JobsCategoryHttpTcpModule,
+	JobsTagOptionHttpTcpModule,
+	JobsTagStatusHttpTcpModule,
+	JobsTagHttpTcpModule,
 };
 const Tcp = {
 	JobsAccessAccessOptionTcpModule,
@@ -84,6 +133,13 @@ const Tcp = {
 	JobsPostOptionTcpModule,
 	JobsPostStatusTcpModule,
 	JobsPostTcpModule,
+	JobsCategoryCategoryOptionTcpModule,
+	JobsCategoryOptionTcpModule,
+	JobsCategoryStatusTcpModule,
+	JobsCategoryTcpModule,
+	JobsTagOptionTcpModule,
+	JobsTagStatusTcpModule,
+	JobsTagTcpModule,
 };
 
 export {
@@ -120,4 +176,25 @@ export {
 	JobsPostOptionHttpModule,
 	JobsPostStatusHttpModule,
 	JobsPostHttpModule,
+	JobsCategoryCategoryOptionHttpModule,
+	JobsCategoryOptionHttpModule,
+	JobsCategoryStatusHttpModule,
+	JobsCategoryHttpModule,
+	JobsCategoryCategoryOptionHttpTcpModule,
+	JobsCategoryOptionHttpTcpModule,
+	JobsCategoryStatusHttpTcpModule,
+	JobsCategoryHttpTcpModule,
+	JobsCategoryCategoryOptionTcpModule,
+	JobsCategoryOptionTcpModule,
+	JobsCategoryStatusTcpModule,
+	JobsCategoryTcpModule,
+	JobsTagOptionHttpModule,
+	JobsTagStatusHttpModule,
+	JobsTagHttpModule,
+	JobsTagOptionHttpTcpModule,
+	JobsTagStatusHttpTcpModule,
+	JobsTagHttpTcpModule,
+	JobsTagOptionTcpModule,
+	JobsTagStatusTcpModule,
+	JobsTagTcpModule,
 };

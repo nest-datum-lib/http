@@ -37,6 +37,9 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 		if (!utilsCheckStrId(options['regionStatusId'])) {
 			throw new MethodNotAllowedException(`Property "regionStatusId" is not valid.`);
 		}
+		if (!utilsCheckStrId(options['typeId'])) {
+			throw new MethodNotAllowedException(`Property "typeId" is not valid.`);
+		}
 		return await this.validateCreate(options);
 	}
 
@@ -48,6 +51,24 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 				throw new MethodNotAllowedException(`Property "regionStatusId" is not valid.`);
 			}
 			output['regionStatusId'] = options['regionStatusId'];
+		}
+		if (utilsCheckExists(options['typeId'])) {
+			if (!utilsCheckStrId(options['typeId'])) {
+				throw new MethodNotAllowedException(`Property "typeId" is not valid.`);
+			}
+			output['typeId'] = options['typeId'];
+		}
+		if (utilsCheckExists(options['categoryId'])) {
+			if (!utilsCheckStrId(options['categoryId'])) {
+				throw new MethodNotAllowedException(`Property "categoryId" is not valid.`);
+			}
+			output['categoryId'] = options['categoryId'];
+		}
+		if (utilsCheckExists(options['parentId'])) {
+			if (!utilsCheckStrId(options['parentId'])) {
+				throw new MethodNotAllowedException(`Property "parentId" is not valid.`);
+			}
+			output['parentId'] = options['parentId'];
 		}
 		if (utilsCheckExists(options['parentId'])) {
 			if (!utilsCheckStrId(options['parentId'])) {
@@ -78,6 +99,8 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 		@AccessToken() accessToken: string,
 		@Body('id') id: string,
 		@Body('userId') userId: string,
+		@Body('typeId') typeId: string,
+		@Body('categoryId') categoryId: string,
 		@Body('parentId') parentId: string,
 		@Body('regionStatusId') regionStatusId: string,
 		@Body('name') name: string,
@@ -92,6 +115,8 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 			accessToken,
 			id,
 			userId,
+			typeId,
+			categoryId,
 			parentId,
 			regionStatusId,
 			name,
@@ -106,6 +131,8 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 		@Param('id') id: string,
 		@Body('id') newId: string,
 		@Body('userId') userId: string,
+		@Body('typeId') typeId: string,
+		@Body('categoryId') categoryId: string,
 		@Body('parentId') parentId: string,
 		@Body('regionStatusId') regionStatusId: string,
 		@Body('name') name: string,
@@ -122,6 +149,8 @@ export class RegionHttpTcpController extends MainHttpTcpController {
 			id,
 			newId,
 			userId,
+			typeId,
+			categoryId,
 			parentId,
 			regionStatusId,
 			name,
