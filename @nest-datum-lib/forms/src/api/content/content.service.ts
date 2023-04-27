@@ -10,6 +10,7 @@ import { Content } from './content.entity';
 
 @Injectable()
 export class ContentService extends SqlService {
+	protected readonly withEnvKey: boolean = false;
 	protected readonly repositoryConstructor = Content;
 
 	constructor(

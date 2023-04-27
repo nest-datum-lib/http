@@ -112,14 +112,16 @@ export class UserService extends MainService {
 				content: lastname,
 			}));
 
+			console.log('000');
+
 			await this.transport.send({ 
 				name: process.env.SERVICE_MAIL,
 				cmd: 'report.create',
 			}, {
-				letterId: 'mail-letter-base-registration', 
+				letterId: 'happ-mail-letter-base-registration', 
 				email: data['email'],
 				action: `Register new user "${data['email']}"`,
-				reportStatusId: 'mail-report-status-send',
+				reportStatusId: 'happ-mail-report-status-send',
 				content: JSON.stringify({
 					...data,
 					firstname,
@@ -224,10 +226,10 @@ export class UserService extends MainService {
 			name: process.env.SERVICE_MAIL,
 			cmd: 'report.create',
 		}, {
-			letterId: 'mail-letter-base-recovery', 
+			letterId: 'happ-mail-letter-base-recovery', 
 			email: payload['email'],
 			action: `Recovery access for "${payload['email']}"`,
-			reportStatusId: 'mail-report-status-send',
+			reportStatusId: 'happ-mail-report-status-send',
 			content: JSON.stringify({
 				...output,
 			}),

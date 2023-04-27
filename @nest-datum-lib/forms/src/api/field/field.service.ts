@@ -12,6 +12,7 @@ import { Field } from './field.entity';
 @Injectable()
 export class FieldService extends MainService {
 	protected readonly withTwoStepRemoval: boolean = true;
+	protected readonly withEnvKey: boolean = false;
 	protected readonly repositoryConstructor = Field;
 	protected readonly repositoryBindOptionConstructor = FieldFieldOption;
 	protected readonly mainRelationColumnName: string = 'fieldId';
