@@ -40,6 +40,7 @@
     "crypto-js": "^4.1.1",
     "deepmerge": "^4.3.1",
     "dotenv": "^16.0.1",
+    "ejs": "^3.1.9",
     "file-type": "^18.2.1",
     "get-current-line": "^6.6.0",
     "hbs": "^4.2.0",
