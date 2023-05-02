@@ -183,7 +183,7 @@ export class HttpController extends Controller {
 				throw new MethodNotAllowedException(`Property "isDeleted" is not valid.`);
 			}
 			output['isDeleted'] = options['isDeleted'];
-		}		
+		}
 		return { ...output, userId: user['id'] };
 	}
 
