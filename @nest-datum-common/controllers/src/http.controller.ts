@@ -259,6 +259,8 @@ export class HttpController extends Controller {
 			if (utilsCheckFunc(err['getHttp'])) {
 				const Exception = err['getHttp']();
 
+				console.log('Exception', Exception);
+
 				throw new Exception(err.message);
 			}
 			throw err;
