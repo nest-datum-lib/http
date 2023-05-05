@@ -1,7 +1,15 @@
 import { 
+	Delete,
+	Post,
+	Patch,
+	Body,
+	Param,
+} from '@nestjs/common';
+import { 
 	UnauthorizedException,
 	MethodNotAllowedException
 } from '@nestjs/common';
+import { AccessToken } from '@nest-datum-common/decorators';
 import { HttpController } from '@nest-datum-common/controllers';
 import { 
 	checkToken,
@@ -31,5 +39,21 @@ export class BindHttpController extends HttpController {
 			[this.mainRelationColumnName ?? 'entityId']: options[this.mainRelationColumnName ?? 'entityId'],
 			[this.optionRelationColumnName ?? 'entityOptionId']: options[this.optionRelationColumnName ?? 'entityOptionId'],
 		};
+	}
+
+	@Post(':id')
+	async create(
+		@AccessToken() accessToken: string,
+		@Param('id') entityOptionId: string,
+		@Body() data,
+	) {
+		const dataKeys = Object.keys(data);
+		const entityId = data[dataKeys[0]];
+
+		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
+			accessToken,
+			entityId,
+			entityOptionId,
+		})));
 	}
 }

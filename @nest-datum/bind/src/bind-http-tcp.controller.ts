@@ -1,9 +1,16 @@
-import { HttpTcpController } from '@nest-datum-common/controllers';
-
+import { 
+	Delete,
+	Post,
+	Patch,
+	Body,
+	Param,
+} from '@nestjs/common';
 import { 
 	UnauthorizedException,
 	MethodNotAllowedException
 } from '@nestjs/common';
+import { AccessToken } from '@nest-datum-common/decorators';
+import { HttpTcpController } from '@nest-datum-common/controllers';
 import { 
 	checkToken,
 	getUser, 
@@ -33,5 +40,24 @@ export class BindHttpTcpController extends HttpTcpController {
 			[this.mainRelationColumnName ?? 'entityId']: options[this.mainRelationColumnName ?? 'entityId'],
 			[this.optionRelationColumnName ?? 'entityOptionId']: options[this.optionRelationColumnName ?? 'entityOptionId'],
 		};
+	}
+
+	@Post(':id')
+	async create(
+		@AccessToken() accessToken: string,
+		@Param('id') entityOptionId: string,
+		@Body() body,
+	) {
+		const bodyKeys = Object.keys(body);
+		const entityId = body[bodyKeys[0]];
+
+		return await this.serviceHandlerWrapper(async () => await this.transport.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.create`,
+		}, await this.validateCreate({
+			accessToken,
+			entityOptionId,
+			entityId,
+		})));
 	}
 }
