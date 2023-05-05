@@ -244,6 +244,8 @@ export class TransportService extends RedisService {
 				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
 				switch (connectionInstanceResponse['errorCode']) {
 					case 405:
+						console.log('connectionInstanceResponse', connectionInstanceResponse);
+
 						throw new MethodNotAllowedException(connectionInstanceResponse['message']);
 					case 404:
 						throw new NotFoundException(connectionInstanceResponse['message']);
