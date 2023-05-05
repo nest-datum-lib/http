@@ -27,6 +27,8 @@ export class BindHttpTcpController extends HttpTcpController {
 		}
 		const user = getUser(options['accessToken']);
 
+		console.log('>>>>>>>>>>', this.mainRelationColumnName, this.optionRelationColumnName, options);
+
 		if (!utilsCheckStrId(options[this.mainRelationColumnName])) {
 			throw new MethodNotAllowedException(`Property "entityId" is not valid.`);
 		}
