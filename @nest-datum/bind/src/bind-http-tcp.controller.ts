@@ -30,10 +30,10 @@ export class BindHttpTcpController extends HttpTcpController {
 		console.log('>>>>>>>>>>', this.mainRelationColumnName, this.optionRelationColumnName, options);
 
 		if (!utilsCheckStrId(options[this.mainRelationColumnName])) {
-			throw new MethodNotAllowedException(`Property "entityId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "${this.mainRelationColumnName}" is not valid.`);
 		}
 		if (!utilsCheckStrId(options[this.optionRelationColumnName])) {
-			throw new MethodNotAllowedException(`Property "entityOptionId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "${this.optionRelationColumnName}" is not valid.`);
 		}
 
 		return {
@@ -47,19 +47,19 @@ export class BindHttpTcpController extends HttpTcpController {
 	@Post(':id')
 	async create(
 		@AccessToken() accessToken: string,
-		@Param('id') entityOptionId: string,
+		@Param('id') entityId: string,
 		@Body() body,
 	) {
 		const bodyKeys = Object.keys(body);
-		const entityId = body[bodyKeys[0]];
+		const entityRelationId = body[bodyKeys[0]];
 
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.create`,
 		}, await this.validateCreate({
 			accessToken,
-			entityOptionId,
-			entityId,
+			[this.mainRelationColumnName]: entityId,
+			[this.optionRelationColumnName]: entityRelationId,
 		})));
 	}
 }
