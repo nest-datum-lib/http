@@ -4,7 +4,7 @@ import { TransportService } from '@nest-datum/transport';
 
 console.log('>>>>>>>>', `${process.env.SERVICE_FORMS}/form/field`)
 
-@Controller(`/form/field`)
+@Controller(`${process.env.SERVICE_FORMS}/form/field`)
 export class FormFieldHttpTcpController extends BindHttpTcpController {
 	protected readonly serviceName: string = process.env.SERVICE_FORMS;
 	protected readonly entityName: string = 'formField';
