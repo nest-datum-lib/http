@@ -14,8 +14,6 @@ import { HttpTcp as JobsHttpTcp } from '@nest-datum-lib/jobs';
 import { AppController } from './app.controller';
 import { Http as Modules } from './index';
 
-console.log('FormsHttpTcp', FormsHttpTcp);
-
 @Module({
 	imports: [
 		TypeOrmModule.forRoot(utilsFormatSqlConfig()),
