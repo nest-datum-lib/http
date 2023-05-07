@@ -68,6 +68,26 @@ import {
 	CategoryHttpTcpModule as JobsCategoryHttpTcpModule,
 	CategoryTcpModule as JobsCategoryTcpModule, 
 } from './src/api/category';
+import { 
+	CompanyCompanyOptionHttpModule as JobsCompanyCompanyOptionHttpModule,
+	CompanyCompanyOptionHttpTcpModule as JobsCompanyCompanyOptionHttpTcpModule, 
+	CompanyCompanyOptionTcpModule as JobsCompanyCompanyOptionTcpModule, 
+} from './src/api/company-company-option';
+import { 
+	CompanyOptionHttpModule as JobsCompanyOptionHttpModule,
+	CompanyOptionHttpTcpModule as JobsCompanyOptionHttpTcpModule, 
+	CompanyOptionTcpModule as JobsCompanyOptionTcpModule, 
+} from './src/api/company-option';
+import { 
+	CompanyStatusHttpModule as JobsCompanyStatusHttpModule,
+	CompanyStatusHttpTcpModule as JobsCompanyStatusHttpTcpModule,
+	CompanyStatusTcpModule as JobsCompanyStatusTcpModule, 
+} from './src/api/company-status';
+import { 
+	CompanyHttpModule as JobsCompanyHttpModule,
+	CompanyHttpTcpModule as JobsCompanyHttpTcpModule,
+	CompanyTcpModule as JobsCompanyTcpModule, 
+} from './src/api/company';
 
 const Http = {
 	JobsAccessAccessOptionHttpModule,
@@ -84,6 +104,10 @@ const Http = {
 	JobsCategoryOptionHttpModule,
 	JobsCategoryStatusHttpModule,
 	JobsCategoryHttpModule,
+	JobsCompanyCompanyOptionHttpModule,
+	JobsCompanyOptionHttpModule,
+	JobsCompanyStatusHttpModule,
+	JobsCompanyHttpModule,
 };
 const HttpTcp = {
 	JobsAccessAccessOptionHttpTcpModule,
@@ -100,6 +124,10 @@ const HttpTcp = {
 	JobsCategoryOptionHttpTcpModule,
 	JobsCategoryStatusHttpTcpModule,
 	JobsCategoryHttpTcpModule,
+	JobsCompanyCompanyOptionHttpTcpModule,
+	JobsCompanyOptionHttpTcpModule,
+	JobsCompanyStatusHttpTcpModule,
+	JobsCompanyHttpTcpModule,
 };
 const Tcp = {
 	JobsAccessAccessOptionTcpModule,
@@ -116,6 +144,10 @@ const Tcp = {
 	JobsCategoryOptionTcpModule,
 	JobsCategoryStatusTcpModule,
 	JobsCategoryTcpModule,
+	JobsCompanyCompanyOptionTcpModule,
+	JobsCompanyOptionTcpModule,
+	JobsCompanyStatusTcpModule,
+	JobsCompanyTcpModule,
 };
 
 export {
@@ -164,4 +196,16 @@ export {
 	JobsCategoryOptionTcpModule,
 	JobsCategoryStatusTcpModule,
 	JobsCategoryTcpModule,
+	JobsCompanyCompanyOptionHttpModule,
+	JobsCompanyOptionHttpModule,
+	JobsCompanyStatusHttpModule,
+	JobsCompanyHttpModule,
+	JobsCompanyCategoryOptionHttpTcpModule,
+	JobsCompanyOptionHttpTcpModule,
+	JobsCompanyStatusHttpTcpModule,
+	JobsCompanyHttpTcpModule,
+	JobsCompanyCategoryOptionTcpModule,
+	JobsCompanyOptionTcpModule,
+	JobsCompanyStatusTcpModule,
+	JobsCompanyTcpModule,
 };

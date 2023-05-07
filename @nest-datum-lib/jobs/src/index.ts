@@ -73,6 +73,26 @@ import {
 	CategoryHttpTcpModule,
 	CategoryTcpModule, 
 } from './api/category';
+import { 
+	CompanyCompanyOptionHttpModule,
+	CompanyCompanyOptionHttpTcpModule, 
+	CompanyCompanyOptionTcpModule, 
+} from './api/company-company-option';
+import { 
+	CompanyOptionHttpModule,
+	CompanyOptionHttpTcpModule, 
+	CompanyOptionTcpModule, 
+} from './api/company-option';
+import { 
+	CompanyStatusHttpModule,
+	CompanyStatusHttpTcpModule,
+	CompanyStatusTcpModule, 
+} from './api/company-status';
+import { 
+	CompanyHttpModule,
+	CompanyHttpTcpModule,
+	CompanyTcpModule, 
+} from './api/company';
 
 const Http = {
 	AccessAccessOptionHttpModule,
@@ -90,6 +110,10 @@ const Http = {
 	CategoryOptionHttpModule,
 	CategoryStatusHttpModule,
 	CategoryHttpModule,
+	CompanyCompanyOptionHttpModule,
+	CompanyOptionHttpModule,
+	CompanyStatusHttpModule,
+	CompanyHttpModule,
 };
 const HttpTcp = {
 	AccessAccessOptionHttpTcpModule,
@@ -107,6 +131,10 @@ const HttpTcp = {
 	CategoryOptionHttpTcpModule,
 	CategoryStatusHttpTcpModule,
 	CategoryHttpTcpModule,
+	CompanyCompanyOptionHttpTcpModule,
+	CompanyOptionHttpTcpModule,
+	CompanyStatusHttpTcpModule,
+	CompanyHttpTcpModule,
 };
 const Tcp = {
 	AccessAccessOptionTcpModule,
@@ -124,6 +152,10 @@ const Tcp = {
 	CategoryOptionTcpModule,
 	CategoryStatusTcpModule,
 	CategoryTcpModule,
+	CompanyCompanyOptionTcpModule,
+	CompanyOptionTcpModule,
+	CompanyStatusTcpModule,
+	CompanyTcpModule,
 };
 
 export {
@@ -175,4 +207,16 @@ export {
 	CategoryOptionHttpModule,
 	CategoryStatusHttpModule,
 	CategoryHttpModule,
+	CompanyCompanyOptionHttpModule,
+	CompanyOptionHttpModule,
+	CompanyStatusHttpModule,
+	CompanyHttpModule,
+	CompanyCompanyOptionHttpTcpModule,
+	CompanyOptionHttpTcpModule,
+	CompanyStatusHttpTcpModule,
+	CompanyHttpTcpModule,
+	CompanyCompanyOptionTcpModule,
+	CompanyOptionTcpModule,
+	CompanyStatusTcpModule,
+	CompanyTcpModule,
 };
