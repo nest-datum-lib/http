@@ -28,6 +28,8 @@ export class RegionContentHttpTcpController extends BindHttpTcpController {
 	}
 
 	async validateCreate(options) {
+		console.log('?????????', options);
+
 		if (!utilsCheckExists(options['value'])) {
 			throw new MethodNotAllowedException(`Property "value" is not valid.`);
 		}
