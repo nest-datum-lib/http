@@ -4,6 +4,7 @@ import {
 } from '@nestjs/microservices';
 import { Controller } from '@nestjs/common';
 import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
+import { exists as utilsCheckExists } from '@nest-datum-utils/check';
 import { BindTcpController } from '@nest-datum/bind';
 import { FieldContentService } from './field-content.service';
 
