@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { MethodNotAllowedException } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { AccessToken } from '@nest-datum-common/decorators';
 import { BindHttpController } from '@nest-datum/bind';
 import { exists as utilsCheckExists } from '@nest-datum-utils/check';
 import { FieldContentService } from './field-content.service';

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { MethodNotAllowedException } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { AccessToken } from '@nest-datum-common/decorators';
 import { BindHttpTcpController } from '@nest-datum/bind';
 import { TransportService } from '@nest-datum/transport';
 import { exists as utilsCheckExists } from '@nest-datum-utils/check';
