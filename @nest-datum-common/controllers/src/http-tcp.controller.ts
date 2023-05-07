@@ -73,6 +73,8 @@ export class HttpTcpController extends HttpController {
 		@Query('relations') relations: string,
 		@Param('id') id: string,
 	): Promise<any> {
+		console.log('?????????????????????????');
+
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.one`,
