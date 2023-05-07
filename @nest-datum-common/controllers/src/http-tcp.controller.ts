@@ -34,19 +34,6 @@ export class HttpTcpController extends HttpController {
 		@Query('filter') filter: string,
 		@Query('sort') sort: string,
 	): Promise<any> {
-		console.log('000000', this.serviceName);
-		console.log('111111', `${this.entityName}.many`);
-		console.log('222222', await this.validateMany({
-				accessToken,
-				select,
-				relations,
-				page,
-				limit,
-				query,
-				filter,
-				sort,
-			}));
-
 		return await this.serviceHandlerWrapper(async () => {
 			const output = await this.transport.send({
 				name: this.serviceName, 
@@ -73,8 +60,6 @@ export class HttpTcpController extends HttpController {
 		@Query('relations') relations: string,
 		@Param('id') id: string,
 	): Promise<any> {
-		console.log('?????????????????????????');
-
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.one`,
