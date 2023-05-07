@@ -49,6 +49,11 @@ import {
 	FieldTcpModule as FormsFieldTcpModule, 
 } from './src/api/field';
 import { 
+	FieldContentHttpModule as FormsFieldContentHttpModule,
+	FieldContentHttpTcpModule as FormsFieldContentHttpTcpModule,
+	FieldContentTcpModule as FormsFieldContentTcpModule, 
+} from './src/api/field-content';
+import { 
 	FormFieldHttpModule as FormsFormFieldHttpModule,
 	FormFieldHttpTcpModule as FormsFormFieldHttpTcpModule,
 	FormFieldTcpModule as FormsFormFieldTcpModule, 
@@ -74,11 +79,6 @@ import {
 	FormTcpModule as FormsFormTcpModule, 
 } from './src/api/form';
 import { 
-	FieldContentHttpModule as FormsFieldContentHttpModule,
-	FieldContentHttpTcpModule as FormsFieldContentHttpTcpModule,
-	FieldContentTcpModule as FormsFieldContentTcpModule, 
-} from './src/api/field-content';
-import { 
 	ContentStatusHttpModule as FormsContentStatusHttpModule,
 	ContentStatusHttpTcpModule as FormsContentStatusHttpTcpModule,
 	ContentStatusTcpModule as FormsContentStatusTcpModule, 
@@ -100,13 +100,13 @@ const Http = {
 	FormsFieldOptionHttpModule,
 	FormsFieldStatusHttpModule,
 	FormsFieldHttpModule,
+	FormsFieldContentHttpModule,
 	FormsFormFieldHttpModule,
 	FormsFormOptionHttpModule,
 	FormsFormStatusHttpModule,
 	FormsFormHttpModule,
 	FormsContentStatusHttpModule,
 	FormsContentHttpModule,
-	FormsFieldContentHttpModule,
 };
 const HttpTcp = {
 	FormsAccessAccessOptionHttpTcpModule,
@@ -119,6 +119,7 @@ const HttpTcp = {
 	FormsFieldOptionHttpTcpModule,
 	FormsFieldStatusHttpTcpModule,
 	FormsFieldHttpTcpModule,
+	FormsFieldContentHttpTcpModule,
 	FormsFormFieldHttpTcpModule,
 	FormsFormFormOptionHttpTcpModule,
 	FormsFormOptionHttpTcpModule,
@@ -126,7 +127,6 @@ const HttpTcp = {
 	FormsFormHttpTcpModule,
 	FormsContentStatusHttpTcpModule,
 	FormsContentHttpTcpModule,
-	FormsFieldContentHttpTcpModule,
 };
 const Tcp = {
 	FormsAccessAccessOptionTcpModule,
@@ -139,6 +139,7 @@ const Tcp = {
 	FormsFieldOptionTcpModule,
 	FormsFieldStatusTcpModule,
 	FormsFieldTcpModule,
+	FormsFieldContentTcpModule,
 	FormsFormFieldTcpModule,
 	FormsFormFormOptionTcpModule,
 	FormsFormOptionTcpModule,
@@ -146,7 +147,6 @@ const Tcp = {
 	FormsFormTcpModule,
 	FormsContentStatusTcpModule,
 	FormsContentTcpModule,
-	FormsFieldContentTcpModule,
 };
 
 export {
@@ -179,6 +179,9 @@ export {
 	FormsFieldOptionHttpModule,
 	FormsFieldStatusHttpModule,
 	FormsFieldHttpModule,
+	FormsFieldContentHttpModule,
+	FormsFieldContentHttpTcpModule,
+	FormsFieldContentTcpModule,
 	FormsFormFieldHttpModule,
 	FormsFormFieldHttpTcpModule,
 	FormsFormFieldTcpModule,
@@ -195,7 +198,4 @@ export {
 	FormsContentHttpTcpModule,
 	FormsContentStatusTcpModule,
 	FormsContentTcpModule,
-	FormsFieldContentHttpModule,
-	FormsFieldContentHttpTcpModule,
-	FormsFieldContentTcpModule,
 };
