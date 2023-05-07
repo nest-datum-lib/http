@@ -202,8 +202,6 @@ export class TransportService extends RedisService {
 			? await this.one({ key: id })
 			: await this.lessLoadedConnection(name);
 
-		console.log('replicaDatareplicaDatareplicaDatareplicaData', replicaData);
-
 		if (!replicaData) {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
