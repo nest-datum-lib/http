@@ -22,6 +22,10 @@ export class BindHttpTcpController extends HttpTcpController {
 	protected readonly optionRelationColumnName: string;
 
 	async validateCreate(options) {
+		return await super.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
 		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
 			throw new UnauthorizedException(`User is undefined or token is not valid.`);
 		}
@@ -55,6 +59,25 @@ export class BindHttpTcpController extends HttpTcpController {
 			name: this.serviceName, 
 			cmd: `${this.entityName}.create`,
 		}, await this.validateCreate({
+			accessToken,
+			[this.mainRelationColumnName]: entityId,
+			[this.optionRelationColumnName]: entityRelationId,
+		})));
+	}
+
+	@Patch(':id')
+	async update(
+		@AccessToken() accessToken: string,
+		@Param('id') entityId: string,
+		@Body() body,
+	) {
+		const bodyKeys = Object.keys(body);
+		const entityRelationId = body[bodyKeys[0]];
+
+		return await this.serviceHandlerWrapper(async () => await this.transport.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
 			accessToken,
 			[this.mainRelationColumnName]: entityId,
 			[this.optionRelationColumnName]: entityRelationId,

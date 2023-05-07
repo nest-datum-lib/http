@@ -14,6 +14,10 @@ export class BindTcpController extends TcpController {
 	protected readonly optionRelationColumnName: string;
 
 	async validateCreate(options) {
+		return await super.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
 		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
 			throw new UnauthorizedException(`User is undefined or token is not valid.`);
 		}

@@ -22,6 +22,10 @@ export class BindHttpController extends HttpController {
 	protected readonly optionRelationColumnName: string;
 
 	async validateCreate(options) {
+		return await super.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
 		if (!checkToken(options['accessToken'], process.env.JWT_SECRET_ACCESS_KEY)) {
 			throw new UnauthorizedException(`User is undefined or token is not valid.`);
 		}
@@ -52,6 +56,22 @@ export class BindHttpController extends HttpController {
 		const entityRelationId = data[dataKeys[0]];
 
 		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
+			accessToken,
+			[this.mainRelationColumnName]: entityId,
+			[this.optionRelationColumnName]: entityRelationId,
+		})));
+	}
+
+	@Patch(':id')
+	async update(
+		@AccessToken() accessToken: string,
+		@Param('id') entityId: string,
+		@Body() data,
+	) {
+		const dataKeys = Object.keys(data);
+		const entityRelationId = data[dataKeys[0]];
+
+		return await this.serviceHandlerWrapper(async () => await this.service.udpate(await this.validateUpdate({
 			accessToken,
 			[this.mainRelationColumnName]: entityId,
 			[this.optionRelationColumnName]: entityRelationId,
