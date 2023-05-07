@@ -58,6 +58,7 @@ export class BindHttpTcpController extends HttpTcpController {
 			name: this.serviceName, 
 			cmd: `${this.entityName}.create`,
 		}, await this.validateCreate({
+			accessToken,
 			[this.mainRelationColumnName]: entityId,
 			[this.optionRelationColumnName]: body[this.optionRelationColumnName],
 		})));
