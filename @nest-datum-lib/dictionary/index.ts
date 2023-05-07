@@ -68,26 +68,6 @@ import {
 	CategoryHttpTcpModule as DictionaryCategoryHttpTcpModule,
 	CategoryTcpModule as DictionaryCategoryTcpModule, 
 } from './src/api/category';
-import { 
-	CompanyCompanyOptionHttpModule as DictionaryCompanyCompanyOptionHttpModule,
-	CompanyCompanyOptionHttpTcpModule as DictionaryCompanyCompanyOptionHttpTcpModule, 
-	CompanyCompanyOptionTcpModule as DictionaryCompanyCompanyOptionTcpModule, 
-} from './src/api/company-company-option';
-import { 
-	CompanyOptionHttpModule as DictionaryCompanyOptionHttpModule,
-	CompanyOptionHttpTcpModule as DictionaryCompanyOptionHttpTcpModule, 
-	CompanyOptionTcpModule as DictionaryCompanyOptionTcpModule, 
-} from './src/api/company-option';
-import { 
-	CompanyStatusHttpModule as DictionaryCompanyStatusHttpModule,
-	CompanyStatusHttpTcpModule as DictionaryCompanyStatusHttpTcpModule,
-	CompanyStatusTcpModule as DictionaryCompanyStatusTcpModule, 
-} from './src/api/company-status';
-import { 
-	CompanyHttpModule as DictionaryCompanyHttpModule,
-	CompanyHttpTcpModule as DictionaryCompanyHttpTcpModule,
-	CompanyTcpModule as DictionaryCompanyTcpModule, 
-} from './src/api/company';
 
 const Http = {
 	DictionaryAccessAccessOptionHttpModule,
