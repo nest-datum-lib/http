@@ -68,21 +68,6 @@ import {
 	CategoryHttpTcpModule as JobsCategoryHttpTcpModule,
 	CategoryTcpModule as JobsCategoryTcpModule, 
 } from './src/api/category';
-import { 
-	TagOptionHttpModule as JobsTagOptionHttpModule,
-	TagOptionHttpTcpModule as JobsTagOptionHttpTcpModule,
-	TagOptionTcpModule as JobsTagOptionTcpModule, 
-} from './src/api/tag-option';
-import { 
-	TagStatusHttpModule as JobsTagStatusHttpModule,
-	TagStatusHttpTcpModule as JobsTagStatusHttpTcpModule,
-	TagStatusTcpModule as JobsTagStatusTcpModule, 
-} from './src/api/tag-status';
-import { 
-	TagHttpModule as JobsTagHttpModule,
-	TagHttpTcpModule as JobsTagHttpTcpModule,
-	TagTcpModule as JobsTagTcpModule, 
-} from './src/api/tag';
 
 const Http = {
 	JobsAccessAccessOptionHttpModule,
@@ -99,9 +84,6 @@ const Http = {
 	JobsCategoryOptionHttpModule,
 	JobsCategoryStatusHttpModule,
 	JobsCategoryHttpModule,
-	JobsTagOptionHttpModule,
-	JobsTagStatusHttpModule,
-	JobsTagHttpModule,
 };
 const HttpTcp = {
 	JobsAccessAccessOptionHttpTcpModule,
@@ -118,9 +100,6 @@ const HttpTcp = {
 	JobsCategoryOptionHttpTcpModule,
 	JobsCategoryStatusHttpTcpModule,
 	JobsCategoryHttpTcpModule,
-	JobsTagOptionHttpTcpModule,
-	JobsTagStatusHttpTcpModule,
-	JobsTagHttpTcpModule,
 };
 const Tcp = {
 	JobsAccessAccessOptionTcpModule,
@@ -137,9 +116,6 @@ const Tcp = {
 	JobsCategoryOptionTcpModule,
 	JobsCategoryStatusTcpModule,
 	JobsCategoryTcpModule,
-	JobsTagOptionTcpModule,
-	JobsTagStatusTcpModule,
-	JobsTagTcpModule,
 };
 
 export {
@@ -188,13 +164,4 @@ export {
 	JobsCategoryOptionTcpModule,
 	JobsCategoryStatusTcpModule,
 	JobsCategoryTcpModule,
-	JobsTagOptionHttpModule,
-	JobsTagStatusHttpModule,
-	JobsTagHttpModule,
-	JobsTagOptionHttpTcpModule,
-	JobsTagStatusHttpTcpModule,
-	JobsTagHttpTcpModule,
-	JobsTagOptionTcpModule,
-	JobsTagStatusTcpModule,
-	JobsTagTcpModule,
 };
