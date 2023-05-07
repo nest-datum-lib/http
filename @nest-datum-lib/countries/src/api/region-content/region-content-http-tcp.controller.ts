@@ -70,7 +70,7 @@ export class RegionContentHttpTcpController extends BindHttpTcpController {
 			accessToken,
 			value: body['value'],
 			[this.mainRelationColumnName]: entityId,
-			[this.optionRelationColumnName]: body['regionId'],
+			[this.optionRelationColumnName]: body['typeOptionId'],
 		})));
 	}
 
