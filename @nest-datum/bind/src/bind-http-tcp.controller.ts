@@ -51,12 +51,6 @@ export class BindHttpTcpController extends HttpTcpController {
 		const bodyKeys = Object.keys(body);
 		const entityRelationId = body[bodyKeys[0]];
 
-		console.log('???????????', {
-			accessToken,
-			[this.mainRelationColumnName]: entityId,
-			[this.optionRelationColumnName]: entityRelationId,
-		});
-
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.create`,
