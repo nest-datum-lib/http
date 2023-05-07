@@ -99,6 +99,8 @@ export class TransportService extends RedisService {
 	}
 
 	async lessLoadedConnection(appName: string): Promise<object> {
+		console.log('this.prefix(appName)', this.prefix(appName));
+
 		const redisValue = await this.repository.lindex(this.prefix(appName), 0);
 
 		if (!utilsCheckStrQueue(redisValue)) {
