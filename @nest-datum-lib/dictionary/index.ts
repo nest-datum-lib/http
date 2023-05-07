@@ -29,65 +29,65 @@ import {
 	RoleAccessTcpModule as DictionaryRoleAccessTcpModule, 
 } from './src/api/role-access';
 import { 
-	FieldFieldOptionHttpModule as DictionaryFieldFieldOptionHttpModule,
-	FieldFieldOptionHttpTcpModule as DictionaryFieldFieldOptionHttpTcpModule, 
-	FieldFieldOptionTcpModule as DictionaryFieldFieldOptionTcpModule, 
-} from './src/api/field-field-option';
+	PostPostOptionHttpModule as DictionaryPostPostOptionHttpModule,
+	PostPostOptionHttpTcpModule as DictionaryPostPostOptionHttpTcpModule, 
+	PostPostOptionTcpModule as DictionaryPostPostOptionTcpModule, 
+} from './src/api/post-post-option';
 import { 
-	FieldOptionHttpModule as DictionaryFieldOptionHttpModule,
-	FieldOptionHttpTcpModule as DictionaryFieldOptionHttpTcpModule, 
-	FieldOptionTcpModule as DictionaryFieldOptionTcpModule, 
-} from './src/api/field-option';
+	PostOptionHttpModule as DictionaryPostOptionHttpModule,
+	PostOptionHttpTcpModule as DictionaryPostOptionHttpTcpModule, 
+	PostOptionTcpModule as DictionaryPostOptionTcpModule, 
+} from './src/api/post-option';
 import { 
-	FieldStatusHttpModule as DictionaryFieldStatusHttpModule,
-	FieldStatusHttpTcpModule as DictionaryFieldStatusHttpTcpModule,
-	FieldStatusTcpModule as DictionaryFieldStatusTcpModule, 
-} from './src/api/field-status';
+	PostStatusHttpModule as DictionaryPostStatusHttpModule,
+	PostStatusHttpTcpModule as DictionaryPostStatusHttpTcpModule,
+	PostStatusTcpModule as DictionaryPostStatusTcpModule, 
+} from './src/api/post-status';
 import { 
-	FieldHttpModule as DictionaryFieldHttpModule,
-	FieldHttpTcpModule as DictionaryFieldHttpTcpModule,
-	FieldTcpModule as DictionaryFieldTcpModule, 
-} from './src/api/field';
+	PostHttpModule as DictionaryPostHttpModule,
+	PostHttpTcpModule as DictionaryPostHttpTcpModule,
+	PostTcpModule as DictionaryPostTcpModule, 
+} from './src/api/post';
 import { 
-	FormFormOptionHttpModule as DictionaryFormFormOptionHttpModule,
-	FormFormOptionHttpTcpModule as DictionaryFormFormOptionHttpTcpModule, 
-	FormFormOptionTcpModule as DictionaryFormFormOptionTcpModule, 
-} from './src/api/form-form-option';
+	CategoryCategoryOptionHttpModule as DictionaryCategoryCategoryOptionHttpModule,
+	CategoryCategoryOptionHttpTcpModule as DictionaryCategoryCategoryOptionHttpTcpModule, 
+	CategoryCategoryOptionTcpModule as DictionaryCategoryCategoryOptionTcpModule, 
+} from './src/api/category-category-option';
 import { 
-	FormOptionHttpModule as DictionaryFormOptionHttpModule,
-	FormOptionHttpTcpModule as DictionaryFormOptionHttpTcpModule, 
-	FormOptionTcpModule as DictionaryFormOptionTcpModule, 
-} from './src/api/form-option';
+	CategoryOptionHttpModule as DictionaryCategoryOptionHttpModule,
+	CategoryOptionHttpTcpModule as DictionaryCategoryOptionHttpTcpModule, 
+	CategoryOptionTcpModule as DictionaryCategoryOptionTcpModule, 
+} from './src/api/category-option';
 import { 
-	FormStatusHttpModule as DictionaryFormStatusHttpModule,
-	FormStatusHttpTcpModule as DictionaryFormStatusHttpTcpModule,
-	FormStatusTcpModule as DictionaryFormStatusTcpModule, 
-} from './src/api/form-status';
+	CategoryStatusHttpModule as DictionaryCategoryStatusHttpModule,
+	CategoryStatusHttpTcpModule as DictionaryCategoryStatusHttpTcpModule,
+	CategoryStatusTcpModule as DictionaryCategoryStatusTcpModule, 
+} from './src/api/category-status';
 import { 
-	FormHttpModule as DictionaryFormHttpModule,
-	FormHttpTcpModule as DictionaryFormHttpTcpModule,
-	FormTcpModule as DictionaryFormTcpModule, 
-} from './src/api/form';
+	CategoryHttpModule as DictionaryCategoryHttpModule,
+	CategoryHttpTcpModule as DictionaryCategoryHttpTcpModule,
+	CategoryTcpModule as DictionaryCategoryTcpModule, 
+} from './src/api/category';
 import { 
-	FormFieldHttpModule as DictionaryFormFieldHttpModule,
-	FormFieldHttpTcpModule as DictionaryFormFieldHttpTcpModule,
-	FormFieldTcpModule as DictionaryFormFieldTcpModule, 
-} from './src/api/form-field';
+	CompanyCompanyOptionHttpModule as DictionaryCompanyCompanyOptionHttpModule,
+	CompanyCompanyOptionHttpTcpModule as DictionaryCompanyCompanyOptionHttpTcpModule, 
+	CompanyCompanyOptionTcpModule as DictionaryCompanyCompanyOptionTcpModule, 
+} from './src/api/company-company-option';
 import { 
-	FieldContentHttpModule as DictionaryFieldContentHttpModule,
-	FieldContentHttpTcpModule as DictionaryFieldContentHttpTcpModule,
-	FieldContentTcpModule as DictionaryFieldContentTcpModule, 
-} from './src/api/field-content';
+	CompanyOptionHttpModule as DictionaryCompanyOptionHttpModule,
+	CompanyOptionHttpTcpModule as DictionaryCompanyOptionHttpTcpModule, 
+	CompanyOptionTcpModule as DictionaryCompanyOptionTcpModule, 
+} from './src/api/company-option';
 import { 
-	ContentStatusHttpModule as DictionaryContentStatusHttpModule,
-	ContentStatusHttpTcpModule as DictionaryContentStatusHttpTcpModule,
-	ContentStatusTcpModule as DictionaryContentStatusTcpModule, 
-} from './src/api/content-status';
+	CompanyStatusHttpModule as DictionaryCompanyStatusHttpModule,
+	CompanyStatusHttpTcpModule as DictionaryCompanyStatusHttpTcpModule,
+	CompanyStatusTcpModule as DictionaryCompanyStatusTcpModule, 
+} from './src/api/company-status';
 import { 
-	ContentHttpModule as DictionaryContentHttpModule,
-	ContentHttpTcpModule as DictionaryContentHttpTcpModule,
-	ContentTcpModule as DictionaryContentTcpModule, 
-} from './src/api/content';
+	CompanyHttpModule as DictionaryCompanyHttpModule,
+	CompanyHttpTcpModule as DictionaryCompanyHttpTcpModule,
+	CompanyTcpModule as DictionaryCompanyTcpModule, 
+} from './src/api/company';
 
 const Http = {
 	DictionaryAccessAccessOptionHttpModule,
@@ -96,17 +96,14 @@ const Http = {
 	DictionaryAccessHttpModule,
 	DictionaryRoleAccessHttpModule,
 	DictionarySettingHttpModule,
-	DictionaryFieldFieldOptionHttpModule,
-	DictionaryFieldOptionHttpModule,
-	DictionaryFieldStatusHttpModule,
-	DictionaryFieldHttpModule,
-	DictionaryFormOptionHttpModule,
-	DictionaryFormStatusHttpModule,
-	DictionaryFormHttpModule,
-	DictionaryFormFieldHttpModule,
-	DictionaryContentStatusHttpModule,
-	DictionaryContentHttpModule,
-	DictionaryFieldContentHttpModule,
+	DictionaryPostPostOptionHttpModule,
+	DictionaryPostOptionHttpModule,
+	DictionaryPostStatusHttpModule,
+	DictionaryPostHttpModule,
+	DictionaryCategoryCategoryOptionHttpModule,
+	DictionaryCategoryOptionHttpModule,
+	DictionaryCategoryStatusHttpModule,
+	DictionaryCategoryHttpModule,
 };
 const HttpTcp = {
 	DictionaryAccessAccessOptionHttpTcpModule,
@@ -115,18 +112,14 @@ const HttpTcp = {
 	DictionaryAccessHttpTcpModule,
 	DictionaryRoleAccessHttpTcpModule,
 	DictionarySettingHttpTcpModule,
-	DictionaryFieldFieldOptionHttpTcpModule,
-	DictionaryFieldOptionHttpTcpModule,
-	DictionaryFieldStatusHttpTcpModule,
-	DictionaryFieldHttpTcpModule,
-	DictionaryFormFormOptionHttpTcpModule,
-	DictionaryFormOptionHttpTcpModule,
-	DictionaryFormStatusHttpTcpModule,
-	DictionaryFormHttpTcpModule,
-	DictionaryFormFieldHttpTcpModule,
-	DictionaryContentStatusHttpTcpModule,
-	DictionaryContentHttpTcpModule,
-	DictionaryFieldContentHttpTcpModule,
+	DictionaryPostPostOptionHttpTcpModule,
+	DictionaryPostOptionHttpTcpModule,
+	DictionaryPostStatusHttpTcpModule,
+	DictionaryPostHttpTcpModule,
+	DictionaryCategoryCategoryOptionHttpTcpModule,
+	DictionaryCategoryOptionHttpTcpModule,
+	DictionaryCategoryStatusHttpTcpModule,
+	DictionaryCategoryHttpTcpModule,
 };
 const Tcp = {
 	DictionaryAccessAccessOptionTcpModule,
@@ -135,18 +128,14 @@ const Tcp = {
 	DictionaryAccessTcpModule,
 	DictionaryRoleAccessTcpModule,
 	DictionarySettingTcpModule,
-	DictionaryFieldFieldOptionTcpModule,
-	DictionaryFieldOptionTcpModule,
-	DictionaryFieldStatusTcpModule,
-	DictionaryFieldTcpModule,
-	DictionaryFormFormOptionTcpModule,
-	DictionaryFormOptionTcpModule,
-	DictionaryFormStatusTcpModule,
-	DictionaryFormTcpModule,
-	DictionaryFormFieldTcpModule,
-	DictionaryContentStatusTcpModule,
-	DictionaryContentTcpModule,
-	DictionaryFieldContentTcpModule,
+	DictionaryPostPostOptionTcpModule,
+	DictionaryPostOptionTcpModule,
+	DictionaryPostStatusTcpModule,
+	DictionaryPostTcpModule,
+	DictionaryCategoryCategoryOptionTcpModule,
+	DictionaryCategoryOptionTcpModule,
+	DictionaryCategoryStatusTcpModule,
+	DictionaryCategoryTcpModule,
 };
 
 export {
@@ -171,31 +160,28 @@ export {
 	DictionarySettingHttpModule,
 	DictionarySettingHttpTcpModule,
 	DictionarySettingTcpModule,
-	DictionaryFieldFieldOptionTcpModule,
-	DictionaryFieldOptionTcpModule,
-	DictionaryFieldStatusTcpModule,
-	DictionaryFieldTcpModule,
-	DictionaryFieldFieldOptionHttpModule,
-	DictionaryFieldOptionHttpModule,
-	DictionaryFieldStatusHttpModule,
-	DictionaryFieldHttpModule,
-	DictionaryFormFormOptionTcpModule,
-	DictionaryFormOptionTcpModule,
-	DictionaryFormStatusTcpModule,
-	DictionaryFormTcpModule,
-	DictionaryFormFieldHttpModule,
-	DictionaryFormOptionHttpModule,
-	DictionaryFormStatusHttpModule,
-	DictionaryFormHttpModule,
-	DictionaryFormFieldHttpTcpModule,
-	DictionaryFormFieldTcpModule,
-	DictionaryContentStatusHttpModule,
-	DictionaryContentHttpModule,
-	DictionaryContentStatusHttpTcpModule,
-	DictionaryContentHttpTcpModule,
-	DictionaryContentStatusTcpModule,
-	DictionaryContentTcpModule,
-	DictionaryFieldContentHttpModule,
-	DictionaryFieldContentHttpTcpModule,
-	DictionaryFieldContentTcpModule,
+	DictionaryPostPostOptionTcpModule,
+	DictionaryPostOptionTcpModule,
+	DictionaryPostStatusTcpModule,
+	DictionaryPostTcpModule,
+	DictionaryPostPostOptionHttpTcpModule,
+	DictionaryPostOptionHttpTcpModule,
+	DictionaryPostStatusHttpTcpModule,
+	DictionaryPostHttpTcpModule,
+	DictionaryPostPostOptionHttpModule,
+	DictionaryPostOptionHttpModule,
+	DictionaryPostStatusHttpModule,
+	DictionaryPostHttpModule,
+	DictionaryCategoryCategoryOptionHttpModule,
+	DictionaryCategoryOptionHttpModule,
+	DictionaryCategoryStatusHttpModule,
+	DictionaryCategoryHttpModule,
+	DictionaryCategoryCategoryOptionHttpTcpModule,
+	DictionaryCategoryOptionHttpTcpModule,
+	DictionaryCategoryStatusHttpTcpModule,
+	DictionaryCategoryHttpTcpModule,
+	DictionaryCategoryCategoryOptionTcpModule,
+	DictionaryCategoryOptionTcpModule,
+	DictionaryCategoryStatusTcpModule,
+	DictionaryCategoryTcpModule,
 };
