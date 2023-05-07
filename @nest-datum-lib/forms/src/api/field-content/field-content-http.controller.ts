@@ -36,14 +36,13 @@ export class FieldContentHttpController extends BindHttpController {
 	async create(
 		@AccessToken() accessToken: string,
 		@Param('id') entityId: string,
-		@Body('fieldId') fieldId,
-		@Body('value') value,
+		@Body() body,
 	) {
 		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
 			accessToken,
-			value,
+			value: body['value'],
 			[this.mainRelationColumnName]: entityId,
-			[this.optionRelationColumnName]: fieldId,
+			[this.optionRelationColumnName]: body['fieldId'],
 		})));
 	}
 }
