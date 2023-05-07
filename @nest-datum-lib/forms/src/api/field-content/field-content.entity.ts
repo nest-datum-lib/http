@@ -36,7 +36,9 @@ export class FieldContent {
 	})
 	public content: Content;
 
-	@Column('text')
+	@Column('text', {
+		nullable: true,
+	})
 	public value: string;
 
 	@CreateDateColumn({ 

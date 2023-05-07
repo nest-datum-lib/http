@@ -8,8 +8,8 @@ import { FieldContentService } from './field-content.service';
 
 @Controller()
 export class FieldContentTcpController extends BindTcpController {
-	protected readonly mainRelationColumnName: string = 'fieldId';
-	protected readonly optionRelationColumnName: string = 'contentId';
+	protected readonly mainRelationColumnName: string = 'contentId';
+	protected readonly optionRelationColumnName: string = 'fieldId';
 	
 	constructor(
 		protected service: FieldContentService,
@@ -39,6 +39,8 @@ export class FieldContentTcpController extends BindTcpController {
 
 	@EventPattern('fieldContent.create')
 	async create(payload) {
+		console.log('payload', payload);
+
 		return await super.create(payload);
 	}
 }

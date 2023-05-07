@@ -10,6 +10,7 @@ import { Content } from './content.entity';
 
 @Injectable()
 export class ContentService extends SqlService {
+	protected readonly withTwoStepRemoval: boolean = true;
 	protected readonly withEnvKey: boolean = false;
 	protected readonly repositoryConstructor = Content;
 
@@ -27,6 +28,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 
@@ -36,6 +38,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 
@@ -45,6 +48,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 }
