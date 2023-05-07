@@ -29,6 +29,11 @@ import {
 	RoleAccessTcpModule as CountriesRoleAccessTcpModule, 
 } from './src/api/role-access';
 import { 
+	RegionContentHttpModule as CountriesRegionContentHttpModule,
+	RegionContentHttpTcpModule as CountriesRegionContentHttpTcpModule, 
+	RegionContentTcpModule as CountriesRegionContentTcpModule, 
+} from './src/api/region-content';
+import { 
 	RegionRegionOptionHttpModule as CountriesRegionRegionOptionHttpModule,
 	RegionRegionOptionHttpTcpModule as CountriesRegionRegionOptionHttpTcpModule, 
 	RegionRegionOptionTcpModule as CountriesRegionRegionOptionTcpModule, 
@@ -76,6 +81,7 @@ const Http = {
 	CountriesAccessHttpModule,
 	CountriesRoleAccessHttpModule,
 	CountriesSettingHttpModule,
+	CountriesRegionContentHttpModule,
 	CountriesRegionRegionOptionHttpModule,
 	CountriesRegionOptionHttpModule,
 	CountriesRegionStatusHttpModule,
@@ -92,6 +98,7 @@ const HttpTcp = {
 	CountriesAccessHttpTcpModule,
 	CountriesRoleAccessHttpTcpModule,
 	CountriesSettingHttpTcpModule,
+	CountriesRegionContentHttpTcpModule,
 	CountriesRegionRegionOptionHttpTcpModule,
 	CountriesRegionOptionHttpTcpModule,
 	CountriesRegionStatusHttpTcpModule,
@@ -108,6 +115,7 @@ const Tcp = {
 	CountriesAccessTcpModule,
 	CountriesRoleAccessTcpModule,
 	CountriesSettingTcpModule,
+	CountriesRegionContentTcpModule,
 	CountriesRegionRegionOptionTcpModule,
 	CountriesRegionOptionTcpModule,
 	CountriesRegionStatusTcpModule,
@@ -140,6 +148,9 @@ export {
 	CountriesSettingHttpModule,
 	CountriesSettingHttpTcpModule,
 	CountriesSettingTcpModule,
+	CountriesRegionContentHttpModule,
+	CountriesRegionContentHttpTcpModule,
+	CountriesRegionContentTcpModule,
 	CountriesRegionRegionOptionTcpModule,
 	CountriesRegionOptionTcpModule,
 	CountriesRegionStatusTcpModule,
