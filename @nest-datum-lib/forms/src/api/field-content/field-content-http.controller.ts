@@ -39,10 +39,7 @@ export class FieldContentHttpController extends BindHttpController {
 		@Body('fieldId') fieldId,
 		@Body('value') value,
 	) {
-		return await this.serviceHandlerWrapper(async () => await this.transport.send({
-			name: this.serviceName, 
-			cmd: `${this.entityName}.create`,
-		}, await this.validateCreate({
+		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
 			accessToken,
 			value,
 			[this.mainRelationColumnName]: entityId,
