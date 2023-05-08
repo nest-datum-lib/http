@@ -25,6 +25,7 @@ export class BindHttpTcpController extends HttpTcpController {
 		if (!utilsCheckStrId(options[this.optionRelationColumnName])) {
 			throw new MethodNotAllowedException(`Property "${this.optionRelationColumnName}" is not valid.`);
 		}
+
 		return {
 			[this.mainRelationColumnName]: options[this.mainRelationColumnName],
 			[this.optionRelationColumnName]: options[this.optionRelationColumnName],
