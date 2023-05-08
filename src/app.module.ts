@@ -11,6 +11,7 @@ import { HttpTcp as FormsHttpTcp } from '@nest-datum-lib/forms';
 import { HttpTcp as DictionaryHttpTcp } from '@nest-datum-lib/dictionary';
 import { HttpTcp as CountriesHttpTcp } from '@nest-datum-lib/countries';
 import { HttpTcp as JobsHttpTcp } from '@nest-datum-lib/jobs';
+import { HttpTcp as CvHttpTcp } from '@nest-datum-lib/cv';
 import { AppController } from './app.controller';
 import { Http as Modules } from './index';
 
@@ -49,6 +50,7 @@ import { Http as Modules } from './index';
 		...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
 		...Object.keys(CountriesHttpTcp).map((key) => CountriesHttpTcp[key]),
 		...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
+		...Object.keys(JobsHttpTcp).map((key) => CvHttpTcp[key]),
 	],
 	controllers: [ AppController ],
 	providers: [],
