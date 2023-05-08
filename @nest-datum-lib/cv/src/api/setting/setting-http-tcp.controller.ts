@@ -2,9 +2,9 @@ import { Controller } from '@nestjs/common';
 import { TransportService } from '@nest-datum/transport';
 import { SettingHttpTcpController as SettingHttpTcpControllerBase } from '@nest-datum/setting';
 
-@Controller(`${process.env.SERVICE_JOBS}/setting`)
+@Controller(`${process.env.SERVICE_CV}/setting`)
 export class SettingHttpTcpController extends SettingHttpTcpControllerBase {
-	protected readonly serviceName: string = process.env.SERVICE_JOBS;
+	protected readonly serviceName: string = process.env.SERVICE_CV;
 
 	constructor(
 		protected transport: TransportService,

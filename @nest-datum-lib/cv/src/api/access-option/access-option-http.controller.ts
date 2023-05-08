@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { AccessOptionHttpController as AccessOptionHttpControllerBase } from '@nest-datum/access';
 import { AccessOptionService } from './access-option.service';
 
-@Controller(`${process.env.SERVICE_JOBS}/access-option`)
+@Controller(`${process.env.SERVICE_CV}/access-option`)
 export class AccessOptionHttpController extends AccessOptionHttpControllerBase {
 	constructor(
 		protected service: AccessOptionService,

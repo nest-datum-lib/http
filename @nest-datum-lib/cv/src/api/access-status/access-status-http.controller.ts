@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { AccessStatusHttpController as AccessStatusHttpControllerBase } from '@nest-datum/access';
 import { AccessStatusService } from './access-status.service';
 
-@Controller(`${process.env.SERVICE_JOBS}/access-status`)
+@Controller(`${process.env.SERVICE_CV}/access-status`)
 export class AccessStatusHttpController extends AccessStatusHttpControllerBase {
 	constructor(
 		protected service: AccessStatusService,

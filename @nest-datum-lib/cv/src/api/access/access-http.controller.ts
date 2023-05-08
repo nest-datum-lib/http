@@ -5,7 +5,7 @@ import { AccessAccessAccessOptionService } from '../access-access-access-option/
 import { AccessAccessOptionService } from '../access-access-option/access-access-option.service';
 import { AccessService } from './access.service';
 
-@Controller(`${process.env.SERVICE_JOBS}/access`)
+@Controller(`${process.env.SERVICE_CV}/access`)
 export class AccessHttpController extends AccessHttpControllerBase {
 	constructor(
 		protected readonly service: AccessService,
