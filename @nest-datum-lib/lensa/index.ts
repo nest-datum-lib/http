@@ -41,7 +41,6 @@ const Http = {
 	LensaAccessHttpModule,
 	LensaRoleAccessHttpModule,
 	LensaSettingHttpModule,
-	LensaReportStatusHttpModule,
 	LensaReportHttpModule,
 };
 const HttpTcp = {
@@ -51,7 +50,6 @@ const HttpTcp = {
 	LensaAccessHttpTcpModule,
 	LensaRoleAccessHttpTcpModule,
 	LensaSettingHttpTcpModule,
-	LensaReportStatusHttpTcpModule,
 	LensaReportHttpTcpModule,
 };
 const Tcp = {
@@ -61,7 +59,6 @@ const Tcp = {
 	LensaAccessTcpModule,
 	LensaRoleAccessTcpModule,
 	LensaSettingTcpModule,
-	LensaReportStatusTcpModule,
 	LensaReportTcpModule,
 };
 
@@ -87,10 +84,7 @@ export {
 	LensaSettingHttpModule,
 	LensaSettingHttpTcpModule,
 	LensaSettingTcpModule,
-	LensaReportStatusHttpModule,
 	LensaReportHttpModule,
-	LensaReportStatusHttpTcpModule,
 	LensaReportHttpTcpModule,
-	LensaReportStatusTcpModule,
 	LensaReportTcpModule,
 };
