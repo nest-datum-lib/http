@@ -50,7 +50,7 @@ import { Http as Modules } from './index';
 		...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
 		...Object.keys(CountriesHttpTcp).map((key) => CountriesHttpTcp[key]),
 		...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
-		...Object.keys(JobsHttpTcp).map((key) => CvHttpTcp[key]),
+		...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
 	],
 	controllers: [ AppController ],
 	providers: [],
