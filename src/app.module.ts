@@ -11,7 +11,7 @@ import { sqlConfig as utilsFormatSqlConfig } from '@nest-datum-utils/format';
 // import * as DictionaryHttpTcp from '@nest-datum-lib/dictionary';
 import * as CountriesHttpTcp from '@nest-datum-lib/countries';
 // import * as JobsHttpTcp from '@nest-datum-lib/jobs';
-// import * as CvHttpTcp from '@nest-datum-lib/cv';
+import * as CvHttpTcp from '@nest-datum-lib/cv';
 // import * as LensaHttpTcp from '@nest-datum-lib/lensa';
 import { AppController } from './app.controller';
 import { Http as Modules } from './index';
@@ -51,7 +51,7 @@ import { Http as Modules } from './index';
 		// ...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
 		...Object.keys(CountriesHttpTcp).map((key) => CountriesHttpTcp[key]),
 		// ...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
-		// ...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
+		...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
 		// ...Object.keys(LensaHttpTcp).map((key) => LensaHttpTcp[key]),
 	],
 	controllers: [ AppController ],
