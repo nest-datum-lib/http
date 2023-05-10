@@ -1,178 +1,33 @@
-import { 
-	SettingHttpModule,
-	SettingHttpTcpModule,
-	SettingTcpModule, 
-} from './api/setting';
-import { 
-	AccessAccessOptionHttpModule,
-	AccessAccessOptionHttpTcpModule, 
-	AccessAccessOptionTcpModule, 
-} from './api/access-access-option';
-import { 
-	AccessOptionHttpModule,
-	AccessOptionHttpTcpModule, 
-	AccessOptionTcpModule, 
-} from './api/access-option';
-import { 
-	AccessStatusHttpModule,
-	AccessStatusHttpTcpModule,
-	AccessStatusTcpModule, 
-} from './api/access-status';
-import { 
-	AccessHttpModule,
-	AccessHttpTcpModule,
-	AccessTcpModule, 
-} from './api/access';
-import { 
-	RoleAccessHttpModule,
-	RoleAccessHttpTcpModule, 
-	RoleAccessTcpModule, 
-} from './api/role-access';
-import { 
-	RegionContentHttpModule,
-	RegionContentHttpTcpModule, 
-	RegionContentTcpModule, 
-} from './api/region-content';
-import { 
-	RegionRegionOptionHttpModule,
-	RegionRegionOptionHttpTcpModule, 
-	RegionRegionOptionTcpModule, 
-} from './api/region-region-option';
-import { 
-	RegionOptionHttpModule,
-	RegionOptionHttpTcpModule, 
-	RegionOptionTcpModule, 
-} from './api/region-option';
-import { 
-	RegionStatusHttpModule,
-	RegionStatusHttpTcpModule,
-	RegionStatusTcpModule, 
-} from './api/region-status';
-import { 
-	RegionHttpModule,
-	RegionHttpTcpModule,
-	RegionTcpModule, 
-} from './api/region';
-import { 
-	TypeTypeOptionHttpModule,
-	TypeTypeOptionHttpTcpModule, 
-	TypeTypeOptionTcpModule, 
-} from './api/type-type-option';
-import { 
-	TypeOptionHttpModule,
-	TypeOptionHttpTcpModule, 
-	TypeOptionTcpModule, 
-} from './api/type-option';
-import { 
-	TypeStatusHttpModule,
-	TypeStatusHttpTcpModule,
-	TypeStatusTcpModule, 
-} from './api/type-status';
-import { 
-	TypeHttpModule,
-	TypeHttpTcpModule,
-	TypeTcpModule, 
-} from './api/type';
-
-const Http = {
-	AccessAccessOptionHttpModule,
-	AccessOptionHttpModule,
-	AccessStatusHttpModule,
-	AccessHttpModule,
-	RoleAccessHttpModule,
-	SettingHttpModule,
-	RegionContentHttpModule,
-	RegionRegionOptionHttpModule,
-	RegionOptionHttpModule,
-	RegionStatusHttpModule,
-	RegionHttpModule,
-	TypeTypeOptionHttpModule,
-	TypeOptionHttpModule,
-	TypeStatusHttpModule,
-	TypeHttpModule,
-};
-const HttpTcp = {
-	AccessAccessOptionHttpTcpModule,
-	AccessOptionHttpTcpModule,
-	AccessStatusHttpTcpModule,
-	AccessHttpTcpModule,
-	RoleAccessHttpTcpModule,
-	SettingHttpTcpModule,
-	RegionContentHttpTcpModule,
-	RegionRegionOptionHttpTcpModule,
-	RegionOptionHttpTcpModule,
-	RegionStatusHttpTcpModule,
-	RegionHttpTcpModule,
-	TypeTypeOptionHttpTcpModule,
-	TypeOptionHttpTcpModule,
-	TypeStatusHttpTcpModule,
-	TypeHttpTcpModule,
-};
-const Tcp = {
-	AccessAccessOptionTcpModule,
-	AccessOptionTcpModule,
-	AccessStatusTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	SettingTcpModule,
-	RegionContentTcpModule,
-	RegionRegionOptionTcpModule,
-	RegionOptionTcpModule,
-	RegionStatusTcpModule,
-	RegionTcpModule,
-	TypeTypeOptionTcpModule,
-	TypeOptionTcpModule,
-	TypeStatusTcpModule,
-	TypeTcpModule,
-};
+import { SettingHttpTcpModule } from './src/api/setting';
+import { AccessAccessOptionHttpTcpModule } from './src/api/access-access-option';
+import { AccessOptionHttpTcpModule } from './src/api/access-option';
+import { AccessStatusHttpTcpModule } from './src/api/access-status';
+import { AccessHttpTcpModule } from './src/api/access';
+import { RoleAccessHttpTcpModule } from './src/api/role-access';
+import { RegionContentHttpTcpModule } from './src/api/region-content';
+import { RegionRegionOptionHttpTcpModule } from './src/api/region-region-option';
+import { RegionOptionHttpTcpModule } from './src/api/region-option';
+import { RegionStatusHttpTcpModule } from './src/api/region-status';
+import { RegionHttpTcpModule } from './src/api/region';
+import { TypeTypeOptionHttpTcpModule } from './src/api/type-type-option';
+import { TypeOptionHttpTcpModule } from './src/api/type-option';
+import { TypeStatusHttpTcpModule } from './src/api/type-status';
+import { TypeHttpTcpModule } from './src/api/type';
 
 export {
-	Http,
-	HttpTcp,
-	Tcp,
-	AccessAccessOptionTcpModule,
-	AccessAccessOptionHttpModule,
 	AccessAccessOptionHttpTcpModule,
-	AccessOptionTcpModule,
-	AccessOptionHttpModule,
 	AccessOptionHttpTcpModule,
-	AccessStatusTcpModule,
-	AccessStatusHttpModule,
 	AccessStatusHttpTcpModule,
-	AccessHttpModule,
 	AccessHttpTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	RoleAccessHttpModule,
 	RoleAccessHttpTcpModule,
-	SettingHttpModule,
 	SettingHttpTcpModule,
-	SettingTcpModule,
-	RegionContentHttpModule,
 	RegionContentHttpTcpModule,
-	RegionContentTcpModule,
-	RegionRegionOptionTcpModule,
-	RegionOptionTcpModule,
-	RegionStatusTcpModule,
-	RegionTcpModule,
 	RegionRegionOptionHttpTcpModule,
 	RegionOptionHttpTcpModule,
 	RegionStatusHttpTcpModule,
 	RegionHttpTcpModule,
-	RegionRegionOptionHttpModule,
-	RegionOptionHttpModule,
-	RegionStatusHttpModule,
-	RegionHttpModule,
-	TypeTypeOptionTcpModule,
-	TypeOptionTcpModule,
-	TypeStatusTcpModule,
-	TypeTcpModule,
 	TypeTypeOptionHttpTcpModule,
 	TypeOptionHttpTcpModule,
 	TypeStatusHttpTcpModule,
 	TypeHttpTcpModule,
-	TypeTypeOptionHttpModule,
-	TypeOptionHttpModule,
-	TypeStatusHttpModule,
-	TypeHttpModule,
 };
