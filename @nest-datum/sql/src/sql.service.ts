@@ -334,6 +334,8 @@ export class SqlService extends ModelService {
 			if (this.withCache === true) {
 				this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'many', '*' ] });
 			}
+			delete processedPayload['accessToken'];
+
 			return (utilsCheckObjQueryRunner(this.queryRunner) && this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new this.repositoryConstructor(), processedPayload))
 				: await this.repository.save(processedPayload);
