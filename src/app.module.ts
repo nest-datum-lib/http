@@ -9,7 +9,7 @@ import { HttpTcp as WebSocketHttpTcp } from '@nest-datum-lib/web-socket';
 import { HttpTcp as MailHttpTcp } from '@nest-datum-lib/mail';
 import { HttpTcp as FormsHttpTcp } from '@nest-datum-lib/forms';
 import { HttpTcp as DictionaryHttpTcp } from '@nest-datum-lib/dictionary';
-import { HttpTcp as CountriesHttpTcp } from '@nest-datum-lib/countries';
+import * as CountriesHttpTcp from '@nest-datum-lib/countries';
 import { HttpTcp as JobsHttpTcp } from '@nest-datum-lib/jobs';
 import { HttpTcp as CvHttpTcp } from '@nest-datum-lib/cv';
 import { HttpTcp as LensaHttpTcp } from '@nest-datum-lib/lensa';
