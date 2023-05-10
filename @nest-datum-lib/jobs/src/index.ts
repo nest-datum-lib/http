@@ -1,222 +1,39 @@
-import { 
-	SettingHttpModule,
-	SettingHttpTcpModule,
-	SettingTcpModule, 
-} from './api/setting';
-import { 
-	AccessAccessOptionHttpModule,
-	AccessAccessOptionHttpTcpModule, 
-	AccessAccessOptionTcpModule, 
-} from './api/access-access-option';
-import { 
-	AccessOptionHttpModule,
-	AccessOptionHttpTcpModule, 
-	AccessOptionTcpModule, 
-} from './api/access-option';
-import { 
-	AccessStatusHttpModule,
-	AccessStatusHttpTcpModule,
-	AccessStatusTcpModule, 
-} from './api/access-status';
-import { 
-	AccessHttpModule,
-	AccessHttpTcpModule,
-	AccessTcpModule, 
-} from './api/access';
-import { 
-	RoleAccessHttpModule,
-	RoleAccessHttpTcpModule, 
-	RoleAccessTcpModule, 
-} from './api/role-access';
-import { 
-	PostContentHttpModule,
-	PostContentHttpTcpModule, 
-	PostContentTcpModule, 
-} from './api/post-content';
-import { 
-	PostPostOptionHttpModule,
-	PostPostOptionHttpTcpModule, 
-	PostPostOptionTcpModule, 
-} from './api/post-post-option';
-import { 
-	PostOptionHttpModule,
-	PostOptionHttpTcpModule, 
-	PostOptionTcpModule, 
-} from './api/post-option';
-import { 
-	PostStatusHttpModule,
-	PostStatusHttpTcpModule,
-	PostStatusTcpModule, 
-} from './api/post-status';
-import { 
-	PostHttpModule,
-	PostHttpTcpModule,
-	PostTcpModule, 
-} from './api/post';
-import { 
-	CategoryCategoryOptionHttpModule,
-	CategoryCategoryOptionHttpTcpModule, 
-	CategoryCategoryOptionTcpModule, 
-} from './api/category-category-option';
-import { 
-	CategoryOptionHttpModule,
-	CategoryOptionHttpTcpModule, 
-	CategoryOptionTcpModule, 
-} from './api/category-option';
-import { 
-	CategoryStatusHttpModule,
-	CategoryStatusHttpTcpModule,
-	CategoryStatusTcpModule, 
-} from './api/category-status';
-import { 
-	CategoryHttpModule,
-	CategoryHttpTcpModule,
-	CategoryTcpModule, 
-} from './api/category';
-import { 
-	CompanyCompanyOptionHttpModule,
-	CompanyCompanyOptionHttpTcpModule, 
-	CompanyCompanyOptionTcpModule, 
-} from './api/company-company-option';
-import { 
-	CompanyOptionHttpModule,
-	CompanyOptionHttpTcpModule, 
-	CompanyOptionTcpModule, 
-} from './api/company-option';
-import { 
-	CompanyStatusHttpModule,
-	CompanyStatusHttpTcpModule,
-	CompanyStatusTcpModule, 
-} from './api/company-status';
-import { 
-	CompanyHttpModule,
-	CompanyHttpTcpModule,
-	CompanyTcpModule, 
-} from './api/company';
-
-const Http = {
-	AccessAccessOptionHttpModule,
-	AccessOptionHttpModule,
-	AccessStatusHttpModule,
-	AccessHttpModule,
-	RoleAccessHttpModule,
-	SettingHttpModule,
-	PostContentHttpModule,
-	PostPostOptionHttpModule,
-	PostOptionHttpModule,
-	PostStatusHttpModule,
-	PostHttpModule,
-	CategoryCategoryOptionHttpModule,
-	CategoryOptionHttpModule,
-	CategoryStatusHttpModule,
-	CategoryHttpModule,
-	CompanyCompanyOptionHttpModule,
-	CompanyOptionHttpModule,
-	CompanyStatusHttpModule,
-	CompanyHttpModule,
-};
-const HttpTcp = {
-	AccessAccessOptionHttpTcpModule,
-	AccessOptionHttpTcpModule,
-	AccessStatusHttpTcpModule,
-	AccessHttpTcpModule,
-	RoleAccessHttpTcpModule,
-	SettingHttpTcpModule,
-	PostContentHttpTcpModule,
-	PostPostOptionHttpTcpModule,
-	PostOptionHttpTcpModule,
-	PostStatusHttpTcpModule,
-	PostHttpTcpModule,
-	CategoryCategoryOptionHttpTcpModule,
-	CategoryOptionHttpTcpModule,
-	CategoryStatusHttpTcpModule,
-	CategoryHttpTcpModule,
-	CompanyCompanyOptionHttpTcpModule,
-	CompanyOptionHttpTcpModule,
-	CompanyStatusHttpTcpModule,
-	CompanyHttpTcpModule,
-};
-const Tcp = {
-	AccessAccessOptionTcpModule,
-	AccessOptionTcpModule,
-	AccessStatusTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	SettingTcpModule,
-	PostContentTcpModule,
-	PostPostOptionTcpModule,
-	PostOptionTcpModule,
-	PostStatusTcpModule,
-	PostTcpModule,
-	CategoryCategoryOptionTcpModule,
-	CategoryOptionTcpModule,
-	CategoryStatusTcpModule,
-	CategoryTcpModule,
-	CompanyCompanyOptionTcpModule,
-	CompanyOptionTcpModule,
-	CompanyStatusTcpModule,
-	CompanyTcpModule,
-};
+import { SettingHttpTcpModule } from './api/setting';
+import { AccessAccessOptionHttpTcpModule } from './api/access-access-option';
+import { AccessOptionHttpTcpModule } from './api/access-option';
+import { AccessStatusHttpTcpModule } from './api/access-status';
+import { AccessHttpTcpModule } from './api/access';
+import { RoleAccessHttpTcpModule } from './api/role-access';
+import { PostPostOptionHttpTcpModule } from './api/post-post-option';
+import { PostOptionHttpTcpModule } from './api/post-option';
+import { PostStatusHttpTcpModule } from './api/post-status';
+import { PostHttpTcpModule } from './api/post';
+import { CategoryCategoryOptionHttpTcpModule } from './api/category-category-option';
+import { CategoryOptionHttpTcpModule } from './api/category-option';
+import { CategoryStatusHttpTcpModule } from './api/category-status';
+import { CategoryHttpTcpModule } from './api/category';
+import { CompanyCompanyOptionHttpTcpModule } from './api/company-company-option';
+import { CompanyOptionHttpTcpModule } from './api/company-option';
+import { CompanyStatusHttpTcpModule } from './api/company-status';
+import { CompanyHttpTcpModule } from './api/company';
 
 export {
-	Http,
-	HttpTcp,
-	Tcp,
-	AccessAccessOptionTcpModule,
-	AccessAccessOptionHttpModule,
 	AccessAccessOptionHttpTcpModule,
-	AccessOptionTcpModule,
-	AccessOptionHttpModule,
 	AccessOptionHttpTcpModule,
-	AccessStatusTcpModule,
-	AccessStatusHttpModule,
 	AccessStatusHttpTcpModule,
-	AccessHttpModule,
 	AccessHttpTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	RoleAccessHttpModule,
 	RoleAccessHttpTcpModule,
-	SettingHttpModule,
 	SettingHttpTcpModule,
-	SettingTcpModule,
-	PostContentHttpModule,
-	PostContentHttpTcpModule,
-	PostContentTcpModule,
-	PostPostOptionTcpModule,
-	PostOptionTcpModule,
-	PostStatusTcpModule,
-	PostTcpModule,
 	PostPostOptionHttpTcpModule,
 	PostOptionHttpTcpModule,
 	PostStatusHttpTcpModule,
 	PostHttpTcpModule,
-	PostPostOptionHttpModule,
-	PostOptionHttpModule,
-	PostStatusHttpModule,
-	PostHttpModule,
-	CategoryCategoryOptionTcpModule,
-	CategoryOptionTcpModule,
-	CategoryStatusTcpModule,
-	CategoryTcpModule,
 	CategoryCategoryOptionHttpTcpModule,
 	CategoryOptionHttpTcpModule,
 	CategoryStatusHttpTcpModule,
 	CategoryHttpTcpModule,
-	CategoryCategoryOptionHttpModule,
-	CategoryOptionHttpModule,
-	CategoryStatusHttpModule,
-	CategoryHttpModule,
-	CompanyCompanyOptionHttpModule,
-	CompanyOptionHttpModule,
-	CompanyStatusHttpModule,
-	CompanyHttpModule,
 	CompanyCompanyOptionHttpTcpModule,
 	CompanyOptionHttpTcpModule,
 	CompanyStatusHttpTcpModule,
 	CompanyHttpTcpModule,
-	CompanyCompanyOptionTcpModule,
-	CompanyOptionTcpModule,
-	CompanyStatusTcpModule,
-	CompanyTcpModule,
 };
