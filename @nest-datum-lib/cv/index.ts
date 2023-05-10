@@ -1,5 +1,5 @@
-import { SettingHttpTcpModule } from './src/api/setting';
-import { AccessAccessOptionHttpTcpModule } from './src/api/access-access-option';
+import { SettingHttpTcpModule as CvSettingHttpTcpModule } from './src/api/setting';
+import { AccessAccessOptionHttpTcpModule as CvAccessAccessOptionHttpTcpModule } from './src/api/access-access-option';
 import { AccessOptionHttpTcpModule as CvAccessOptionHttpTcpModule } from './src/api/access-option';
 import { AccessStatusHttpTcpModule as CvAccessStatusHttpTcpModule } from './src/api/access-status';
 import { AccessHttpTcpModule as CvAccessHttpTcpModule } from './src/api/access';
