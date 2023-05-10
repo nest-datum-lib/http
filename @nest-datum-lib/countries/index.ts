@@ -14,20 +14,18 @@ import { TypeOptionHttpTcpModule as CountriesTypeOptionHttpTcpModule } from './s
 import { TypeStatusHttpTcpModule as CountriesTypeStatusHttpTcpModule } from './src/api/type-status';
 import { TypeHttpTcpModule as CountriesTypeHttpTcpModule } from './src/api/type';
 
-export {
-	CountriesAccessAccessOptionHttpTcpModule,
-	CountriesAccessOptionHttpTcpModule,
-	CountriesAccessStatusHttpTcpModule,
-	CountriesAccessHttpTcpModule,
-	CountriesRoleAccessHttpTcpModule,
-	CountriesSettingHttpTcpModule,
-	CountriesRegionContentHttpTcpModule,
-	CountriesRegionRegionOptionHttpTcpModule,
-	CountriesRegionOptionHttpTcpModule,
-	CountriesRegionStatusHttpTcpModule,
-	CountriesRegionHttpTcpModule,
-	CountriesTypeTypeOptionHttpTcpModule,
-	CountriesTypeOptionHttpTcpModule,
-	CountriesTypeStatusHttpTcpModule,
-	CountriesTypeHttpTcpModule,
-};
+export CountriesAccessAccessOptionHttpTcpModule;
+export CountriesAccessOptionHttpTcpModule;
+export CountriesAccessStatusHttpTcpModule;
+export CountriesAccessHttpTcpModule;
+export CountriesRoleAccessHttpTcpModule;
+export CountriesSettingHttpTcpModule;
+export CountriesRegionContentHttpTcpModule;
+export CountriesRegionRegionOptionHttpTcpModule;
+export CountriesRegionOptionHttpTcpModule;
+export CountriesRegionStatusHttpTcpModule;
+export CountriesRegionHttpTcpModule;
+export CountriesTypeTypeOptionHttpTcpModule;
+export CountriesTypeOptionHttpTcpModule;
+export CountriesTypeStatusHttpTcpModule;
+export CountriesTypeHttpTcpModule;
