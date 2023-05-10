@@ -10,7 +10,4 @@ import { Access } from '../access/access.entity';
 export class RoleAccess extends RoleAccessBase {
 	@Column()
 	public accessId: string;
-
-	@ManyToOne(() => Access, (access) => access.roleAccesses)
-	public access: Access;
 }
