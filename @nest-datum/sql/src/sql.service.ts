@@ -343,6 +343,8 @@ export class SqlService extends ModelService {
 		catch (err) {
 			await this.rollbackQueryRunnerManager();
 
+			console.log('!!!!!!!!!!', err);
+
 			throw err;
 		}
 		finally {

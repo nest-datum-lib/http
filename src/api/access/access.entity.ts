@@ -18,4 +18,9 @@ export class Access extends BaseAccess {
 		cascade: true,
 	})
 	public accessAccessAccessOptions: AccessAccessAccessOption[];
+
+	@OneToMany(() => RoleAccess, (roleAccess) => roleAccess.access, {
+		cascade: true,
+	})
+	public roleAccesses: RoleAccess[];
 }
