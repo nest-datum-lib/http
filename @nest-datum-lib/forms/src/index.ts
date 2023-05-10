@@ -1,201 +1,39 @@
-import { 
-	SettingHttpModule,
-	SettingHttpTcpModule,
-	SettingTcpModule, 
-} from './api/setting';
-import { 
-	AccessAccessOptionHttpModule,
-	AccessAccessOptionHttpTcpModule, 
-	AccessAccessOptionTcpModule, 
-} from './api/access-access-option';
-import { 
-	AccessOptionHttpModule,
-	AccessOptionHttpTcpModule, 
-	AccessOptionTcpModule, 
-} from './api/access-option';
-import { 
-	AccessStatusHttpModule,
-	AccessStatusHttpTcpModule,
-	AccessStatusTcpModule, 
-} from './api/access-status';
-import { 
-	AccessHttpModule,
-	AccessHttpTcpModule,
-	AccessTcpModule, 
-} from './api/access';
-import { 
-	RoleAccessHttpModule,
-	RoleAccessHttpTcpModule, 
-	RoleAccessTcpModule, 
-} from './api/role-access';
-import { 
-	FieldFieldOptionHttpModule,
-	FieldFieldOptionHttpTcpModule, 
-	FieldFieldOptionTcpModule, 
-} from './api/field-field-option';
-import { 
-	FieldOptionHttpModule,
-	FieldOptionHttpTcpModule, 
-	FieldOptionTcpModule, 
-} from './api/field-option';
-import { 
-	FieldStatusHttpModule,
-	FieldStatusHttpTcpModule,
-	FieldStatusTcpModule, 
-} from './api/field-status';
-import { 
-	FieldHttpModule,
-	FieldHttpTcpModule,
-	FieldTcpModule, 
-} from './api/field';
-import { 
-	FormFieldHttpModule,
-	FormFieldHttpTcpModule,
-	FormFieldTcpModule, 
-} from './api/form-field';
-import { 
-	FieldContentHttpModule,
-	FieldContentHttpTcpModule,
-	FieldContentTcpModule, 
-} from './api/field-content';
-import { 
-	ContentStatusHttpModule,
-	ContentStatusHttpTcpModule,
-	ContentStatusTcpModule, 
-} from './api/content-status';
-import { 
-	ContentHttpModule,
-	ContentHttpTcpModule,
-	ContentTcpModule, 
-} from './api/content';
-import { 
-	FormFormOptionHttpModule,
-	FormFormOptionHttpTcpModule, 
-	FormFormOptionTcpModule, 
-} from './api/form-form-option';
-import { 
-	FormOptionHttpModule,
-	FormOptionHttpTcpModule, 
-	FormOptionTcpModule, 
-} from './api/form-option';
-import { 
-	FormStatusHttpModule,
-	FormStatusHttpTcpModule,
-	FormStatusTcpModule, 
-} from './api/form-status';
-import { 
-	FormHttpModule,
-	FormHttpTcpModule,
-	FormTcpModule, 
-} from './api/form';
+import { SettingHttpTcpModule } from './api/setting';
+import { AccessAccessOptionHttpTcpModule } from './api/access-access-option';
+import { AccessOptionHttpTcpModule } from './api/access-option';
+import { AccessStatusHttpTcpModule } from './api/access-status';
+import { AccessHttpTcpModule } from './api/access';
+import { RoleAccessHttpTcpModule } from './api/role-access';
+import { FieldFieldOptionHttpTcpModule } from './api/field-field-option';
+import { FieldOptionHttpTcpModule } from './api/field-option';
+import { FieldStatusHttpTcpModule } from './api/field-status';
+import { FieldHttpTcpModule } from './api/field';
+import { FieldContentHttpTcpModule } from './api/field-content';
+import { FormFieldHttpTcpModule } from './api/form-field';
+import { FormFormOptionHttpTcpModule } from './api/form-form-option';
+import { FormOptionHttpTcpModule } from './api/form-option';
+import { FormStatusHttpTcpModule } from './api/form-status';
+import { FormHttpTcpModule } from './api/form';
+import { ContentStatusHttpTcpModule } from './api/content-status';
+import { ContentHttpTcpModule } from './api/content';
 
-const Http = {
-	AccessAccessOptionHttpModule,
-	AccessOptionHttpModule,
-	AccessStatusHttpModule,
-	AccessHttpModule,
-	RoleAccessHttpModule,
-	SettingHttpModule,
-	FieldFieldOptionHttpModule,
-	FieldOptionHttpModule,
-	FieldStatusHttpModule,
-	FieldHttpModule,
-	ContentStatusHttpModule,
-	ContentHttpModule,
-	FieldContentHttpModule,
-	FormFieldHttpModule,
-	FormOptionHttpModule,
-	FormStatusHttpModule,
-	FormHttpModule,
-};
-const HttpTcp = {
+export {
 	AccessAccessOptionHttpTcpModule,
 	AccessOptionHttpTcpModule,
 	AccessStatusHttpTcpModule,
 	AccessHttpTcpModule,
 	RoleAccessHttpTcpModule,
 	SettingHttpTcpModule,
+	FieldContentHttpTcpModule,
 	FieldFieldOptionHttpTcpModule,
 	FieldOptionHttpTcpModule,
 	FieldStatusHttpTcpModule,
 	FieldHttpTcpModule,
-	ContentStatusHttpTcpModule,
-	ContentHttpTcpModule,
-	FieldContentHttpTcpModule,
 	FormFieldHttpTcpModule,
 	FormFormOptionHttpTcpModule,
 	FormOptionHttpTcpModule,
 	FormStatusHttpTcpModule,
 	FormHttpTcpModule,
-};
-const Tcp = {
-	AccessAccessOptionTcpModule,
-	AccessOptionTcpModule,
-	AccessStatusTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	SettingTcpModule,
-	FieldFieldOptionTcpModule,
-	FieldOptionTcpModule,
-	FieldStatusTcpModule,
-	FieldTcpModule,
-	ContentStatusTcpModule,
-	ContentTcpModule,
-	FieldContentTcpModule,
-	FormFieldTcpModule,
-	FormFormOptionTcpModule,
-	FormOptionTcpModule,
-	FormStatusTcpModule,
-	FormTcpModule,
-};
-
-export {
-	Http,
-	HttpTcp,
-	Tcp,
-	AccessAccessOptionTcpModule,
-	AccessAccessOptionHttpModule,
-	AccessAccessOptionHttpTcpModule,
-	AccessOptionTcpModule,
-	AccessOptionHttpModule,
-	AccessOptionHttpTcpModule,
-	AccessStatusTcpModule,
-	AccessStatusHttpModule,
-	AccessStatusHttpTcpModule,
-	AccessHttpModule,
-	AccessHttpTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	RoleAccessHttpModule,
-	RoleAccessHttpTcpModule,
-	SettingHttpModule,
-	SettingHttpTcpModule,
-	SettingTcpModule,
-	FieldFieldOptionTcpModule,
-	FieldOptionTcpModule,
-	FieldStatusTcpModule,
-	FieldTcpModule,
-	FieldFieldOptionHttpModule,
-	FieldOptionHttpModule,
-	FieldStatusHttpModule,
-	FieldHttpModule,
-	ContentStatusHttpModule,
-	ContentHttpModule,
 	ContentStatusHttpTcpModule,
 	ContentHttpTcpModule,
-	ContentStatusTcpModule,
-	ContentTcpModule,
-	FieldContentHttpModule,
-	FieldContentHttpTcpModule,
-	FieldContentTcpModule,
-	FormFieldHttpModule,
-	FormFieldHttpTcpModule,
-	FormFieldTcpModule,
-	FormFormOptionTcpModule,
-	FormOptionTcpModule,
-	FormStatusTcpModule,
-	FormTcpModule,
-	FormOptionHttpModule,
-	FormStatusHttpModule,
-	FormHttpModule,
 };

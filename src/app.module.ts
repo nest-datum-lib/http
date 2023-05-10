@@ -7,7 +7,7 @@ import * as DataTypeHttpTcp from '@nest-datum-lib/data-type';
 // import * as SsoHttpTcp from '@nest-datum-lib/sso';
 // import * as WebSocketHttpTcp from '@nest-datum-lib/web-socket';
 // import * as MailHttpTcp from '@nest-datum-lib/mail';
-// import * as FormsHttpTcp from '@nest-datum-lib/forms';
+import * as FormsHttpTcp from '@nest-datum-lib/forms';
 import * as DictionaryHttpTcp from '@nest-datum-lib/dictionary';
 import * as CountriesHttpTcp from '@nest-datum-lib/countries';
 // import * as JobsHttpTcp from '@nest-datum-lib/jobs';
@@ -47,7 +47,7 @@ import { Http as Modules } from './index';
 		// ...Object.keys(SsoHttpTcp).map((key) => SsoHttpTcp[key]),
 		// ...Object.keys(WebSocketHttpTcp).map((key) => WebSocketHttpTcp[key]),
 		// ...Object.keys(MailHttpTcp).map((key) => MailHttpTcp[key]),
-		// ...Object.keys(FormsHttpTcp).map((key) => FormsHttpTcp[key]),
+		...Object.keys(FormsHttpTcp).map((key) => FormsHttpTcp[key]),
 		...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
 		...Object.keys(CountriesHttpTcp).map((key) => CountriesHttpTcp[key]),
 		// ...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
