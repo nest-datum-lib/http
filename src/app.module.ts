@@ -3,16 +3,16 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { sqlConfig as utilsFormatSqlConfig } from '@nest-datum-utils/format';
-import { HttpTcp as DataTypeHttpTcp } from '@nest-datum-lib/data-type';
-import { HttpTcp as SsoHttpTcp } from '@nest-datum-lib/sso';
-import { HttpTcp as WebSocketHttpTcp } from '@nest-datum-lib/web-socket';
-import { HttpTcp as MailHttpTcp } from '@nest-datum-lib/mail';
-import { HttpTcp as FormsHttpTcp } from '@nest-datum-lib/forms';
-import { HttpTcp as DictionaryHttpTcp } from '@nest-datum-lib/dictionary';
+// import * as DataTypeHttpTcp from '@nest-datum-lib/data-type';
+// import * as SsoHttpTcp from '@nest-datum-lib/sso';
+// import * as WebSocketHttpTcp from '@nest-datum-lib/web-socket';
+// import * as MailHttpTcp from '@nest-datum-lib/mail';
+// import * as FormsHttpTcp from '@nest-datum-lib/forms';
+// import * as DictionaryHttpTcp from '@nest-datum-lib/dictionary';
 import * as CountriesHttpTcp from '@nest-datum-lib/countries';
-import { HttpTcp as JobsHttpTcp } from '@nest-datum-lib/jobs';
-import { HttpTcp as CvHttpTcp } from '@nest-datum-lib/cv';
-import { HttpTcp as LensaHttpTcp } from '@nest-datum-lib/lensa';
+// import * as JobsHttpTcp from '@nest-datum-lib/jobs';
+// import * as CvHttpTcp from '@nest-datum-lib/cv';
+// import * as LensaHttpTcp from '@nest-datum-lib/lensa';
 import { AppController } from './app.controller';
 import { Http as Modules } from './index';
 
@@ -43,16 +43,16 @@ import { Http as Modules } from './index';
 		
 		...Object.keys(Modules).map((key) => Modules[key]),
 		
-		...Object.keys(DataTypeHttpTcp).map((key) => DataTypeHttpTcp[key]),
-		...Object.keys(SsoHttpTcp).map((key) => SsoHttpTcp[key]),
-		...Object.keys(WebSocketHttpTcp).map((key) => WebSocketHttpTcp[key]),
-		...Object.keys(MailHttpTcp).map((key) => MailHttpTcp[key]),
-		...Object.keys(FormsHttpTcp).map((key) => FormsHttpTcp[key]),
-		...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
+		// ...Object.keys(DataTypeHttpTcp).map((key) => DataTypeHttpTcp[key]),
+		// ...Object.keys(SsoHttpTcp).map((key) => SsoHttpTcp[key]),
+		// ...Object.keys(WebSocketHttpTcp).map((key) => WebSocketHttpTcp[key]),
+		// ...Object.keys(MailHttpTcp).map((key) => MailHttpTcp[key]),
+		// ...Object.keys(FormsHttpTcp).map((key) => FormsHttpTcp[key]),
+		// ...Object.keys(DictionaryHttpTcp).map((key) => DictionaryHttpTcp[key]),
 		...Object.keys(CountriesHttpTcp).map((key) => CountriesHttpTcp[key]),
-		...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
-		...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
-		...Object.keys(LensaHttpTcp).map((key) => LensaHttpTcp[key]),
+		// ...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
+		// ...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
+		// ...Object.keys(LensaHttpTcp).map((key) => LensaHttpTcp[key]),
 	],
 	controllers: [ AppController ],
 	providers: [],
