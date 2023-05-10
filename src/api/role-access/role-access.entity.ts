@@ -11,9 +11,6 @@ export class RoleAccess extends RoleAccessBase {
 	@Column()
 	public accessId: string;
 
-	@ManyToOne(() => Access, (access) => access.roleAccesses, {
-		onDelete: 'CASCADE',
-		onUpdate: 'CASCADE',
-	})
+	@ManyToOne(() => Access, (access) => access.roleAccesses)
 	public access: Access;
 }
