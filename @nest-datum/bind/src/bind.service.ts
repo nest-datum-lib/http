@@ -47,10 +47,16 @@ export class BindService extends FuseService {
 		delete payload[this.mainRelationColumnName];
 		delete payload[this.optionRelationColumnName];
 
-		return {
+		console.log('>>>>>>>>>', {
+			...payload,
 			[this.optionRelationColumnName]: processedPayload['entityOptionId'] || processedPayload[this.optionRelationColumnName],
 			[this.mainRelationColumnName]: processedPayload['entityId'] || processedPayload[this.mainRelationColumnName],
+		});
+
+		return {
 			...payload,
+			[this.optionRelationColumnName]: processedPayload['entityOptionId'] || processedPayload[this.optionRelationColumnName],
+			[this.mainRelationColumnName]: processedPayload['entityId'] || processedPayload[this.mainRelationColumnName],
 		};
 	}
 
