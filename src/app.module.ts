@@ -3,7 +3,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { sqlConfig as utilsFormatSqlConfig } from '@nest-datum-utils/format';
-// import * as DataTypeHttpTcp from '@nest-datum-lib/data-type';
+import * as DataTypeHttpTcp from '@nest-datum-lib/data-type';
 // import * as SsoHttpTcp from '@nest-datum-lib/sso';
 // import * as WebSocketHttpTcp from '@nest-datum-lib/web-socket';
 // import * as MailHttpTcp from '@nest-datum-lib/mail';
@@ -43,7 +43,7 @@ import { Http as Modules } from './index';
 		
 		...Object.keys(Modules).map((key) => Modules[key]),
 		
-		// ...Object.keys(DataTypeHttpTcp).map((key) => DataTypeHttpTcp[key]),
+		...Object.keys(DataTypeHttpTcp).map((key) => DataTypeHttpTcp[key]),
 		// ...Object.keys(SsoHttpTcp).map((key) => SsoHttpTcp[key]),
 		// ...Object.keys(WebSocketHttpTcp).map((key) => WebSocketHttpTcp[key]),
 		// ...Object.keys(MailHttpTcp).map((key) => MailHttpTcp[key]),
