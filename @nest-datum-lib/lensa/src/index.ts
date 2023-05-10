@@ -1,90 +1,17 @@
-import { 
-	SettingHttpModule,
-	SettingHttpTcpModule,
-	SettingTcpModule, 
-} from './api/setting';
-import { 
-	AccessAccessOptionHttpModule,
-	AccessAccessOptionHttpTcpModule, 
-	AccessAccessOptionTcpModule, 
-} from './api/access-access-option';
-import { 
-	AccessOptionHttpModule,
-	AccessOptionHttpTcpModule, 
-	AccessOptionTcpModule, 
-} from './api/access-option';
-import { 
-	AccessStatusHttpModule,
-	AccessStatusHttpTcpModule,
-	AccessStatusTcpModule, 
-} from './api/access-status';
-import { 
-	AccessHttpModule,
-	AccessHttpTcpModule,
-	AccessTcpModule, 
-} from './api/access';
-import { 
-	RoleAccessHttpModule,
-	RoleAccessHttpTcpModule, 
-	RoleAccessTcpModule, 
-} from './api/role-access';
-import { 
-	ReportHttpModule,
-	ReportHttpTcpModule,
-	ReportTcpModule, 
-} from './api/report';
-
-const Http = {
-	AccessAccessOptionHttpModule,
-	AccessOptionHttpModule,
-	AccessStatusHttpModule,
-	AccessHttpModule,
-	RoleAccessHttpModule,
-	SettingHttpModule,
-	ReportHttpModule,
-};
-const HttpTcp = {
-	AccessAccessOptionHttpTcpModule,
-	AccessOptionHttpTcpModule,
-	AccessStatusHttpTcpModule,
-	AccessHttpTcpModule,
-	RoleAccessHttpTcpModule,
-	SettingHttpTcpModule,
-	ReportHttpTcpModule,
-};
-const Tcp = {
-	AccessAccessOptionTcpModule,
-	AccessOptionTcpModule,
-	AccessStatusTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	SettingTcpModule,
-	ReportTcpModule,
-};
+import { SettingHttpTcpModule } from './api/setting';
+import { AccessAccessOptionHttpTcpModule } from './api/access-access-option';
+import { AccessOptionHttpTcpModule } from './api/access-option';
+import { AccessStatusHttpTcpModule } from './api/access-status';
+import { AccessHttpTcpModule } from './api/access';
+import { RoleAccessHttpTcpModule } from './api/role-access';
+import { ReportHttpTcpModule } from './api/report';
 
 export {
-	Http,
-	HttpTcp,
-	Tcp,
-	AccessAccessOptionTcpModule,
-	AccessAccessOptionHttpModule,
 	AccessAccessOptionHttpTcpModule,
-	AccessOptionTcpModule,
-	AccessOptionHttpModule,
 	AccessOptionHttpTcpModule,
-	AccessStatusTcpModule,
-	AccessStatusHttpModule,
 	AccessStatusHttpTcpModule,
-	AccessHttpModule,
 	AccessHttpTcpModule,
-	AccessTcpModule,
-	RoleAccessTcpModule,
-	RoleAccessHttpModule,
 	RoleAccessHttpTcpModule,
-	SettingHttpModule,
 	SettingHttpTcpModule,
-	SettingTcpModule,
-	ReportHttpModule,
 	ReportHttpTcpModule,
-	ReportTcpModule,
 };
