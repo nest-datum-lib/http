@@ -328,13 +328,13 @@ export class SqlService extends ModelService {
 	}
 
 	protected async createProcess(processedPayload: object, payload: object): Promise<object> {
-		console.log('>>>>>>>>>', processedPayload, payload);
-
 		try {
 			if (this.withCache === true) {
 				this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'many', '*' ] });
 			}
 			delete processedPayload['accessToken'];
+
+			console.log('>>>>>>>>>', processedPayload);
 
 			return (utilsCheckObjQueryRunner(this.queryRunner) && this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new this.repositoryConstructor(), processedPayload))
