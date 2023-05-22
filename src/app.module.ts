@@ -13,6 +13,7 @@ import * as CountriesHttpTcp from '@nest-datum-lib/countries';
 import * as JobsHttpTcp from '@nest-datum-lib/jobs';
 import * as CvHttpTcp from '@nest-datum-lib/cv';
 import * as LensaHttpTcp from '@nest-datum-lib/lensa';
+import * as JohnConnorHttpTcp from '@nest-datum-lib/john-connor';
 import { AppController } from './app.controller';
 import { Http as Modules } from './index';
 
@@ -53,6 +54,7 @@ import { Http as Modules } from './index';
 		...Object.keys(JobsHttpTcp).map((key) => JobsHttpTcp[key]),
 		...Object.keys(CvHttpTcp).map((key) => CvHttpTcp[key]),
 		...Object.keys(LensaHttpTcp).map((key) => LensaHttpTcp[key]),
+		...Object.keys(JohnConnorHttpTcp).map((key) => JohnConnorHttpTcp[key]),
 	],
 	controllers: [ AppController ],
 	providers: [],
