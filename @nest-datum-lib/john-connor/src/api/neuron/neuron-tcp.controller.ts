@@ -4,7 +4,7 @@ import {
 	EventPattern, 
 } from '@nestjs/microservices';
 import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
-import { TcpController } from '@nest-datum-common/controllers-v2.2.0';
+import { TcpController } from '@nest-datum-common/controllers';
 import { 
 	str as utilsCheckStr,
 	numericInt as utilsCheckNumericInt,

@@ -9,7 +9,7 @@ import {
 	str as utilsCheckStr,
 	numericInt as utilsCheckNumericInt, 
 } from '@nest-datum-utils/check';
-import { HttpController } from '@nest-datum-common/controllers-v2.2.0';
+import { HttpController } from '@nest-datum-common/controllers';
 import { NeuronService } from './neuron.service';
 
 @Controller(`/neuron`)
