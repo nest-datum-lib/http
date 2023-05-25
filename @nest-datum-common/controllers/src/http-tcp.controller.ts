@@ -34,20 +34,6 @@ export class HttpTcpController extends HttpController {
 		@Query('filter') filter: string,
 		@Query('sort') sort: string,
 	): Promise<any> {
-		console.log('??????????', {
-				name: this.serviceName, 
-				cmd: `${this.entityName}.many`,
-			}, await this.validateMany({
-				accessToken,
-				select,
-				relations,
-				page,
-				limit,
-				query,
-				filter,
-				sort,
-			}));
-
 		return await this.serviceHandlerWrapper(async () => {
 			const output = await this.transport.send({
 				name: this.serviceName, 

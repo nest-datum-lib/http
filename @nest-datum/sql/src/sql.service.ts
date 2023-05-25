@@ -334,16 +334,12 @@ export class SqlService extends ModelService {
 			}
 			delete processedPayload['accessToken'];
 
-			console.log('>>>>>>>>>', processedPayload, this.repository);
-
 			return (utilsCheckObjQueryRunner(this.queryRunner) && this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new this.repositoryConstructor(), processedPayload))
 				: await this.repository.save(processedPayload);
 		}
 		catch (err) {
 			await this.rollbackQueryRunnerManager();
-
-			console.log('!!!!!!!!!!', err);
 
 			throw err;
 		}
