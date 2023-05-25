@@ -229,7 +229,8 @@ export class TransportService extends RedisService {
 		}
 		if (cmdIsPostAction
 			|| cmd.includes('.update')
-			|| cmd.includes('.drop')) {
+			|| cmd.includes('.drop')
+			|| cmd.includes('.step')) {
 			connectionInstance.emit(cmd, { ...payload });
 		}
 		else {
