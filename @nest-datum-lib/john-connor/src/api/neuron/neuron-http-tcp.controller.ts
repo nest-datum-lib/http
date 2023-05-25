@@ -1,7 +1,7 @@
 import { 
 	Controller,
-	Get,
-	Query,
+	Post,
+	Body,
 	MethodNotAllowedException,
 } from '@nestjs/common';
 import { strToArr as utilsFormatStrToArr } from '@nest-datum-utils/format';
@@ -10,7 +10,7 @@ import {
 	numericInt as utilsCheckNumericInt, 
 } from '@nest-datum-utils/check';
 import { TransportService } from '@nest-datum/transport';
-import { HttpTcpController } from '@nest-datum-common/controllers';
+import { HttpTcpController } from '@nest-datum-common/controllers-v2.2.0';
 
 @Controller(`${process.env.SERVICE_JOHN_CONNOR}/neuron`)
 export class NeuronHttpTcpController extends HttpTcpController {
@@ -36,10 +36,10 @@ export class NeuronHttpTcpController extends HttpTcpController {
 		};
 	}
 
-	@Get('step')
+	@Post('step')
 	async step(
-		@Query('id') id: number,
-		@Query('value') value: string,
+		@Body('id') id: number,
+		@Body('value') value: string,
 	) {
 		return await this.serviceHandlerWrapper(
 			async () => await this.transport.send({
