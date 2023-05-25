@@ -45,12 +45,16 @@ export class NeuronHttpTcpController extends HttpTcpController {
 	) {
 		console.log('**************', {
 			name: this.serviceName, 
-			cmd: `${this.entityName}.create`,
+			cmd: `${this.entityName}.step`,
 		});
+		console.log('____________', await this.validateStep({
+			id,
+			value,
+		}));
 
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
-			cmd: `${this.entityName}.create`,
+			cmd: `${this.entityName}.step`,
 		}, await this.validateStep({
 			id,
 			value,
