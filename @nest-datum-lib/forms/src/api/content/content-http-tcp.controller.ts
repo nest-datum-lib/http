@@ -84,6 +84,7 @@ export class ContentHttpTcpController extends HttpTcpController {
 		@Body('contentStatusId') contentStatusId: string,
 		@Body('formId') formId: string,
 		@Body('isNotDelete') isNotDelete: boolean,
+		@Body('isPush') isPush: boolean,
 	) {
 		return await this.serviceHandlerWrapper(
 			async () => await this.transport.send({
@@ -96,6 +97,7 @@ export class ContentHttpTcpController extends HttpTcpController {
 			contentStatusId,
 			formId,
 			isNotDelete,
+			isPush,
 		})));
 	}
 
