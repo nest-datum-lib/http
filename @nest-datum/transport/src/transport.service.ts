@@ -241,13 +241,19 @@ export class TransportService extends RedisService {
 					.pipe(map(response => response)));
 			}
 			catch (err) {
+				console.log('errr', err);
+
 				throw new FailureException(err.message);
 			}
 			if (!utilsCheckExists(connectionInstanceResponse)) {
+				console.log('2222222222222', connectionInstanceResponse);
+
 				throw new NotFoundException(`Resource not found.`);
 			}
 			else if (utilsCheckObj(connectionInstanceResponse) 
 				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
+				console.log('connectionInstanceResponse', connectionInstanceResponse);
+
 				switch (connectionInstanceResponse['errorCode']) {
 					case 405:
 						throw new MethodNotAllowedException(connectionInstanceResponse['message']);
