@@ -202,6 +202,8 @@ export class TransportService extends RedisService {
 			? await this.one({ key: id })
 			: await this.lessLoadedConnection(name);
 
+		console.log('replicaData', replicaData);
+
 		if (!replicaData) {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
@@ -214,6 +216,10 @@ export class TransportService extends RedisService {
 		const cmdIsPostAction = cmd.includes('.create') 
 			|| cmd.includes('.send')
 			|| cmd.includes('.content');
+
+		console.log('connectionInstance', connectionInstance);
+		console.log('cmd', cmd);
+		console.log('payload', payload);
 
 		if (cmdIsPostAction
 			&& utilsCheckObj(payload)
