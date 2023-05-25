@@ -40,6 +40,13 @@ export class ContentHttpTcpController extends HttpTcpController {
 			}
 			options['isPush'] = !!options['isPush'];
 		}
+		console.log('>>>>>>>>>>>>>', await super.validateCreate({
+			accessToken: options['accessToken'],
+			isPush: options['isPush'],
+			contentStatusId: options['contentStatusId'],
+			formId: options['formId'],
+		}));
+
 		return await super.validateCreate({
 			accessToken: options['accessToken'],
 			isPush: options['isPush'],
