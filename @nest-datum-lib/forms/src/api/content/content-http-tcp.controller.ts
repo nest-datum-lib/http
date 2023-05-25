@@ -13,6 +13,7 @@ import { HttpTcpController } from '@nest-datum-common/controllers';
 import { 
 	exists as utilsCheckExists,
 	strId as utilsCheckStrId,
+	bool as utilsCheckBool,
 } from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_FORMS}/content`)
@@ -33,7 +34,18 @@ export class ContentHttpTcpController extends HttpTcpController {
 		if (!utilsCheckStrId(options['formId'])) {
 			throw new MethodNotAllowedException(`Property "formId" is not valid.`);
 		}
-		return await super.validateCreate(options);
+		if (utilsCheckExists(options['isPush'])) {
+			if (!utilsCheckBool(options['isPush'])) {
+				throw new MethodNotAllowedException(`Property "isPush" is not valid.`);
+			}
+			options['isPush'] = !!options['isPush'];
+		}
+		return await super.validateCreate({
+			accessToken: options['accessToken'],
+			isPush: options['isPush'],
+			contentStatusId: options['contentStatusId'],
+			formId: options['formId'],
+		});
 	}
 
 	async validateUpdate(options) {
