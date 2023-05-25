@@ -219,7 +219,7 @@ export class TransportService extends RedisService {
 
 		console.log('connectionInstance', connectionInstance);
 		console.log('cmd', cmd);
-		console.log('payload', payload);
+		console.log('payload', payload, cmdIsPostAction);
 
 		if (cmdIsPostAction
 			&& utilsCheckObj(payload)
