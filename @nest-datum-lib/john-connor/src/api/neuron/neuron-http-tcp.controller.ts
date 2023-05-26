@@ -24,8 +24,6 @@ export class NeuronHttpTcpController extends HttpTcpController {
 	}
 
 	async validateStep(options: object = {}) {
-		console.log('options', options);
-
 		if (!utilsCheckNumericInt(options['id'])) {
 			throw new MethodNotAllowedException(`Property "id" is not valid.`);
 		}
@@ -43,15 +41,6 @@ export class NeuronHttpTcpController extends HttpTcpController {
 		@Body('id') id: number,
 		@Body('value') value: string,
 	) {
-		console.log('**************', {
-			name: this.serviceName, 
-			cmd: `${this.entityName}.step`,
-		});
-		console.log('____________', await this.validateStep({
-			id,
-			value,
-		}));
-
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.step`,
