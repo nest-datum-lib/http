@@ -249,6 +249,8 @@ export class TransportService extends RedisService {
 		else {
 			let connectionInstanceResponse;
 
+			console.log('---11111111-1111-1-1--1--1--1-1-1', { cmd }, payload);
+
 			try {
 				connectionInstanceResponse = await lastValueFrom(connectionInstance
 					.send({ cmd }, payload)
