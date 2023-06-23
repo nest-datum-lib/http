@@ -221,6 +221,8 @@ export class TransportService extends RedisService {
 			payload['id'] = uuidv4();
 			payload['createdAt'] = (new Date()).toISOString();
 		}
+		console.log('cmd, { ...payload }', cmd, { ...payload });
+
 		if (cmdIsPostAction
 			|| cmd.includes('.update')
 			|| cmd.includes('.drop')) {
