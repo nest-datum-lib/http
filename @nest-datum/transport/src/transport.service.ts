@@ -202,8 +202,6 @@ export class TransportService extends RedisService {
 			? await this.one({ key: id })
 			: await this.lessLoadedConnection(name);
 
-		console.log('replicaDatareplicaDatareplicaData', replicaData);
-
 		if (!replicaData) {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
@@ -237,19 +235,13 @@ export class TransportService extends RedisService {
 					.pipe(map(response => response)));
 			}
 			catch (err) {
-				console.log('00000000', cmd, { ...payload }, err);
-
 				throw new FailureException(err.message);
 			}
 			if (!utilsCheckExists(connectionInstanceResponse)) {
-				console.log('22222222', cmd, { ...payload });
-
 				throw new NotFoundException(`Resource not found.`);
 			}
 			else if (utilsCheckObj(connectionInstanceResponse) 
 				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
-				console.log('333333', cmd, { ...payload }, connectionInstanceResponse['errorCode'], connectionInstanceResponse['message']);
-
 				switch (connectionInstanceResponse['errorCode']) {
 					case 405:
 						throw new MethodNotAllowedException(connectionInstanceResponse['message']);
