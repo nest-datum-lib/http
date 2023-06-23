@@ -251,8 +251,6 @@ export class UserHttpTcpController extends MainHttpTcpController {
 		@Body('login') login: string,
 		@Body('password') password: string,
 	): Promise<any> {
-		console.log('?????????????????????', login, password);
-
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
 			cmd: `${this.entityName}.login`,
