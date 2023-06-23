@@ -83,8 +83,12 @@ export class TransportService extends RedisService {
 				index = 0;
 
 			if (!connectionInstance['isConnected']) {
+				console.log('************', process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT);
+
 				await (new Promise((resolve, reject) => {
 					interval = setInterval(() => {
+						console.log('&&&&&&&&&&&&&&', index, Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS || 3));
+
 						if (connectionInstance
 							&& connectionInstance['isConnected']) {
 							clearInterval(interval);
@@ -218,8 +222,6 @@ export class TransportService extends RedisService {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
 		const connectionInstance = this.connection(replicaData);
-
-		console.log('connectionInstanceconnectionInstanceconnectionInstance', connectionInstance);
 
 		if (!connectionInstance
 			|| !(await this.isConnected(connectionInstance, replicaData['id']))) {
