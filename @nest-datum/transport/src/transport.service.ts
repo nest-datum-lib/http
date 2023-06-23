@@ -283,8 +283,11 @@ export class TransportService extends RedisService {
 						throw new FailureException(connectionInstanceResponse['message']);
 				}
 			}
+			console.log('44444444444444444444', connectionInstanceResponse);
 			return connectionInstanceResponse;
 		}
+		console.log('555555555555555');
+
 		if (utilsCheckObj(payload)) {
 			delete payload['accessToken'];
 			delete payload['refreshToken'];
