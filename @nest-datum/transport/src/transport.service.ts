@@ -221,8 +221,6 @@ export class TransportService extends RedisService {
 			payload['id'] = uuidv4();
 			payload['createdAt'] = (new Date()).toISOString();
 		}
-		console.log('cmd, { ...payload }', cmd, { ...payload });
-
 		if (cmdIsPostAction
 			|| cmd.includes('.update')
 			|| cmd.includes('.drop')) {
@@ -237,13 +235,19 @@ export class TransportService extends RedisService {
 					.pipe(map(response => response)));
 			}
 			catch (err) {
+				console.log('00000000', cmd, { ...payload }, err);
+
 				throw new FailureException(err.message);
 			}
 			if (!utilsCheckExists(connectionInstanceResponse)) {
+				console.log('22222222', cmd, { ...payload });
+
 				throw new NotFoundException(`Resource not found.`);
 			}
 			else if (utilsCheckObj(connectionInstanceResponse) 
 				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
+				console.log('333333', cmd, { ...payload }, connectionInstanceResponse['errorCode'], connectionInstanceResponse['message']);
+
 				switch (connectionInstanceResponse['errorCode']) {
 					case 405:
 						throw new MethodNotAllowedException(connectionInstanceResponse['message']);
