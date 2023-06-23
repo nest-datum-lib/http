@@ -261,6 +261,8 @@ export class TransportService extends RedisService {
 
 				throw new FailureException(err.message);
 			}
+			console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
+
 			if (!utilsCheckExists(connectionInstanceResponse)) {
 				console.log('22222222', cmd, { ...payload });
 
