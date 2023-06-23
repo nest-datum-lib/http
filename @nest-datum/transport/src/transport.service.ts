@@ -83,7 +83,7 @@ export class TransportService extends RedisService {
 				index = 0;
 
 			if (!connectionInstance['isConnected']) {
-				console.log('************', process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT);
+				console.log('************', Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT || 200));
 
 				await (new Promise((resolve, reject) => {
 					interval = setInterval(() => {
@@ -104,6 +104,8 @@ export class TransportService extends RedisService {
 					}, Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT || 200));
 				}));
 			}
+			console.log('@@@@@@@@@@@@@@@@@@', connectionInstance);
+
 			return true;
 		}
 		catch (err) {
