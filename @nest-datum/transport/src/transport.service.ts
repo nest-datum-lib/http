@@ -50,9 +50,19 @@ export class TransportService extends RedisService {
 		const port = replicaData['port'];
 		let connectionInstance = _savedInstance[id];
 
+		console.log('((((((((', id, host, port);
+
 		if (!connectionInstance
 			&& utilsCheckStrHost(host)
 			&& utilsCheckNumericInt(port)) {
+			console.log('____________', {
+				transport: Transport.TCP,
+				options: {
+					host: host || process.env.APP_HOST,
+					port: Number(port || process.env.APP_PORT),
+				},
+			});
+
 			connectionInstance = ClientProxyFactory.create({
 				transport: Transport.TCP,
 				options: {
@@ -208,6 +218,8 @@ export class TransportService extends RedisService {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
 		const connectionInstance = this.connection(replicaData);
+
+		console.log('connectionInstanceconnectionInstanceconnectionInstance', connectionInstance);
 
 		if (!connectionInstance
 			|| !(await this.isConnected(connectionInstance, replicaData['id']))) {
