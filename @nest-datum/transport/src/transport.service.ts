@@ -50,19 +50,9 @@ export class TransportService extends RedisService {
 		const port = replicaData['port'];
 		let connectionInstance = _savedInstance[id];
 
-		console.log('((((((((', id, host, port);
-
 		if (!connectionInstance
 			&& utilsCheckStrHost(host)
 			&& utilsCheckNumericInt(port)) {
-			console.log('____________', {
-				transport: Transport.TCP,
-				options: {
-					host: host || process.env.APP_HOST,
-					port: Number(port || process.env.APP_PORT),
-				},
-			});
-
 			connectionInstance = ClientProxyFactory.create({
 				transport: Transport.TCP,
 				options: {
@@ -83,12 +73,8 @@ export class TransportService extends RedisService {
 				index = 0;
 
 			if (!connectionInstance['isConnected']) {
-				console.log('************', Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT || 200));
-
 				await (new Promise((resolve, reject) => {
 					interval = setInterval(() => {
-						console.log('&&&&&&&&&&&&&&', index, Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS || 3));
-
 						if (connectionInstance
 							&& connectionInstance['isConnected']) {
 							clearInterval(interval);
@@ -104,8 +90,6 @@ export class TransportService extends RedisService {
 					}, Number(process.env.SETTING_TRANSPORT_CONNECT_ATTEMPTS_TIMEOUT || 200));
 				}));
 			}
-			console.log('@@@@@@@@@@@@@@@@@@', connectionInstance);
-
 			return true;
 		}
 		catch (err) {
@@ -218,8 +202,6 @@ export class TransportService extends RedisService {
 			? await this.one({ key: id })
 			: await this.lessLoadedConnection(name);
 
-		console.log('replicaDatareplicaDatareplicaData', replicaData);
-
 		if (!replicaData) {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
@@ -229,8 +211,6 @@ export class TransportService extends RedisService {
 			|| !(await this.isConnected(connectionInstance, replicaData['id']))) {
 			throw new NotFoundException(`Replica "${id || name}" not found.`);
 		}
-		console.log('################################', cmd, payload);
-
 		const cmdIsPostAction = cmd.includes('.create') 
 			|| cmd.includes('.send')
 			|| cmd.includes('.content');
@@ -249,29 +229,19 @@ export class TransportService extends RedisService {
 		else {
 			let connectionInstanceResponse;
 
-			console.log('---11111111-1111-1-1--1--1--1-1-1', { cmd }, payload, connectionInstance);
-
 			try {
 				connectionInstanceResponse = await lastValueFrom(connectionInstance
 					.send({ cmd }, payload)
 					.pipe(map(response => response)));
 			}
 			catch (err) {
-				console.log('00000000', cmd, { ...payload }, err);
-
 				throw new FailureException(err.message);
 			}
-			console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
-
 			if (!utilsCheckExists(connectionInstanceResponse)) {
-				console.log('22222222', cmd, { ...payload });
-
 				throw new NotFoundException(`Resource not found.`);
 			}
 			else if (utilsCheckObj(connectionInstanceResponse) 
 				&& utilsCheckNumericInt(connectionInstanceResponse['errorCode'])) {
-				console.log('333333', cmd, { ...payload }, connectionInstanceResponse['errorCode'], connectionInstanceResponse['message']);
-
 				switch (connectionInstanceResponse['errorCode']) {
 					case 405:
 						throw new MethodNotAllowedException(connectionInstanceResponse['message']);
@@ -285,11 +255,8 @@ export class TransportService extends RedisService {
 						throw new FailureException(connectionInstanceResponse['message']);
 				}
 			}
-			console.log('44444444444444444444', connectionInstanceResponse);
 			return connectionInstanceResponse;
 		}
-		console.log('555555555555555');
-
 		if (utilsCheckObj(payload)) {
 			delete payload['accessToken'];
 			delete payload['refreshToken'];
