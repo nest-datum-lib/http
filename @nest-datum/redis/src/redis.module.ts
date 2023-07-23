@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EntityModule } from '@nest-datum/entity';
 import { RedisService } from './redis.service';
 
 @Module({
@@ -8,5 +9,5 @@ import { RedisService } from './redis.service';
 		RedisService, 
 	],
 })
-export class RedisModule {
+export class RedisModule extends EntityModule {
 }

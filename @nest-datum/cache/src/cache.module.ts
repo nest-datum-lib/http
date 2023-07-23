@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
+import { RedisModule } from '@nest-datum/redis';
 import { CacheService } from './cache.service';
 
 @Module({
-	controllers: [],
 	imports: [],
+	controllers: [],
 	providers: [ 
 		CacheService, 
 	],
 })
-export class CacheModule {
+export class CacheModule extends RedisModule {
 }

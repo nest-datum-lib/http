@@ -1,23 +1,16 @@
 import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisModule } from '@nest-datum/redis';
 import { TransportService } from './transport.service';
 
 @Module({
-	imports: [
-		RedisModule.forRoot({
-			config: {
-				namespace: 'Transport',
-				host: process.env.REDIS_TRANSPORT_HOST,
-				port: Number(process.env.REDIS_TRANSPORT_PORT),
-				password: process.env.REDIS_TRANSPORT_PASSWORD,
-				db: Number(process.env.REDIS_TRANSPORT_DB),
-			},
-		}),
-	],
+	imports: [],
 	controllers: [],
 	providers: [ 
 		TransportService, 
 	],
 })
-export class TransportModule {
+export class TransportModule extends RedisModule {
+	static async listen(Module, callback = () => {}) {
+		return Module;
+	}
 }

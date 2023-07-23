@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ModelService } from '@nest-datum/model';
+import { EntityModule } from '@nest-datum/entity';
 import { SqlService } from './sql.service';
 
 @Module({
 	imports: [],
 	controllers: [],
 	providers: [ 
-		ModelService,
 		SqlService, 
 	],
 })
-export class SqlModule {
+export class SqlModule extends EntityModule {
 }
