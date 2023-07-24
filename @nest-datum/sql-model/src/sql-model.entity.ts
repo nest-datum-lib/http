@@ -2,6 +2,8 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	Index,
+	CreateDateColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 import { SqlEntity } from '@nest-datum/sql';
 

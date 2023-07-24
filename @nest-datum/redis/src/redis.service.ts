@@ -1,4 +1,4 @@
-import { Entity } from '@nest-datum/entity';
+import { EntityService } from '@nest-datum/entity';
 
-export class RedisService extends Entity {
+export class RedisService extends EntityService {
 }

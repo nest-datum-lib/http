@@ -1,12 +1,18 @@
-import { 
-	PrimaryGeneratedColumn,
-	Entity, 
-	Column,
-	Index,
-	OneToMany,
-} from 'typeorm';
+import { Entity } from 'typeorm';
 import { SqlModelEntity } from '@nest-datum/sql-model';
+import { SqlModelEnvEntity } from '@nest-datum/sql-model-env';
+import { SqlModelRemovableEntity } from '@nest-datum/sql-model-removable';
+import { SqlModelStatusEntity } from '@nest-datum/sql-model-status';
+import { SqlModelUserEntity } from '@nest-datum/sql-model-user';
+import { extender } from '@nest-datum-utils/extender';
+
+const SqlModelEntityExtends = extender(SqlModelEntity, [ 
+	SqlModelEnvEntity, 
+	SqlModelRemovableEntity, 
+	SqlModelStatusEntity, 
+	SqlModelUserEntity, 
+]);
 
 @Entity()
-export class Route extends SqlModelEntity {
+export class Route extends SqlModelEntityExtends {
 }
