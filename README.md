@@ -1,2 +1,2 @@
 # @nest-datum-lib/http
-## HTTP gateway.
+## HTTP gateway
