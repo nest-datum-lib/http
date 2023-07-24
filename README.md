@@ -1,2 +1,2 @@
 # http
-## Handling HTTP requests and proxying to service.
+## Handling HTTP requests and proxying to service
