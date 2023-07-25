@@ -4,8 +4,8 @@ import {
 } from 'typeorm';
 import { SqlModelEntity } from '@nest-datum/sql-model';
 
-export class SqlModelEnvEntity extends SqlModelEntity {
+export class SqlModelDataTypeEntity extends SqlModelEntity {
 	@Column({ default: '' })
 	@Index()
-	public envKey: string;
+	public dataTypeId: string;
 }

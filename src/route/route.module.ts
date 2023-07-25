@@ -1,3 +1,4 @@
+import { Mixin } from 'ts-mixer';
 import { 
 	Module,
 	NestModule,
@@ -9,22 +10,16 @@ import { SqlModelEnvModule } from '@nest-datum/sql-model-env';
 import { SqlModelRemovableModule } from '@nest-datum/sql-model-removable';
 import { SqlModelStatusModule } from '@nest-datum/sql-model-status';
 import { SqlModelUserModule } from '@nest-datum/sql-model-user';
-import { extender } from '@nest-datum-utils/extender';
+import { RouteStatus } from '../route-status/route-status.entity';
 import { RouteService } from './route.service';
 import { RouteController } from './route.controller';
 import { Route } from './route.entity';
-
-const SqlModelModuleExtends = extender(SqlModelModule, [ 
-	SqlModelEnvModule, 
-	SqlModelRemovableModule, 
-	SqlModelStatusModule, 
-	SqlModelUserModule, 
-]);
 
 @Module({
 	controllers: [ RouteController ],
 	imports: [
 		TypeOrmModule.forFeature([
+			RouteStatus,
 			Route,
 		]),
 	],
@@ -32,7 +27,7 @@ const SqlModelModuleExtends = extender(SqlModelModule, [
 		RouteService,
 	],
 })
-export class RouteModule extends SqlModelModuleExtends implements NestModule {
+export class RouteModule extends Mixin(SqlModelModule, SqlModelEnvModule, SqlModelRemovableModule, SqlModelStatusModule, SqlModelUserModule) implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 	}
 }
