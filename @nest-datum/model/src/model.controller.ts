@@ -35,7 +35,7 @@ export class ModelController {
 		return properties;
 	}
 
-	async getMany(properties: object): Promise<Array<Array<any> | number>> {
+	async getMany(properties: object): Promise<object> {
 		return await this.errorHandler(async () => await this.service.getMany(await this.validateGetMany(properties)));
 	}
 
@@ -47,7 +47,7 @@ export class ModelController {
 		return await this.errorHandler(async () => await this.service.create(await this.validateCreate(properties)));
 	}
 
-	async updateMany(properties: object): Promise<Array<any>> {
+	async updateMany(properties: object): Promise<object> {
 		return await this.errorHandler(async () => await this.service.updateMany(await this.validateUpdateMany(properties)));
 	}
 
@@ -59,7 +59,7 @@ export class ModelController {
 		return await this.errorHandler(async () => await this.service.dropMany(await this.validateDropMany(properties)));
 	}
 
-	async dropOne(id: string, properties: object): Promise<boolean> {
+	async dropOne(id: string, properties: object): Promise<object> {
 		return await this.errorHandler(async () => await this.service.dropOne(await this.validateDropOne({ ...properties, id })));
 	}
 }

@@ -11,7 +11,7 @@ import { ModelController } from './model.controller';
 
 export class ModelHttpController extends ModelController {
 	@Get()
-	async getMany(@Query() properties: object): Promise<Array<Array<any> | number>> {
+	async getMany(@Query() properties: object): Promise<object> {
 		return await super.getMany(properties);
 	}
 
@@ -26,7 +26,7 @@ export class ModelHttpController extends ModelController {
 	}
 
 	@Patch()
-	async updateMany(@Body() properties: object): Promise<Array<any>> {
+	async updateMany(@Body() properties: object): Promise<object> {
 		return await super.updateMany(properties);
 	}
 
@@ -41,7 +41,7 @@ export class ModelHttpController extends ModelController {
 	}
 
 	@Delete(':id')
-	async dropOne(@Param('id') id: string, @Query() properties: object): Promise<boolean> {
+	async dropOne(@Param('id') id: string, @Query() properties: object): Promise<object> {
 		return await super.dropOne(id, properties);
 	}
 }

@@ -13,7 +13,7 @@ export class ModelRemovableHttpController extends ModelRemovableController {
 	}
 
 	@Put(':id')
-	async restoreOne(@Param('id') id: string, @Query() properties: object): Promise<boolean> {
+	async restoreOne(@Param('id') id: string, @Query() properties: object): Promise<object> {
 		return await super.dropOne(id, properties);
 	}
 }

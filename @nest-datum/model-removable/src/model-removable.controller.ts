@@ -16,7 +16,7 @@ export class ModelRemovableController extends ModelController {
 		return await this.errorHandler(async () => await this.service.restoreMany(await this.validateRestoreMany(properties)));
 	}
 
-	async restoreOne(id: string, properties: object): Promise<boolean> {
+	async restoreOne(id: string, properties: object): Promise<object> {
 		return await this.errorHandler(async () => await this.service.restoreOne(await this.validateRestoreOne({ ...properties, id })));
 	}
 }
