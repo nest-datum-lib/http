@@ -19,6 +19,7 @@ import {
 	strName as utilsCheckStrName,
 	strEmail as utilsCheckStrEmail,
 	strPassword as utilsCheckStrPassword,
+	strUserLogin as utilsCheckUserLogin,
 	strFilled as utilsCheckStrFilled,
 } from '@nest-datum-utils/check';
 
@@ -37,20 +38,20 @@ export class UserHttpTcpController extends MainHttpTcpController {
 	}
 
 	async validateCreate(options) {
-		if (!utilsCheckStrFilled(options['login'])) {
-			throw new ForbiddenException(`Property "login" is not valid.`);
+		if (!utilsCheckUserLogin(options['login'])) {
+			throw new MethodNotAllowedException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrEmail(options['email'])) {
-			throw new ForbiddenException(`Property "email" is not valid.`);
+			throw new MethodNotAllowedException(`Property "email" is not valid.`);
 		}
 		if (!utilsCheckStrPassword(options['password'])) {
-			throw new ForbiddenException(`Property "email" is not valid.`);
+			throw new MethodNotAllowedException(`Property "password" is not valid.`);
 		}
 		if (!utilsCheckStrId(options['roleId'])) {
-			throw new ForbiddenException(`Property "roleId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "roleId" is not valid.`);
 		}
 		if (!utilsCheckStrId(options['userStatusId'])) {
-			throw new ForbiddenException(`Property "userStatusId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "userStatusId" is not valid.`);
 		}
 		if (utilsCheckExists(options['position'])) {
 			if (!utilsCheckStrFilled(options['position'])) {
@@ -85,7 +86,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 			output['userStatusId'] = options['userStatusId'];
 		}
 		if (utilsCheckExists(options['login'])) {
-			if (!utilsCheckStrFilled(options['login'])) {
+			if (!utilsCheckUserLogin(options['login'])) {
 				throw new MethodNotAllowedException(`Property "login" is not valid.`);
 			}
 			output['login'] = options['login'];
@@ -121,11 +122,11 @@ export class UserHttpTcpController extends MainHttpTcpController {
 	}
 
 	async validateLogin(options) {
-		if (!utilsCheckStrFilled(options['login'])) {
-			throw new ForbiddenException(`Property "login" is not valid.`);
+		if (!utilsCheckUserLogin(options['login'])) {
+			throw new MethodNotAllowedException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrPassword(options['password'])) {
-			throw new ForbiddenException(`Property "password" is not valid.`);
+			throw new MethodNotAllowedException(`Property "password" is not valid.`);
 		}
 		return {
 			login: options['login'],
@@ -134,20 +135,20 @@ export class UserHttpTcpController extends MainHttpTcpController {
 	}
 
 	async validateRegister(options) {
-		if (!utilsCheckStrFilled(options['login'])) {
-			throw new ForbiddenException(`Property "login" is not valid.`);
+		if (!utilsCheckUserLogin(options['login'])) {
+			throw new MethodNotAllowedException(`Property "login" is not valid.`);
 		}
 		if (!utilsCheckStrName(options['firstname'])) {
-			throw new ForbiddenException(`Property "firstname" is not valid.`);
+			throw new MethodNotAllowedException(`Property "firstname" is not valid.`);
 		}
 		if (!utilsCheckStrName(options['lastname'])) {
-			throw new ForbiddenException(`Property "lastname" is not valid.`);
+			throw new MethodNotAllowedException(`Property "lastname" is not valid.`);
 		}
 		if (!utilsCheckStrEmail(options['email'])) {
-			throw new ForbiddenException(`Property "email" is not valid.`);
+			throw new MethodNotAllowedException(`Property "email" is not valid.`);
 		}
 		if (!utilsCheckStrPassword(options['password']) || options['password'] !== options['repeatedPassword']) {
-			throw new ForbiddenException(`Property "password" is not valid.`);
+			throw new MethodNotAllowedException(`Property "password" is not valid.`);
 		}
 
 		return {
@@ -164,7 +165,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 
 	async validateRecovery(options) {
 		if (!utilsCheckStrEmail(options['email'])) {
-			throw new ForbiddenException(`Property "email" is not valid.`);
+			throw new MethodNotAllowedException(`Property "email" is not valid.`);
 		}
 
 		return {
@@ -174,7 +175,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 
 	async validateReset(options) {
 		if (!utilsCheckStrPassword(options['password']) || options['password'] !== options['repeatedPassword']) {
-			throw new ForbiddenException(`Property "password" is not valid.`);
+			throw new MethodNotAllowedException(`Property "password" is not valid.`);
 		}
 
 		return {
