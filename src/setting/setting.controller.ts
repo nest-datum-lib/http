@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
-import { SqlSettingController } from '@nest-datum/sql-setting';
+import { SettingHttpController } from '@nest-datum/setting';
 import { SettingService } from './setting.service';
 
 @Controller(`/setting`)
-export class SettingController extends SqlSettingController {
+export class SettingController extends SettingHttpController {
 	constructor(
 		protected readonly service: SettingService,
 	) {

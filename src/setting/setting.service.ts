@@ -4,16 +4,14 @@ import {
 	Repository,
 	Connection, 
 } from 'typeorm';
-import { SqlSettingService } from '@nest-datum/sql-setting';
-import { CacheService } from '@nest-datum/cache';
+import { SettingService as BaseSettingService } from '@nest-datum/setting';
 import { Setting } from './setting.entity';
 
 @Injectable()
-export class SettingService extends SqlSettingService {
+export class SettingService extends BaseSettingService {
 	constructor(
 		@InjectRepository(Setting) protected readonly repository: Repository<Setting>,
 		protected readonly connectionService: Connection,
-		protected readonly cacheService: CacheService,
 	) {
 		super();
 	}

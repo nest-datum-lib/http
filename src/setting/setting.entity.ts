@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
-import { SqlSettingEntity } from '@nest-datum/sql-setting';
+import { Setting as BaseSetting } from '@nest-datum/setting';
 
 @Entity()
-export class Setting extends SqlSettingEntity {
+export class Setting extends BaseSetting {
 }

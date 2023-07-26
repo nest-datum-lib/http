@@ -4,8 +4,7 @@ import {
 	MiddlewareConsumer,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheService } from '@nest-datum/cache';
-import { SqlSettingModule } from '@nest-datum/sql-setting';
+import { SettingModule as BaseSettingModule } from '@nest-datum/setting';
 import { SettingService } from './setting.service';
 import { SettingController } from './setting.controller';
 import { Setting } from './setting.entity';
@@ -19,10 +18,9 @@ import { Setting } from './setting.entity';
 	],
 	providers: [ 
 		SettingService,
-		CacheService,
 	],
 })
-export class SettingModule extends SqlSettingModule implements NestModule {
+export class SettingModule extends BaseSettingModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 	}
 }

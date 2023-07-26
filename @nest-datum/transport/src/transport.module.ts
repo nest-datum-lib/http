@@ -1,6 +1,5 @@
-import { RedisModule } from '@nest-datum/redis';
 
-export class TransportModule extends RedisModule {
+export class TransportModule {
 	static async listen(Module, callback = () => {}) {
 		return Module;
 	}
