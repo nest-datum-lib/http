@@ -4,9 +4,8 @@ import {
 	Patch,
 	Body,
 	Param,
-	UnauthorizedException,
-	MethodNotAllowedException,
 } from '@nestjs/common';
+import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 import { HttpTcpController } from '@nest-datum-common/controllers';

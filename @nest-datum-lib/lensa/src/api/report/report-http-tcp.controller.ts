@@ -4,17 +4,14 @@ import {
 	Patch,
 	Body,
 	Param,
-	UnauthorizedException,
-	MethodNotAllowedException,
 } from '@nestjs/common';
+import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { TransportService } from '@nest-datum/transport';
 import { HttpTcpController } from '@nest-datum-common/controllers';
 import { 
 	exists as utilsCheckExists,
 	strId as utilsCheckStrId,
-	strDescription as utilsCheckStrDescription,
-	strFilled as utilsCheckStrFilled,
 	strEmail as utilsCheckStrEmail,
 	str as utilsCheckStr,
 } from '@nest-datum-utils/check';

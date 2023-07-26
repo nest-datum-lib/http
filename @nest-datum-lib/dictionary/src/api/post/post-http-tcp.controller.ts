@@ -4,11 +4,9 @@ import {
 	Patch,
 	Body,
 	Param,
-	UnauthorizedException,
-	MethodNotAllowedException,
 } from '@nestjs/common';
+import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
 import { TransportService } from '@nest-datum/transport';
-import { checkToken } from '@nest-datum-common/jwt';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { MainHttpTcpController } from '@nest-datum/main';
 import { 
@@ -16,7 +14,6 @@ import {
 	strId as utilsCheckStrId,
 	strName as utilsCheckStrName, 
 	strDescription as utilsCheckStrDescription,
-	numeric as utilsCheckNumeric,
 } from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_DICTIONARY}/post`)

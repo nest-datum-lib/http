@@ -5,10 +5,9 @@ import {
 	Body,
 	Param,
 	UnauthorizedException,
-	MethodNotAllowedException,
 } from '@nestjs/common';
+import { MethodNotAllowedException } from '@nestjs/common';
 import { TransportService } from '@nest-datum/transport';
-import { checkToken } from '@nest-datum-common/jwt';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { MainHttpTcpController } from '@nest-datum/main';
 import { 
