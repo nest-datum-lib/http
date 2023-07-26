@@ -1,13 +1,5 @@
-import { 
-	Repository,
-	Connection, 
-} from 'typeorm';
-import { Model } from './model.entity';
 
 export class ModelService {
-	protected readonly repository;
-	protected readonly connectionService: Connection;
-
 	async getMany(properties: object): Promise<Array<Array<any> | number>> {
 		return [];
 	}

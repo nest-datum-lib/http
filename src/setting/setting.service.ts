@@ -4,11 +4,11 @@ import {
 	Repository,
 	Connection, 
 } from 'typeorm';
-import { SettingService as BaseSettingService } from '@nest-datum/setting';
+import { SettingSqlService } from '@nest-datum/setting';
 import { Setting } from './setting.entity';
 
 @Injectable()
-export class SettingService extends BaseSettingService {
+export class SettingService extends SettingSqlService {
 	constructor(
 		@InjectRepository(Setting) protected readonly repository: Repository<Setting>,
 		protected readonly connectionService: Connection,
