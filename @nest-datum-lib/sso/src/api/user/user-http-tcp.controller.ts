@@ -23,6 +23,7 @@ import {
 	strPassword as utilsCheckStrPassword,
 	strUserLogin as utilsCheckUserLogin,
 	strFilled as utilsCheckStrFilled,
+	strUrl as utilsCheckUrl,
 } from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_SSO}/user`)
@@ -152,6 +153,9 @@ export class UserHttpTcpController extends MainHttpTcpController {
 		if (!utilsCheckStrPassword(options['password']) || options['password'] !== options['repeatedPassword']) {
 			throw new MethodNotAllowedException(`Property "password" is not valid.`);
 		}
+		if (!utilsCheckUrl(options['origin'])) {
+			throw new MethodNotAllowedException('Property "origin" is not valid.');
+		}
 
 		return {
 			login: options['login'],
@@ -162,7 +166,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 			repeatedPassword: options['repeatedPassword'],
 			roleId: 'happ-sso-role-member',
 			userStatusId: 'happ-sso-user-status-new',
-			origin: options["origin"],
+			origin: options['origin'],
 		};
 	}
 
