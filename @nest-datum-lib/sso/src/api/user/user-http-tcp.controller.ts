@@ -4,7 +4,9 @@ import {
 	Patch,
 	Body,
 	Param,
+	Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { 
 	MethodNotAllowedException, 
 	ForbiddenException 
@@ -160,6 +162,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 			repeatedPassword: options['repeatedPassword'],
 			roleId: 'happ-sso-role-member',
 			userStatusId: 'happ-sso-user-status-new',
+			origin: options["origin"],
 		};
 	}
 
@@ -212,6 +215,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 		@Body('lastname') lastname: string,
 		@Body('password') password: string,
 		@Body('repeatedPassword') repeatedPassword: string,
+		@Req() request: Request,
 	): Promise<any> {
 		return await this.serviceHandlerWrapper(async () => await this.transport.send({
 			name: this.serviceName, 
@@ -223,6 +227,7 @@ export class UserHttpTcpController extends MainHttpTcpController {
 			lastname,
 			password,
 			repeatedPassword,
+			origin: request.get("origin"),
 		})));
 	}
 
