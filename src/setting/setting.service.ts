@@ -10,8 +10,8 @@ import { Setting } from './setting.entity';
 @Injectable()
 export class SettingService extends SettingSqlService {
 	constructor(
-		@InjectRepository(Setting) protected readonly repository: Repository<Setting>,
-		protected readonly connectionService: Connection,
+		@InjectRepository(Setting) public readonly repository: Repository<Setting>,
+		public readonly connectionService: Connection,
 	) {
 		super();
 	}

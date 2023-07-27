@@ -1,9 +1,10 @@
 import { Column } from 'typeorm';
 
-class Sample {}
+class Sample {
+}
 
 export function ModelStatusSql(Base: any = Sample) {
-	abstract class AbstractBase extends Base {
+	class AbstractBase extends Base {
 		@Column({ default: '' })
 		public statusId: string;
 	}

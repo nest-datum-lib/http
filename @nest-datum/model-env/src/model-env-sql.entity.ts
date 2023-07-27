@@ -3,10 +3,11 @@ import {
 	Index,
 } from 'typeorm';
 
-class Sample {}
+class Sample {
+}
 
 export function ModelEnvSql(Base: any = Sample) {
-	abstract class AbstractBase extends Base {
+	class AbstractBase extends Base {
 		@Column({ default: '' })
 		@Index()
 		public envKey: string;

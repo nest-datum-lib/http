@@ -1,6 +1,12 @@
-import { Mixin } from 'ts-mixer';
 import { ModelSqlService } from '@nest-datum/model';
 import { ModelTokenService } from './model-token.service';
 
-export class ModelTokenSqlService extends Mixin(ModelSqlService, ModelTokenService) {
+class Sample {
+}
+
+export function ModelTokenSqlService(Base: any = Sample) {
+	class AbstractBase extends ModelSqlService(ModelTokenService(Base)) {
+	}
+
+	return AbstractBase;
 }

@@ -1,4 +1,3 @@
-import { Mixin } from 'ts-mixer';
 import { ModelHttpController } from '@nest-datum/model';
 import { ModelTokenHttpController } from '@nest-datum/model-token';
 import { ModelEnvTokenHttpController } from '@nest-datum/model-env-token';
@@ -9,5 +8,5 @@ import { ModelRemovableTokenHttpController } from '@nest-datum/model-removable-t
 import { ModelDatesHttpController } from '@nest-datum/model-dates';
 import { SettingController } from './setting.controller';
 
-export class SettingHttpController extends Mixin(SettingController, ModelHttpController, ModelTokenHttpController, ModelEnvTokenHttpController, ModelUserHttpController, ModelDataTypeHttpController, ModelDataValueHttpController, ModelRemovableTokenHttpController, ModelDatesHttpController) {
+export class SettingHttpController extends ModelHttpController(ModelTokenHttpController(ModelEnvTokenHttpController(ModelUserHttpController(ModelDataTypeHttpController(ModelDataValueHttpController(ModelRemovableTokenHttpController(ModelDatesHttpController(SettingController())))))))) {
 }

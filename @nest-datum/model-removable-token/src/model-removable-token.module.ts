@@ -1,4 +1,11 @@
 import { ModelRemovableModule } from '@nest-datum/model-removable';
 
-export class ModelRemovableTokenModule extends ModelRemovableModule {
+class Sample {
+}
+
+export function ModelRemovableTokenModule(Base: any = Sample) {
+	class AbstractBase extends ModelRemovableModule(Base) {
+	}
+
+	return AbstractBase;
 }

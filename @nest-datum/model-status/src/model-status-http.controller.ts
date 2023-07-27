@@ -1,4 +1,11 @@
 import { ModelStatusController } from './model-status.controller';
 
-export class ModelStatusHttpController extends ModelStatusController {
+class Sample {
+}
+
+export function ModelStatusHttpController(Base: any = Sample) {
+	class AbstractBase extends ModelStatusController(Base) {
+	}
+
+	return AbstractBase;
 }

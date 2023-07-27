@@ -1,4 +1,3 @@
-import { Mixin } from 'ts-mixer';
 import { ModelModule } from '@nest-datum/model';
 import { ModelTokenModule } from '@nest-datum/model-token';
 import { ModelEnvModule } from '@nest-datum/model-env';
@@ -8,5 +7,5 @@ import { ModelDataValueModule } from '@nest-datum/model-data-value';
 import { ModelRemovableTokenModule } from '@nest-datum/model-removable-token';
 import { ModelDatesModule } from '@nest-datum/model-dates';
 
-export class SettingModule extends Mixin(ModelModule, ModelTokenModule, ModelEnvModule, ModelUserModule, ModelDataTypeModule, ModelDataValueModule, ModelRemovableTokenModule, ModelDatesModule) {
+export class SettingModule extends ModelModule(ModelTokenModule(ModelEnvModule(ModelUserModule(ModelDataTypeModule(ModelDataValueModule(ModelRemovableTokenModule(ModelDatesModule()))))))) {
 }

@@ -1,6 +1,12 @@
-import { Mixin } from 'ts-mixer';
 import { ModelSqlService } from '@nest-datum/model';
 import { ModelRemovableService } from './model-removable.service';
 
-export class ModelRemovableSqlService extends Mixin(ModelSqlService, ModelRemovableService) {
+class Sample {
+}
+
+export function ModelRemovableSqlService(Base: any = Sample) {
+	class AbstractBase extends ModelSqlService(ModelRemovableService(Base)) {
+	}
+
+	return AbstractBase
 }

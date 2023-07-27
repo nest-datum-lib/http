@@ -4,7 +4,14 @@ import {
 } from 'typeorm';
 import { ModelService } from './model.service';
 
-export class ModelSqlService extends ModelService {
-	protected readonly repository;
-	protected readonly connectionService: Connection;
+class Sample {
+}
+
+export function ModelSqlService(Base: any = Sample) {
+	class AbstractBase extends ModelService(Base) {
+		public readonly repository;
+		public readonly connectionService: Connection;
+	}
+
+	return AbstractBase;
 }

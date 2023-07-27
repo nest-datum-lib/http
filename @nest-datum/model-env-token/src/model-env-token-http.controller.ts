@@ -1,4 +1,11 @@
 import { ModelEnvTokenController } from './model-env-token.controller';
 
-export class ModelEnvTokenHttpController extends ModelEnvTokenController {
+class Sample {
+}
+
+export function ModelEnvTokenHttpController(Base: any = Sample) {
+	class AbstractBase extends ModelEnvTokenController(Base) {
+	}
+
+	return AbstractBase;
 }

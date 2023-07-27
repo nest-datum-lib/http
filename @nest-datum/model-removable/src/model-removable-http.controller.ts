@@ -6,14 +6,21 @@ import {
 } from '@nestjs/common';
 import { ModelRemovableController } from './model-removable.controller';
 
-export class ModelRemovableHttpController extends ModelRemovableController {
-	@Put()
-	async restoreMany(@Query() properties: object): Promise<object> {
-		return await super.dropMany(properties);
+class Sample {
+}
+
+export function ModelRemovableHttpController(Base: any = Sample) {
+	class AbstractBase extends ModelRemovableController(Base) {
+		@Put()
+		async restoreMany(@Query() properties: object): Promise<object> {
+			return await super.dropMany(properties);
+		}
+
+		@Put(':id')
+		async restoreOne(@Param('id') id: string, @Query() properties: object): Promise<object> {
+			return await super.dropOne(id, properties);
+		}
 	}
 
-	@Put(':id')
-	async restoreOne(@Param('id') id: string, @Query() properties: object): Promise<object> {
-		return await super.dropOne(id, properties);
-	}
+	return AbstractBase;
 }

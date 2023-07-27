@@ -1,4 +1,11 @@
 import { ModelModule } from '@nest-datum/model';
 
-export class ModelTokenModule extends ModelModule {
+class Sample {
+}
+
+export function ModelTokenModule(Base: any = Sample) {
+	class AbstractBase extends ModelModule(Base) {
+	}
+
+	return AbstractBase;
 }

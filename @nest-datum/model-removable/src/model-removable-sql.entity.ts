@@ -1,9 +1,10 @@
 import { Column } from 'typeorm';
 
-class Sample {}
+class Sample {
+}
 
 export function ModelRemovableSql(Base: any = Sample) {
-	abstract class AbstractBase extends Base {
+	class AbstractBase extends Base {
 		@Column('boolean', { default: false })
 		public isDeleted: boolean = false;
 

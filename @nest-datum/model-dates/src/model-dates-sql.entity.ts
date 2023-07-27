@@ -3,10 +3,11 @@ import {
 	UpdateDateColumn, 
 } from 'typeorm';
 
-class Sample {}
+class Sample {
+}
 
 export function ModelDatesSql(Base: any = Sample) {
-	abstract class AbstractBase extends Base {
+	class AbstractBase extends Base {
 		@CreateDateColumn({ 
 			type: 'timestamp', 
 			precision: null,

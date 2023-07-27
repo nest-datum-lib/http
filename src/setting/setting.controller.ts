@@ -5,7 +5,7 @@ import { SettingService } from './setting.service';
 @Controller(`/setting`)
 export class SettingController extends SettingHttpController {
 	constructor(
-		protected readonly service: SettingService,
+		public readonly service: SettingService,
 	) {
 		super();
 	}

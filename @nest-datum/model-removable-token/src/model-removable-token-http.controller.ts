@@ -1,4 +1,11 @@
 import { ModelRemovableTokenController } from './model-removable-token.controller';
 
-export class ModelRemovableTokenHttpController extends ModelRemovableTokenController {
+class Sample {
+}
+
+export function ModelRemovableTokenHttpController(Base: any = Sample) {
+	class AbstractBase extends ModelRemovableTokenController(Base) {
+	}
+
+	return AbstractBase;
 }

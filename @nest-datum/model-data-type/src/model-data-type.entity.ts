@@ -1,8 +1,9 @@
 
-class Sample {}
+class Sample {
+}
 
 export function ModelDataType(Base: any = Sample) {
-	abstract class AbstractBase extends Base {
+	class AbstractBase extends Base {
 	}
 
 	return AbstractBase;

@@ -1,4 +1,11 @@
 import { ModelDatesController } from './model-dates.controller';
 
-export class ModelDatesHttpController extends ModelDatesController {
+class Sample {
+}
+
+export function ModelDatesHttpController(Base: any = Sample) {
+	class AbstractBase extends ModelDatesController(Base) {
+	}
+
+	return AbstractBase;
 }

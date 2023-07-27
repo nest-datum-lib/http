@@ -1,4 +1,3 @@
-import { Mixin } from 'ts-mixer';
 import { ModelController } from '@nest-datum/model';
 import { ModelTokenController } from '@nest-datum/model-token';
 import { ModelEnvTokenController } from '@nest-datum/model-env-token';
@@ -8,5 +7,12 @@ import { ModelDataValueController } from '@nest-datum/model-data-value';
 import { ModelRemovableTokenController } from '@nest-datum/model-removable-token';
 import { ModelDatesController } from '@nest-datum/model-dates';
 
-export class SettingController extends Mixin(ModelController, ModelTokenController, ModelEnvTokenController, ModelUserController, ModelDataTypeController, ModelDataValueController, ModelRemovableTokenController, ModelDatesController) {
+class Sample {
+}
+
+export function SettingController(Base: any = Sample) {
+	class AbstractBase extends ModelController(ModelTokenController(ModelEnvTokenController(ModelUserController(ModelDataTypeController(ModelDataValueController(ModelRemovableTokenController(ModelDatesController(Base)))))))) {
+	}
+
+	return AbstractBase;
 }
