@@ -1,10 +1,9 @@
-import { ModelController } from '@nest-datum/model';
 
 class Sample {
 }
 
 export function ModelDataTypeController(Base: any = Sample) {
-	class AbstractBase extends ModelController(Base) {
+	class AbstractBase extends Base {
 	}
 
 	return AbstractBase;

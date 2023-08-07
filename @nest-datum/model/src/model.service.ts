@@ -65,7 +65,7 @@ export function ModelService(Base: any = Sample) {
 		}
 
 		async createPrepareProperties(properties: object): Promise<object> {
-			return properties;
+			return {};
 		}
 
 		async createProcess(properties: object): Promise<object> {

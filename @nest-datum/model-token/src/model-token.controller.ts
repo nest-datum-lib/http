@@ -1,10 +1,9 @@
-import { ModelController } from '@nest-datum/model';
 
 class Sample {
 }
 
 export function ModelTokenController(Base: any = Sample) {
-	class AbstractBase extends ModelController(Base) {
+	class AbstractBase extends Base {
 		public readonly getManyWithToken: boolean;
 		public readonly getOneWithToken: boolean;
 		public readonly createWithToken: boolean;

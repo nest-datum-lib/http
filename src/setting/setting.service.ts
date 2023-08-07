@@ -4,7 +4,7 @@ import {
 	Repository,
 	Connection, 
 } from 'typeorm';
-import { SettingSqlService } from '@nest-datum/setting';
+import { SettingSqlService } from '@nest-datum/setting-sql';
 import { Setting } from './setting.entity';
 
 @Injectable()

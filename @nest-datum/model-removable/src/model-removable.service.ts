@@ -1,10 +1,9 @@
-import { ModelService } from '@nest-datum/model';
 
 class Sample {
 }
 
 export function ModelRemovableService(Base: any = Sample) {
-	class AbstractBase extends ModelService(Base) {
+	class AbstractBase extends Base {
 		async dropMany(properties: object): Promise<object> {
 			return await super.dropMany(properties);
 		}

@@ -1,10 +1,9 @@
-import { ModelController } from '@nest-datum/model';
 
 class Sample {
 }
 
 export function ModelEnvController(Base: any = Sample) {
-	class AbstractBase extends ModelController(Base) {
+	class AbstractBase extends Base {
 		public readonly service;
 		public readonly createWithEnv: boolean;
 		public readonly updateManyWithEnv: boolean;

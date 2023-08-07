@@ -1,10 +1,9 @@
-import { ModelController } from '@nest-datum/model';
 
 class Sample {
 }
 
 export function ModelRemovableController(Base: any = Sample) {
-	class AbstractBase extends ModelController(Base) {
+	class AbstractBase extends Base {
 		public readonly service;
 
 		async validateRestoreMany(properties: object): Promise<object> {

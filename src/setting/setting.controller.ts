@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { SettingHttpController } from '@nest-datum/setting';
+import { SettingHttpController } from '@nest-datum/setting-http';
 import { SettingService } from './setting.service';
 
 @Controller(`/setting`)
