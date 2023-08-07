@@ -1,4 +1,4 @@
-import str from './index.js';
+import str from './index';
 
 const password = (value) => str(value)
 	&& value[0] !== ' ' // mustn't start with space

@@ -1,4 +1,4 @@
-import utilsCheckStrDescription from './description.js';
+import utilsCheckStrDescription from './description';
 
 const name = (value) => utilsCheckStrDescription(value) && value.length < 127;
 

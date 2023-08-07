@@ -1,4 +1,4 @@
-import str from './index.js';
+import str from './index';
 
 const userLogin = (value) => str(value)
     && value.length >= 6
