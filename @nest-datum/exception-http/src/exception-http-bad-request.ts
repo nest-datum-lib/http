@@ -1,9 +1,9 @@
-import { BadRequestException } from '@nestjs/common';
-import { ExceptionBadRequest } from '@nest-datum/exception';
-import { ExceptionHttp } from './exception-http';
 
-export function ExceptionHttpBadRequest(Base: any = BadRequestException) {
-	class AbstractBase extends ExceptionBadRequest(BadRequestException) {
+class Sample {
+}
+
+export function ExceptionHttpBadRequest(Base: any = Sample) {
+	class AbstractBase extends Base {
 	};
 
 	return AbstractBase;

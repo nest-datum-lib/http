@@ -1,4 +1,11 @@
-import { ExceptionBadRequest } from '@nest-datum/exception';
+import { 
+	Exception,
+	ExceptionError,
+	ExceptionForbidden,
+	ExceptionUnauthorized,
+	ExceptionBadRequest,
+	ExceptionNotFound, 
+} from '@nest-datum/exception';
 import { 
 	exists as utilsCheckExists,
 	strArr as utilsCheckStrArr,
@@ -11,6 +18,17 @@ class Sample {
 export function ModelController(Base: any = Sample) {
 	class AbstractBase extends Base {
 		public readonly service;
+
+		constructor(...properties) {
+			super(...properties);
+
+			this.Exception = Exception();
+			this.ExceptionError = ExceptionError();
+			this.ExceptionForbidden = ExceptionForbidden();
+			this.ExceptionUnauthorized = ExceptionUnauthorized()
+			this.ExceptionBadRequest = ExceptionBadRequest(Exception());
+			this.ExceptionNotFound = ExceptionNotFound();
+		}
 
 		async errorHandler(callback: Function) {
 			return await callback();
@@ -29,41 +47,41 @@ export function ModelController(Base: any = Sample) {
 			if (utilsCheckExists(offset)
 				&& !((output['offset'] = Number(offset)) >= 1
 					|| Number(offset) <= 99999999)) {
-				throw new (ExceptionBadRequest())(`Offset value "${offset}" is bad format.`);
+				throw new this.ExceptionBadRequest(`Offset value "${offset}" is bad format.`);
 			}
 			if (utilsCheckExists(properties['limit'])
 				&& !((output['offset'] = Number(properties['limit'])) >= 1
 					|| Number(properties['limit']) <= 99999999)) {
-				throw new (ExceptionBadRequest())(`Limit value "${properties['limit']}" is bad format.`);
+				throw new this.ExceptionBadRequest(`Limit value "${properties['limit']}" is bad format.`);
 			}
 			if (utilsCheckExists(properties['select'])) {
 				if (!utilsCheckStrArr(properties['select'])) {
-					throw new (ExceptionBadRequest())(`Select value "${properties['select']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Select value "${properties['select']}" is bad format.`);
 				}
 				output['select'] = JSON.parse(properties['select']);
 			}
 			if (utilsCheckExists(properties['join'])) {
 				if (!utilsCheckStrArr(properties['join'])) {
-					throw new (ExceptionBadRequest())(`Join value "${properties['join']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Join value "${properties['join']}" is bad format.`);
 				}
 				output['join'] = JSON.parse(properties['join']);
 			}
 			if (utilsCheckExists(properties['groupBy'])) {
 				if (!utilsCheckStrArr(properties['groupBy'])) {
-					throw new (ExceptionBadRequest())(`GroupBy value "${properties['groupBy']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`GroupBy value "${properties['groupBy']}" is bad format.`);
 				}
 				output['groupBy'] = JSON.parse(properties['groupBy']);
 			}
 			if (utilsCheckExists(properties['orderBy'])) {
 				if (!utilsCheckStrArr(properties['orderBy'])) {
-					throw new (ExceptionBadRequest())(`OrderBy value "${properties['orderBy']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`OrderBy value "${properties['orderBy']}" is bad format.`);
 				}
 				output['orderBy'] = JSON.parse(properties['orderBy']);
 			}
 			if (utilsCheckExists(properties['where'])) {
 				if (!utilsCheckStrArr(properties['where'])
 					&& !utilsCheckStrObj(properties['where'])) {
-					throw new (ExceptionBadRequest())(`Where value "${properties['where']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Where value "${properties['where']}" is bad format.`);
 				}
 				output['where'] = JSON.parse(properties['where']);
 			}

@@ -12,7 +12,7 @@ export function ModelDatesController(Base: any = Sample) {
 		async validateGetMany(properties: object): Promise<object> {
 			if (utilsCheckExists(properties['orderBy'])) {
 				if (!utilsCheckStrArr(properties['orderBy'])) {
-					throw new (ExceptionHttpBadRequest())(`OrderBy value "${properties['orderBy']}" is bad format.`);
+					// throw new (ExceptionHttpBadRequest())(`OrderBy value "${properties['orderBy']}" is bad format.`);
 				}
 				properties['orderBy'] = JSON.parse(properties['orderBy']);
 			}

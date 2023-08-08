@@ -1,9 +1,9 @@
-import { Exception } from '@nest-datum/exception';
 
-class Sample {}
+class Sample {
+}
 
 export function ExceptionHttp(Base: any = Sample) {
-	class AbstractBase extends Exception(Base) {
+	class AbstractBase extends Base {
 	};
 
 	return AbstractBase;

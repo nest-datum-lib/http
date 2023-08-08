@@ -1,4 +1,9 @@
 import { 
+	HttpException,
+	ForbiddenException,
+	UnauthorizedException,
+	BadRequestException,
+	NotFoundException,
 	Get, 
 	Post,
 	Patch,
@@ -8,12 +13,31 @@ import {
 	Body,
 } from '@nestjs/common';
 import { ModelController } from '@nest-datum/model';
+import { 
+	ExceptionHttp,
+	ExceptionHttpError,
+	ExceptionHttpForbidden,
+	ExceptionHttpUnauthorized,
+	ExceptionHttpBadRequest,
+	ExceptionHttpNotFound, 
+} from '@nest-datum/exception-http';
 
 class Sample {
 }
 
 export function ModelHttpController(Base: any = Sample) {
 	class AbstractBase extends ModelController(Base) {
+		constructor(...properties) {
+			super(...properties);
+
+			this.Exception = ExceptionHttp(HttpException);
+			this.ExceptionError = ExceptionHttpError(HttpException);
+			this.ExceptionForbidden = ExceptionHttpForbidden(ForbiddenException);
+			this.ExceptionUnauthorized = ExceptionHttpUnauthorized(UnauthorizedException)
+			this.ExceptionBadRequest = ExceptionHttpBadRequest(BadRequestException);
+			this.ExceptionNotFound = ExceptionHttpNotFound(NotFoundException);
+		}
+
 		@Get()
 		async getMany(@Query() properties: object): Promise<object> {
 			return await super.getMany(properties);

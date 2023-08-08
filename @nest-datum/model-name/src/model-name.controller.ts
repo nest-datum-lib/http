@@ -12,7 +12,7 @@ export function ModelNameController(Base: any = Sample) {
 			if (this.validateCreateNameIsRequired) {
 				if (!(utilsCheckStrFilled(properties['name'])
 					&& properties['name'].length <= 255)) {
-					throw new (ExceptionHttpBadRequest())(`Name value "${name}" is bad format.`);
+					// throw new (ExceptionHttpBadRequest())(`Name value "${name}" is bad format.`);
 				}
 			}
 			return await super.validateCreate(properties);

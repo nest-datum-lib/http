@@ -278,14 +278,12 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		async createPrepareProperties(properties: object): Promise<object> {
-			const orderByAllow = await this.createAllowPrepareProperties();
+			const columnsByAllow = await this.createAllowPrepareProperties();
 			let column,
 				output = {};
 
-			console.log('orderByAllow', orderByAllow, properties);
-
 			for (column in properties) {
-				if (orderByAllow.includes(column)) {
+				if (columnsByAllow.includes(column)) {
 					output[column] = properties[column];
 				}
 			}

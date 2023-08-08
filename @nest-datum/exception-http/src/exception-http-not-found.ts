@@ -1,10 +1,9 @@
-import { ExceptionNotFound } from '@nest-datum/exception';
-import { ExceptionHttp } from './exception-http';
 
-class Sample {}
+class Sample {
+}
 
 export function ExceptionHttpNotFound(Base: any = Sample) {
-	class AbstractBase extends ExceptionHttp(ExceptionNotFound(Base)) {
+	class AbstractBase extends Base {
 	};
 
 	return AbstractBase;

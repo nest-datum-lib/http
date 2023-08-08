@@ -18,6 +18,10 @@ export function ModelSqlDataValueService(Base: any = Sample) {
 				'dataValue',
 			];
 		}
+
+		async createPrepareProperties(properties: object): Promise<object> {
+			return await super.createPrepareProperties({ dataValue: '', ...properties });
+		}
 	}
 
 	return AbstractBase;

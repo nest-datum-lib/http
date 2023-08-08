@@ -1,10 +1,9 @@
-import { ExceptionUnauthorized } from '@nest-datum/exception';
-import { ExceptionHttp } from './exception-http';
 
-class Sample {}
+class Sample {
+}
 
 export function ExceptionHttpUnauthorized(Base: any = Sample) {
-	class AbstractBase extends ExceptionHttp(ExceptionUnauthorized(Base)) {
+	class AbstractBase extends Base {
 	};
 
 	return AbstractBase;
