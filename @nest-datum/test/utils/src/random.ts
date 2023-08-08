@@ -4,9 +4,11 @@
  * @param min 
  * @returns number
  */
-export const rnd = (max: number, min: number = 0) => Math.abs(
-  Math.floor(Math.random() * (max - min))
-);
+export const rnd = (max: number, min: number = 0) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 /**
  * Returns chat at random position

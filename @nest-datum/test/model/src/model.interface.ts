@@ -3,15 +3,20 @@ import { EntityClassOrSchema } from "@nestjs/typeorm/dist/interfaces/entity-clas
 import { ValueParam } from "@nest-datum/test/model";
 
 /**
- * Used for RequestSchema.
+ * Used for HttpRequestSchema and TcpRequestSchema.
  */
 export type RequestBodySchema = Record<string, ValueParam>;
+/**
+ * Used for URI query parameters.
+ */
 export type RequestQuerySchema = Record<string, ValueParam>;
 
 export type URI = string;
-export type EventPattern = {
-  cmd: string;
+
+export type MessagePattern = {
+  [message_name: string]: string;
 };
+export type EventPattern = string;
 
 export type HttpMethod =
 'get'     |
@@ -25,9 +30,11 @@ export type HttpMethod =
 'patch';
 
 /**
- * Schema of testing request that used for to send to specified controllers.
+ * Schema of testing request that used for 
+ * to send to specified http controllers.
  * Describes:
- *  - endpoint URI or EventPattern
+ *  - type should be http
+ *  - endpoint URI
  *  - http method
  *  - request body schema
  *  - URI queries params
@@ -44,9 +51,20 @@ export type HttpRequestSchema = {
   expectedResponse?: string | Record<string, string>;
 };
 
+/**
+ * Schema of testing request that used for 
+ * to send to specified tcp controllers.
+ * Describes:
+ *  - type should be tcp
+ *  - message pattern
+ *  - event pattern
+ *  - payload, the same as a bodySchema
+ *  - response expectation
+ */
 export type TcpRequestSchema = {
   type: 'tcp';
-  pattern: EventPattern;
+  message_pattern?: MessagePattern;
+  event_pattern?: EventPattern;
   payload: RequestBodySchema;
   expectedResponse?: any;
 };
@@ -92,9 +110,9 @@ export type ServiceMeta = {
   mock?: {
     perform: boolean;
     customFactory?: <T = any>(
-      customMockers?: Record<string, MockTargetFunction>
+      customMockers?: Record<string, Mocker>
     ) => MockType<T>;
-    customMockers?: Record<string, MockTargetFunction>,
+    customMockers?: Record<string, Mocker>,
   };
   unit?: UnitTestSchema;
 };
@@ -119,7 +137,7 @@ export type ControllerMeta = {
 
 export type RepositoryMeta ={
   type: EntityClassOrSchema;
-  customMockers?: Record<string, MockTargetFunction>;
+  customMockers?: Record<string, Mocker>;
 };
 
 /**
@@ -141,7 +159,9 @@ export type Importers = {
 };
 
 export type MockType<T> = {
-  [P in keyof T]?: jest.Mock<{}>;
+  [P in keyof T]?: jest.Mock<{}> | {};
 };
 
 export type MockTargetFunction = (...args: any[]) => unknown;
+
+export type Mocker = MockTargetFunction | {};

@@ -24,9 +24,8 @@ export class TcpController extends Controller {
 			throw new MethodNotAllowedException(`Property "ids" is not valid [1].`);
 		}
 		return {
-			accessToken: options['accessToken'],
 			userId: user['id'],
-			ids: options['ids'],
+			...options,
 		};
 	}
 

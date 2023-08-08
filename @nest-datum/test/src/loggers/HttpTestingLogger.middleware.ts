@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
  * Logs every request & response for every endpoint.
  */
 @Injectable()
-export default class TestingLogger implements NestMiddleware {
+export default class HttpTestingLogger implements NestMiddleware {
   public use(
     request: Request, 
     response: Response, 

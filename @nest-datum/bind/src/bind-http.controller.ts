@@ -62,7 +62,7 @@ export class BindHttpController extends HttpController {
 		@Param('id') id: string,
 		@Body() body,
 	) {
-		return await this.serviceHandlerWrapper(async () => await this.service.udpate(await this.validateUpdate({
+		return await this.serviceHandlerWrapper(async () => await this.service.update(await this.validateUpdate({
 			accessToken,
 			id,
 			[this.mainRelationColumnName]: body[this.mainRelationColumnName],

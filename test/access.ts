@@ -96,14 +96,73 @@ const accessHttpRequests = [
   }
 ] as HttpRequestSchema[];
 
+const eventPatternsRequests = {
+  ...defaultBody,
+  ids: [{
+    type: 'auto',
+    value: {
+      type: 'uuid',
+    },
+  }],
+  isDeleted: {
+    type: 'auto',
+    value: {
+      type: 'boolean',
+    },
+  },
+};
+
 const accessTcpRequests = [
   {
     type: 'tcp',
-    payload: defaultBody,
-    pattern: {
+    message_pattern: {
+      cmd: 'access.many',
+    },
+    payload: {
+      ...defaultBody,
+      id: {
+        type: 'custom',
+        value: 'id1'
+      },
+    },
+    expectedResponse: {},
+  },
+  {
+    type: 'tcp',
+    message_pattern: {
       cmd: 'access.one',
     },
-    expectedResponse: {"errorCode": 405, "message": "Property \"id\" is not valid."},
+    payload: {
+      ...defaultBody,
+      id: {
+        type: 'custom',
+        value: 'someid',
+      },
+    },
+    expectedResponse: {
+      id: 'someid',
+    },
+  },
+  {
+    type: 'tcp',
+    event_pattern: 'access.drop',
+    payload: eventPatternsRequests,
+    expectedResponse: true,
+  },
+  {
+    type: 'tcp',
+    event_pattern: 'access.dropMany',
+    payload: eventPatternsRequests,
+  },
+  {
+    type: 'tcp',
+    event_pattern: 'access.create',
+    payload: eventPatternsRequests,
+  },
+  {
+    type: 'tcp',
+    event_pattern: 'access.update',
+    payload: eventPatternsRequests,
   }
 ] as TcpRequestSchema[];
 
@@ -132,13 +191,6 @@ const importers: Importers = {
     accessService: {
       name: 'AccessService',
       type: AccessService,
-      unit: {
-        'some test': {
-          funcName: 'create',
-          expectFuncName: 'toBeCalled',
-          customImplementation: () => 'test',
-        },
-      },
     },
     accessOptionService: {
       name: 'AccessOptionService',
@@ -159,16 +211,27 @@ const importers: Importers = {
   },
   mockDependencies: {
     repositories: [
-      Access, 
-      AccessOption, 
-      AccessAccessOption, 
-      AccessAccessAccessOption, 
-      RoleAccess,
-    ].map(repo => ({
-      type: repo
-    })),
+      {
+        type: Access,
+        customMockers: {
+          findOne: () => {
+            return {
+              id: 'someid',
+            }
+          }
+        }
+      },
+      ...[
+        AccessOption, 
+        AccessAccessOption, 
+        AccessAccessAccessOption, 
+        RoleAccess,
+      ].map(repo => ({
+        type: repo
+      }))
+    ],
   },
 }
 
-const testSuite = new TestSuite(name_module, importers, true);
+const testSuite = new TestSuite(name_module, importers, false);
 testSuite.perform();

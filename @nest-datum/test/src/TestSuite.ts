@@ -6,7 +6,7 @@ import {
   ClientProxy,
 } from '@nestjs/microservices';
 import * as request from 'supertest';
-import { TestingLogger } from '@nest-datum/test';
+import { HttpTestingLogger, TcpTestingLogger } from '@nest-datum/test';
 import { createMock } from '@golevelup/ts-jest';
 import { repositoryMockFactory } from '@nest-datum/test';
 import { transportServiceMockFactory } from '@nest-datum/test';
@@ -86,16 +86,21 @@ export default class TestSuite {
    */
   public async perform() {
     describe(`Performing test suite for ${this.name}`, () => {
-      beforeAll(this.prepare.bind(this));
-      it('App should be defined', () => {
-        expect(this.app).toBeDefined();
+      describe('Initializing main components', () => {
+        beforeAll(async () => await this.prepare());
+        it('App should be defined', () => {
+          expect(this.app).toBeDefined();
+        });
+        it('TCP Client should be defined', () => {
+          expect(this.tcpClient).toBeDefined();
+        });
       });
+  
+      describe('Performing unit tests', this.coverageUnitTests.bind(this));
+      describe('Performing e2e tests', this.coverageE2ETests.bind(this));
+      
+      afterAll(async () => await this.finish());
     });
-
-    describe('Performing unit tests', this.coverageUnitTests.bind(this));
-    describe('Performing e2e tests', this.coverageE2ETests.bind(this));
-    
-    afterAll(this.finish.bind(this));
   }
 
   /**
@@ -133,6 +138,10 @@ export default class TestSuite {
           )
         )
           .map(serviceMeta => {
+            console.log(JSON.stringify(serviceMeta.type.prototype, null, '\t'));
+            // serviceMeta.type.prototype.withTwoStepRemoval = false;
+            // Object.defineProperty(servi)
+
             if (serviceMeta?.mock && serviceMeta.mock.perform) {
               if (serviceMeta.mock.customFactory) {
                 return {
@@ -147,6 +156,7 @@ export default class TestSuite {
                 useValue: createMock<typeof serviceMeta.type>()
               };
             } else return serviceMeta.type;
+
           }),
       ],
     })
@@ -158,13 +168,18 @@ export default class TestSuite {
 
   private async init() {
     this.app.use(json());
-    
-    if (this.verbose)
-      this.app.use(new TestingLogger().use.bind(TestingLogger));
 
-    await this.app.connectMicroservice({
+    const microservice = await this.app.connectMicroservice({
       transport: Transport.TCP,
     });
+    
+    if (this.verbose) {
+      this.app.use(new HttpTestingLogger().use.bind(HttpTestingLogger));
+      microservice.useGlobalInterceptors(
+        new TcpTestingLogger()
+      );
+      // this.app.useGlobalInterceptors(new TcpTestingLogger());
+    }
 
     await this.app.startAllMicroservices();
     await this.app.init();
@@ -217,9 +232,14 @@ export default class TestSuite {
     );
   }
 
-  private validateHttpRequest(request: HttpRequestSchema) {
+  private validateAnyRequest(request: HttpRequestSchema | TcpRequestSchema) {
     if (!request.type)
       throw new Error('Request type is not specified!');
+    if (!request.type)
+      throw new Error('Request type is not specified!');
+  }
+
+  private validateHttpRequest(request: HttpRequestSchema) {
     if (!request.method)
       throw new Error('Request method is not specified!');
     if (!request.expectedStatusCode)
@@ -229,10 +249,14 @@ export default class TestSuite {
   }
 
   private validateTcpRequest(request: TcpRequestSchema) {
-    if (!request.type)
-      throw new Error('Request type is not specified!');
-    if (!request.pattern)
-      throw new Error('Tcp event pattern is not specified!');
+    if (
+      !request.message_pattern &&
+      !request.event_pattern
+    ) {
+      throw new Error(
+        'TCP Requests requires message or event pattern. Received - nothing!'
+      );
+    }
     if (!request.payload)
       throw new Error('Payload is not specified!');
   }
@@ -299,7 +323,7 @@ export default class TestSuite {
 
       (Object.values(this.importers[key]) as ControllerMeta[])
         .forEach(controllerMeta => {
-          if (!controllerMeta.requests.length) return;
+          if (!controllerMeta?.requests?.length) return;
           const uri_root = controllerMeta.uri_root;
           describe(`sending requests to ${controllerMeta.name} controller`, () => {
             for (const request of controllerMeta.requests)
@@ -313,6 +337,7 @@ export default class TestSuite {
     request: HttpRequestSchema | TcpRequestSchema, 
     uri_root?: string,
   ) {
+    this.validateAnyRequest(request);
     if (request.type === 'http') {
       this.testHttpRequest(request, uri_root);
     } else if (request.type === 'tcp') {
@@ -335,7 +360,7 @@ export default class TestSuite {
     it(
       `${request.method.toUpperCase()} to ${request.endpoint}` +
       `, expected ${request.expectedStatusCode} ` +
-      `${request.expectedResponse ? 
+      `${request.expectedResponse !== undefined ? 
         `with response ${JSON.stringify(request.expectedResponse, null)}` : 
         ''}`,
       () => {
@@ -365,24 +390,42 @@ export default class TestSuite {
     this.validateTcpRequest(request);
 
     it(
-      `TCP request to ${JSON.stringify(request.pattern, null)} pattern` +
+      `TCP request to ${
+        request.message_pattern ? 
+        JSON.stringify(request.message_pattern, null) :
+        JSON.stringify(request.event_pattern, null)
+      } pattern` +
       `${
-        request.expectedResponse ? 
+        request.expectedResponse !== undefined ? 
         `, expected response ${
           JSON.stringify(request.expectedResponse, null)
         }` :
         ''
       }`,
       (done) => {
-        const response: Observable<any> = this.tcpClient.send(
-          request.pattern,
-          request.payload,
-        );
-    
-        response.subscribe(res => {
-          expect(res).toStrictEqual(request.expectedResponse);
+        const generated_payload = generateRequest(request.payload);
+        let response: Observable<any>;
+
+        if (request.message_pattern) {
+          response = this.tcpClient.send(
+            request.message_pattern,
+            generated_payload,
+          );
+          response.subscribe(res => {
+            expect(res).toEqual(request.expectedResponse);
+            done();
+          });
+        } else if (request.event_pattern) {
+          response = this.tcpClient.emit(
+            request.event_pattern,
+            generated_payload,
+          );
           done();
-        });
+        } else {
+          throw new Error(
+            'TCP Requests requires message or event pattern. Received - nothing!'
+          );
+        }
       }
     );
   }
@@ -396,9 +439,10 @@ export default class TestSuite {
   /**
    * Performs finish stage after the all tests.
    */
-  private finish() {
-    this.app.close();
-    this.tcpClient.close();
+  private async finish() {
+    jest.clearAllMocks();
+    await this.app.close();
+    await this.tcpClient.close();
   }
 
   /**

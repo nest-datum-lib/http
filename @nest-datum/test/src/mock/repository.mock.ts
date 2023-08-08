@@ -1,4 +1,4 @@
-import { MockType, MockTargetFunction } from "@nest-datum/test/model"
+import { MockType, Mocker } from "@nest-datum/test/model"
 import { jestMockWrapper } from "@nest-datum/test/utils";
 import { Repository } from "typeorm";
 import { EntityClassOrSchema } from "@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type";
@@ -19,16 +19,20 @@ const defaultRepositoryMockers = {
   save: jest.fn(() => true),
   update: jest.fn((entity, new_entity) => new_entity),
   count: jest.fn(() => 1),
+  metadata: {
+    tableName: 'testTable',
+  }
 };
 
 function repositoryMockFactory<EntityType extends EntityClassOrSchema>(
-  customMockers: Record<string, MockTargetFunction> = {}
+  customMockers: Record<string, Mocker> = {}
 ): MockType<Repository<EntityType>> {
   if (customMockers) {
     Object.keys(customMockers).forEach((funcName: string) => {
       customMockers[funcName] = jestMockWrapper(customMockers[funcName]);
     });
   }
+  
   return jest.fn(
     () => ({
       ...defaultRepositoryMockers,

@@ -7,7 +7,8 @@ import {
   TcpRequestSchema,
   RequestBodySchema,
   MockType,
-  MockTargetFunction
+  MockTargetFunction,
+  Mocker,
 } from './src/model.interface';
 import {
   AutoValue,
@@ -34,4 +35,5 @@ export {
   BooleanValueParam,
   MockType,
   MockTargetFunction,
+  Mocker,
 };

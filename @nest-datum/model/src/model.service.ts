@@ -201,7 +201,6 @@ export class ModelService {
 
 		const processedPayload = await this.dropManyProperties(payload);
 		const output = await this.dropManyProcess(processedPayload, payload);
-
 		return await this.dropManyOutput(processedPayload, await this.dropAfter(payload, processedPayload, output));
 	}
 

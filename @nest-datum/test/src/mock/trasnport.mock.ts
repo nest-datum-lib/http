@@ -1,4 +1,4 @@
-import { MockType, MockTargetFunction } from "@nest-datum/test/model"
+import { MockType, Mocker } from "@nest-datum/test/model"
 import { ModelService } from "@nest-datum/model";
 import { jestMockWrapper } from "@nest-datum/test/utils";
 
@@ -16,7 +16,7 @@ const defaultTransportMockers = {
 };
 
 function transportServiceMockFactory<T extends ModelService>(
-  customMockers: Record<string, MockTargetFunction> = {}
+  customMockers: Record<string, Mocker> = {}
 ): MockType<T> {
   if (customMockers) {
     Object.keys(customMockers).forEach((funcName: string) => {

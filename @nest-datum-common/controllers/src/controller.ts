@@ -119,9 +119,8 @@ export class Controller {
 		const user = getUser(options['accessToken']);
 
 		return {
-			accessToken: options['accessToken'],
 			userId: user['id'],
-			id: options['id'],
+			...options,
 		};
 	}
 
@@ -135,9 +134,8 @@ export class Controller {
 			throw new MethodNotAllowedException(`Property "ids" is not valid [1].`);
 		}
 		return {
-			accessToken: options['accessToken'],
 			userId: user['id'],
-			ids: JSON.parse(options['ids']),
+			...options,
 		};
 	}
 
