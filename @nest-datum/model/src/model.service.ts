@@ -64,6 +64,11 @@ export function ModelService(Base: any = Sample) {
 			return await this.before(properties);
 		}
 
+		/**
+		 * Parse the input parameters and prepare the data for the new model.
+		 * @param properties object
+		 * @return Promise<object>
+		 */
 		async createPrepareProperties(properties: object): Promise<object> {
 			return {};
 		}

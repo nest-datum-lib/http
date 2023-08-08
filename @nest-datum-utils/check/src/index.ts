@@ -3,7 +3,10 @@ import arrFilled from './arr/filled';
 import str from './str';
 import strFilled from './str/filled';
 import strArr from './str/arr';
+import strArrFilled from './str/arrFilled';
 import strObj from './str/obj';
+import strObjFilled from './str/objFilled';
+import strId from './str/id';
 import strSqlOperator from './str/sql/operator';
 import numericInt from './numeric/int';
 import bool from './bool';
@@ -15,7 +18,10 @@ export {
 	str,
 	strFilled,
 	strArr,
+	strArrFilled,
 	strObj,
+	strObjFilled,
+	strId,
 	strSqlOperator,
 	numericInt,
 	bool,

@@ -9,7 +9,10 @@ import {
 import { 
 	exists as utilsCheckExists,
 	strArr as utilsCheckStrArr,
-	strObj as utilsCheckStrObj, 
+	strArrFilled as utilsCheckStrArrFilled,
+	strObj as utilsCheckStrObj,
+	strObjFilled as utilsCheckStrObjFilled,
+	strId as utilsCheckStrId, 
 } from '@nest-datum-utils/check';
 
 class Sample {
@@ -47,22 +50,22 @@ export function ModelController(Base: any = Sample) {
 			if (utilsCheckExists(offset)
 				&& !((output['offset'] = Number(offset)) >= 1
 					|| Number(offset) <= 99999999)) {
-				throw new this.ExceptionBadRequest(`Offset value "${offset}" is bad format.`);
+				throw new this.ExceptionBadRequest(`Property "offset" "${offset}" is bad format.`);
 			}
 			if (utilsCheckExists(properties['limit'])
 				&& !((output['offset'] = Number(properties['limit'])) >= 1
 					|| Number(properties['limit']) <= 99999999)) {
-				throw new this.ExceptionBadRequest(`Limit value "${properties['limit']}" is bad format.`);
+				throw new this.ExceptionBadRequest(`Property "limit" "${properties['limit']}" is bad format.`);
 			}
 			if (utilsCheckExists(properties['select'])) {
 				if (!utilsCheckStrArr(properties['select'])) {
-					throw new this.ExceptionBadRequest(`Select value "${properties['select']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Property "select" "${properties['select']}" is bad format.`);
 				}
 				output['select'] = JSON.parse(properties['select']);
 			}
 			if (utilsCheckExists(properties['join'])) {
 				if (!utilsCheckStrArr(properties['join'])) {
-					throw new this.ExceptionBadRequest(`Join value "${properties['join']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Property "join" "${properties['join']}" is bad format.`);
 				}
 				output['join'] = JSON.parse(properties['join']);
 			}
@@ -74,14 +77,14 @@ export function ModelController(Base: any = Sample) {
 			}
 			if (utilsCheckExists(properties['orderBy'])) {
 				if (!utilsCheckStrArr(properties['orderBy'])) {
-					throw new this.ExceptionBadRequest(`OrderBy value "${properties['orderBy']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Property "orderBy" "${properties['orderBy']}" is bad format.`);
 				}
 				output['orderBy'] = JSON.parse(properties['orderBy']);
 			}
 			if (utilsCheckExists(properties['where'])) {
 				if (!utilsCheckStrArr(properties['where'])
 					&& !utilsCheckStrObj(properties['where'])) {
-					throw new this.ExceptionBadRequest(`Where value "${properties['where']}" is bad format.`);
+					throw new this.ExceptionBadRequest(`Property "where" "${properties['where']}" is bad format.`);
 				}
 				output['where'] = JSON.parse(properties['where']);
 			}
@@ -89,26 +92,85 @@ export function ModelController(Base: any = Sample) {
 		}
 
 		async validateGetOne(properties: object): Promise<object> {
+			const output = {
+				id: properties['id'],
+				select: [],
+				join: [],
+				where: {},
+			};
+
+			if (!utilsCheckStrId(output['id'])) {
+				throw new this.ExceptionBadRequest(`Property "id" "${output['id']}" is bad format.`);
+			}
+			if (utilsCheckExists(properties['select'])) {
+				if (!utilsCheckStrArr(properties['select'])) {
+					throw new this.ExceptionBadRequest(`Property "select" "${properties['select']}" is bad format.`);
+				}
+				output['select'] = JSON.parse(properties['select']);
+			}
+			if (utilsCheckExists(properties['join'])) {
+				if (!utilsCheckStrArr(properties['join'])) {
+					throw new this.ExceptionBadRequest(`Property "join" "${properties['join']}" is bad format.`);
+				}
+				output['join'] = JSON.parse(properties['join']);
+			}
+			if (utilsCheckExists(properties['where'])) {
+				if (!utilsCheckStrArr(properties['where'])
+					&& !utilsCheckStrObj(properties['where'])) {
+					throw new this.ExceptionBadRequest(`Property "where" "${properties['where']}" is bad format.`);
+				}
+				output['where'] = JSON.parse(properties['where']);
+			}
 			return properties;
 		}
 
 		async validateCreate(properties: object): Promise<object> {
+			if (utilsCheckExists(properties['id'])
+				&& !utilsCheckStrId(properties['id'])) {
+				throw new this.ExceptionBadRequest(`Property "id" "${properties['id']}" is bad format.`);
+			}
 			return properties;
 		}
 
 		async validateUpdateMany(properties: object): Promise<object> {
+			if (!utilsCheckExists(properties['body'])
+				|| !utilsCheckStrObjFilled(properties['body'])) {
+				throw new this.ExceptionBadRequest(`Property "body" "${properties['body']}" is bad format.`);
+			}
+			let id;
+
+			for (id in properties['body']) {
+				if (!utilsCheckStrId(id)) {
+					throw new this.ExceptionBadRequest(`Property "id" "${id}" is bad format.`);
+				}
+				if (!utilsCheckStrObjFilled(properties['body'][id])) {
+					throw new this.ExceptionBadRequest(`Property "body item" "${properties['body'][id]}" is bad format.`);
+				}
+			}
 			return properties;
 		}
 
 		async validateUpdateOne(properties: object): Promise<object> {
+			if (!utilsCheckStrId(properties['id'])) {
+				throw new this.ExceptionBadRequest(`Property "id" "${properties['id']}" is bad format.`);
+			}
 			return properties;
 		}
 
 		async validateDropMany(properties: object): Promise<object> {
+			if (utilsCheckExists(properties['ids'])) {
+				if (!utilsCheckStrArrFilled(properties['ids'])) {
+					throw new this.ExceptionBadRequest(`Property "ids" "${properties['ids']}" is bad format.`);
+				}
+				return { ...properties, ids: (JSON.parse(properties['ids'] || '[]') || []) };
+			}
 			return properties;
 		}
 
 		async validateDropOne(properties: object): Promise<object> {
+			if (!utilsCheckStrId(properties['id'])) {
+				throw new this.ExceptionBadRequest(`Property "id" "${properties['id']}" is bad format.`);
+			}
 			return properties;
 		}
 

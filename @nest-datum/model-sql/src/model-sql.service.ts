@@ -16,6 +16,12 @@ export function ModelSqlService(Base: any = Sample) {
 		public readonly connectionService: Connection;
 		public readonly getManyAllDefaultLimit: number = 20;
 
+		/**
+		 * Concatenate strings from prepared "getMany" properties for query rows.
+		 * @param {object} properties
+		 * @param {object} sqlQueryBuilderProperties
+		 * @return {Promise<string>}
+		 */
 		async getManyListQueryString(properties: object, sqlQueryBuilderProperties: object): Promise<string> {
 			return `\nSELECT ${sqlQueryBuilderProperties['select']}\nFROM ${this.repository.metadata.tableName}\n${sqlQueryBuilderProperties['join']
 				? `${sqlQueryBuilderProperties['join']}`
@@ -31,6 +37,12 @@ export function ModelSqlService(Base: any = Sample) {
 								: ''};`;
 		}
 
+		/**
+		 * Concatenate strings from prepared "getMany" properties for query total value.
+		 * @param {object} properties
+		 * @param {object} sqlQueryBuilderProperties
+		 * @return {Promise<string>}
+		 */
 		async getManyTotalQueryString(properties: object, sqlQueryBuilderProperties: object): Promise<string> {
 			return `\nSELECT COUNT(DISTINCT \`${this.repository.metadata.tableName}\`.\`id\`) AS \`total\`, ${sqlQueryBuilderProperties['select']}\nFROM ${this.repository.metadata.tableName}\n${sqlQueryBuilderProperties['join']
 				? `${sqlQueryBuilderProperties['join']}`
@@ -43,10 +55,19 @@ export function ModelSqlService(Base: any = Sample) {
 							: ''};`;
 		}
 
+		/**
+		 * List of allowed fields that the client can query from database by select.
+		 * @return {Promise<Array<string>>}
+		 */
 		async getManyAllowPreparePropertiesSelect(): Promise<Array<string>> {
 			return [ 'id' ];
 		}
 
+		/**
+		 * Provide "SELECT" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesSelect(properties: object): Promise<string> {
 			const columnsSelectRequest = properties['select'] || [];
 			const columnsSelectAllow = await this.getManyAllowPreparePropertiesSelect();
@@ -79,10 +100,19 @@ export function ModelSqlService(Base: any = Sample) {
 				})();
 		}
 
+		/**
+		 * List of allowed fields that the client can query from database by join.
+		 * @return {Promise<Array<string>>}
+		 */
 		async getManyAllowPreparePropertiesJoin(): Promise<Array<string>> {
 			return [];
 		}
 
+		/**
+		 * Provide "JOIN" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesJoin(properties: object): Promise<string> {
 			const whereRequest = properties['where'];
 			const joinRequest = properties['join'] || {};
@@ -105,6 +135,11 @@ export function ModelSqlService(Base: any = Sample) {
 			return output.join(`\n`);
 		}
 
+		/**
+		 * Provide group string by "AND" operator to "WHERE" property in database query string.
+		 * @param {object} allProperties
+		 * @return {Promise<Function>}
+		 */
 		async getManyPreparePropertiesWhereGroupAnd(allProperties: object): Promise<Function> {
 			return async (whereProperties: object): Promise<string> => {
 				let column,
@@ -127,6 +162,11 @@ export function ModelSqlService(Base: any = Sample) {
 			};
 		}
 
+		/**
+		 * Provide group string by "OR" operator to "WHERE" property in database query string.
+		 * @param {object} allProperties
+		 * @return {Promise<Function>}
+		 */
 		async getManyPreparePropertiesWhereGroupOr(allProperties: object): Promise<Function> {
 			return async (whereProperties: Array<any>): Promise<string> => {
 				let i = 0,
@@ -150,6 +190,11 @@ export function ModelSqlService(Base: any = Sample) {
 			};
 		}
 
+		/**
+		 * Provide "WHERE" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesWhere(properties: object): Promise<string> {
 			if (utilsCheckObjFilled(properties['where'])) {
 				return await (await this.getManyPreparePropertiesWhereGroupAnd(properties))(properties['where']);
@@ -157,10 +202,19 @@ export function ModelSqlService(Base: any = Sample) {
 			return '';
 		}
 
+		/**
+		 * List of allowed fields that the client can query from database by order.
+		 * @return {Promise<Array<string>>}
+		 */
 		async getManyAllowPreparePropertiesOrderBy(): Promise<Array<string>> {
 			return [];
 		}
 
+		/**
+		 * Provide "ORDER BY" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
 			const orderByRequest = properties['orderBy'] || {};
 			const orderByAllow = await this.getManyAllowPreparePropertiesOrderBy();
@@ -188,10 +242,19 @@ export function ModelSqlService(Base: any = Sample) {
 			return output.join(`,`);
 		}
 
+		/**
+		 * List of allowed fields that the client can query from database by group.
+		 * @return {Promise<Array<string>>}
+		 */
 		async getManyAllowPreparePropertiesGroupBy(): Promise<Array<string>> {
 			return [];
 		}
 
+		/**
+		 * Provide "GROUP BY" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesGroupBy(properties: object): Promise<string> {
 			const groupByRequest = properties['groupBy'] || [];
 			const groupByAllow = await this.getManyAllowPreparePropertiesGroupBy();
@@ -216,6 +279,11 @@ export function ModelSqlService(Base: any = Sample) {
 			return output.join(`,`);
 		}
 
+		/**
+		 * Provide "offset" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesOffset(properties: object): Promise<string> {
 			const offset = properties['offset'] ?? properties['page'];
 			const limit = utilsCheckNumericInt(properties['limit'])
@@ -225,14 +293,24 @@ export function ModelSqlService(Base: any = Sample) {
 			return `${(offset > 0) ? ((offset - 1) * limit) : 0}`;
 		}
 
+		/**
+		 * Provide "limit" property to database query.
+		 * @param {object} properties
+		 * @return {Promise<string>}
+		 */
 		async getManyPreparePropertiesLimit(properties: object): Promise<string> {
 			return utilsCheckNumericInt(properties['limit'])
 				? `${properties['limit']}`
 				: `${this.getManyAllDefaultLimit || 20}`;
 		}
 
+		/**
+		 * Parse the input parameters and prepare the data for query to database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
 		async getManyPrepareProperties(properties: object): Promise<object> {
-			const _getManyQueryProcessQueryBuilder = {
+			const _getManyProcessQuery = {
 				select: await this.getManyPreparePropertiesSelect(properties),
 				join: await this.getManyPreparePropertiesJoin(properties),
 				where: await this.getManyPreparePropertiesWhere(properties),
@@ -243,40 +321,55 @@ export function ModelSqlService(Base: any = Sample) {
 			};
 			const output = { 
 				...properties, 
-				_getManyQueryProcessQueryBuilder: {
-					..._getManyQueryProcessQueryBuilder,
-					queryString: await this.getManyListQueryString(properties, _getManyQueryProcessQueryBuilder),
-					queryTotal: await this.getManyTotalQueryString(properties, _getManyQueryProcessQueryBuilder),
-				}, 
+				_getManyQueryString: await this.getManyListQueryString(properties, _getManyProcessQuery),
+				_getManyQueryTotal: await this.getManyTotalQueryString(properties, _getManyProcessQuery),
 			};
 
-			console.log(`\n>>> QUERY getManyPrepareProperties list query string:\n-------------------------------------`, output._getManyQueryProcessQueryBuilder.queryString);
-			console.log(`\n>>> QUERY getManyPrepareProperties total query string:\n-------------------------------------`, output._getManyQueryProcessQueryBuilder.queryTotal);
+			console.log(`\n>>> QUERY getManyPrepareProperties list query string:\n-------------------------------------`, output._getManyQueryString);
+			console.log(`\n>>> QUERY getManyPrepareProperties total query string:\n-------------------------------------`, output._getManyQueryTotal);
 
 			return output;
 		}
 
-		async getManyQueryProcess(properties: object): Promise<object> {
-			properties['_getManyQueryProcessResult'] = {
-				rows: await this.connectionService.query(properties['_getManyQueryProcessQueryBuilder']['queryString']),
-				total: Number(((await this.connectionService.query(properties['_getManyQueryProcessQueryBuilder']['queryTotal']))[0] || {})['total']),
-			};
-
-			return properties;
-		}
-
+		/**
+		 * A method that directly implements a query to database.
+		 * Adds query result to "_getManyProcessResult" property.
+		 * @param {properties} object
+		 * @return {Promise<object>}
+		 */
 		async getManyProcess(properties: object): Promise<object> {
-			return await this.getManyQueryProcess(await super.getManyProcess(properties));
+			return await super.getManyProcess({ 
+				...properties, 
+				_getManyProcessResult: {
+					rows: await this.connectionService.query(properties['_getManyQueryString']),
+					total: Number(((await this.connectionService.query(properties['_getManyQueryTotal']))[0] || {})['total']),
+				}, 
+			});
 		}
 
+		/**
+		 * Parse the input parameters and prepare the data for the query to data base.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
 		async getManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
-			return propertiesOutput['_getManyQueryProcessResult'];
+			return propertiesOutput['_getManyProcessResult'];
 		}
 
+		/**
+		 * List of allowed fields that the client can add to the created model.
+		 * @return Promise<Array<string>>
+		 */
 		async createAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 'id' ];
 		}
 
+		/**
+		 * Parse the input parameters and prepare the data for the new model.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
 		async createPrepareProperties(properties: object): Promise<object> {
 			const columnsByAllow = await this.createAllowPrepareProperties();
 			let column,
@@ -287,27 +380,26 @@ export function ModelSqlService(Base: any = Sample) {
 					output[column] = properties[column];
 				}
 			}
-			return { ...properties, _createProcessQueryBuilder: await this.createProcessQueryBuilder(output) };
+			return { ...properties, _createPrepareProperties: output };
 		}
 
+		/**
+		 * Method that directly adds new data to database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
 		async createProcess(properties: object): Promise<object> {
-			return await this.createQueryProcess(await super.createProcess(properties));
+			return await super.createProcess({ ...properties, _createProcessResult: await this.repository.save(properties['_createPrepareProperties']) });
 		}
 
-		async createQueryProcess(properties: object): Promise<object> {
-			properties['_createQueryProcessResult'] = await this.connectionService.query(properties['_createProcessQueryBuilder']);
-
-			return properties;
-		}
-
-		async createProcessQueryBuilder(properties: object): Promise<string> {
-			const propertiesKeys = Object.keys(properties);
-
-			return `INSERT INTO \`${this.repository.metadata.tableName}\` (${propertiesKeys.map((column) => `\`${column}\``).join(', ')}) VALUES (${propertiesKeys.map((column) => `"${properties[column]}"`).join(', ')});`;
-		}
-
+		/**
+		 * Parsing the resulting data after the process of adding data to database, before directly returning it back to the client
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
 		async createResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
-			return propertiesOutput;
+			return propertiesOutput['_createProcessResult'];
 		}
 	}
 
