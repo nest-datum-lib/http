@@ -73,6 +73,11 @@ export function ModelService(Base: any = Sample) {
 			return {};
 		}
 
+		/**
+		 * Abstract method for creating a new model.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
 		async createProcess(properties: object): Promise<object> {
 			return properties;
 		}
@@ -81,6 +86,12 @@ export function ModelService(Base: any = Sample) {
 			return await this.after(properties);
 		}
 
+		/**
+		 * Parsing the resulting data before directly returning it back to the client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
 		async createResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput;
 		}

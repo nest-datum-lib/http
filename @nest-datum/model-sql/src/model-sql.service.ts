@@ -348,13 +348,69 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
-		 * Parse the input parameters and prepare the data for the query to data base.
+		 * Parse the input parameters and prepare the data for returning to client.
 		 * @param {object} propertiesInput
 		 * @param {object} propertiesOutput
 		 * @return {Promise<object>}
 		 */
 		async getManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput['_getManyProcessResult'];
+		}
+
+		/**
+		 * List of allowed fields that the client can extract from model of database.
+		 * @return Promise<Array<string>>
+		 */
+		async getOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 'id' ];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for query one model from database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async getOnePrepareProperties(properties: object): Promise<object> {
+			const _getOneProcessQuery = {
+				select: await this.getManyPreparePropertiesSelect(properties),
+				join: await this.getManyPreparePropertiesJoin(properties),
+				where: await this.getManyPreparePropertiesWhere(properties),
+				groupBy: await this.getManyPreparePropertiesGroupBy(properties),
+				orderBy: await this.getManyPreparePropertiesOrderBy(properties),
+				offset: 0,
+				limit: 1,
+			};
+			const output = { 
+				...properties, 
+				_getOneQueryString: await this.getManyListQueryString(properties, _getOneProcessQuery),
+			};
+
+			console.log(`\n>>> QUERY getOnePrepareProperties list query string:\n-------------------------------------`, output._getOneQueryString);
+
+			return output;
+		}
+
+		/**
+		 * A method that directly implements a query to database.
+		 * Adds query result to "_getOneProcessResult" property.
+		 * @param {properties} object
+		 * @return {Promise<object>}
+		 */
+		async getOneProcess(properties: object): Promise<object> {
+			return await super.getOneProcess({ 
+				...properties, 
+				_getOneProcessResult: ((await this.connectionService.query(properties['_getOneQueryString'])) || [])[0], 
+			});
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for returning to client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
+		async getOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_getOneProcessResult'];
 		}
 
 		/**
@@ -393,13 +449,180 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
-		 * Parsing the resulting data after the process of adding data to database, before directly returning it back to the client
+		 * Parsing the resulting data after the process of adding data to database, before directly returning it back to the client.
 		 * @param {object} propertiesInput
 		 * @param {object} propertiesOutput
 		 * @return {Promise<object>}
 		 */
 		async createResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput['_createProcessResult'];
+		}
+
+		/**
+		 * List of allowed fields that the client can update many models in database.
+		 * @return Promise<Array<string>>
+		 */
+		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 'id' ];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for the updating many models.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async updateManyPrepareProperties(properties: object): Promise<object> {
+			const getManyPreparedProperties = await this.getManyPrepareProperties(properties);
+			const columnsByAllow = await this.updateManyAllowPrepareProperties();
+			const columnsByRequest = properties['body'];
+			let id,
+				output = {};
+
+			for (id in columnsByRequest) {
+				const newValues = columnsByRequest[id];
+
+				if (utilsCheckObjFilled(newValues)) {
+					Object
+						.keys(newValues)
+						.filter((column) => columnsByAllow.includes(column))
+						.forEach((column) => {
+							if (!output[id]) {
+								output[id] = {};
+							}
+							output[id][column] = newValues[column];
+						});
+				}
+			}
+			return { 
+				...properties, 
+				_updateManyPrepareProperties: output, 
+				_getManyQueryString: getManyPreparedProperties['_getManyQueryString'],
+				_getManyQueryTotal: getManyPreparedProperties['_getManyQueryTotal'],
+			};
+		}
+
+		/**
+		 * Method that directly update data in database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async updateManyProcess(properties: object): Promise<object> {
+			const newProperties = await this.getManyProcess(properties);
+			const rows = newProperties['_getManyProcessResult']['rows'];
+			let i = 0,
+				output = [];
+
+			while (i < rows.length) {
+				if (await this.repository.update({ id: rows[i]['id'] }, properties[rows[i]['id']])) {
+					output.push({ ...rows[i], ...properties[rows[i]['id']] });
+				}
+				i++;
+			}
+			return { ...properties, _dropManyProcessResult: output };
+		}
+
+		/**
+		 * Parsing the resulting data after the process of update many models in database, before directly returning it back to the client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
+		async updateManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_updateManyProcessResult'];
+		}
+
+		/**
+		 * List of allowed fields that the client can update one model in database.
+		 * @return Promise<Array<string>>
+		 */
+		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 'id' ];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for the updating one model.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async updateOnePrepareProperties(properties: object): Promise<object> {
+			const columnsByAllow = await this.updateOneAllowPrepareProperties();
+			let column,
+				output = {};
+
+			for (column in properties) {
+				if (columnsByAllow.includes(column)) {
+					output[column] = properties[column];
+				}
+			}
+			return { ...properties, _updateOnePrepareProperties: output };
+		}
+
+		/**
+		 * Method that directly update data in database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async updateOneProcess(properties: object): Promise<object> {
+			return await super.updateOneProcess({ ...properties, _updateOneProcessResult: await this.repository.update({ id: properties['id'] }, properties['_updateOnePrepareProperties']) });
+		}
+
+		/**
+		 * Parsing the resulting data after the process of update one model in database, before directly returning it back to the client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
+		async updateOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_updateOneProcessResult'];
+		}
+
+		/**
+		 * Method that directly deleting many models from database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async dropManyProcess(properties: object): Promise<object> {
+			const newProperties = await this.getManyProcess(properties);
+			const rows = newProperties['_getManyProcessResult']['rows'];
+			let i = 0,
+				output = [];
+
+			while (i < rows.length) {
+				if (await this.repository.delete({ id: rows[i]['id'] })) {
+					output.push(rows[i]);
+				}
+				i++;
+			}
+			return { ...properties, _dropManyProcessResult: output };
+		}
+
+		/**
+		 * Parsing the resulting data after the process of deleting many models from database, before directly returning it back to the client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
+		async dropManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_dropManyProcessResult'];
+		}
+
+		/**
+		 * Method that directly delete model data in database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async dropOneProcess(properties: object): Promise<object> {
+			return await super.updateOneProcess({ ...properties, _dropOneProcessResult: await this.repository.delete({ id: properties['id'] }) });
+		}
+
+		/**
+		 * Parsing the resulting data after the process of delete one model from database, before directly returning it back to the client.
+		 * @param {object} propertiesInput
+		 * @param {object} propertiesOutput
+		 * @return {Promise<object>}
+		 */
+		async dropOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_dropOneProcessResult'];
 		}
 	}
 
