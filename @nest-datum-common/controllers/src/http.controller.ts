@@ -142,7 +142,7 @@ export class HttpController extends Controller {
 		return {
 			userId: user['id'],
 			...options,
-			ids: options['ids'],
+			ids: JSON.parse(options['ids']),
 		};
 	}
 

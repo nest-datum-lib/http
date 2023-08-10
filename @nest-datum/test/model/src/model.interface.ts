@@ -92,6 +92,15 @@ export type UnitTestSchema = {
   [title:string]: UnitTestBody;
 };
 
+export type MockParams = {
+  perform?: boolean;
+  customFactory?: <T = any>(
+    customMockers?: Record<string, Mocker>
+  ) => MockType<T>;
+  customMockers?: Record<string, Mocker>,
+  properties?: Record<string, any>,
+};
+
 /**
  * This is how you should describe Nest Providers modules for testing.
  * @param name - the name of the provider(used to describe it in test coverages).
@@ -99,7 +108,7 @@ export type UnitTestSchema = {
  * @param value - initialized instance of the Nest Provider(
  *  ignore this parameter because it will be used by TestSuite for internal operations
  * )
- * @param mock - to mock given instance or not(
+ * @param mock - override logic of the instance by given mock params(
  *  recommended if just need to test controllers without performing any services logic
  * )
  */
@@ -107,13 +116,7 @@ export type ServiceMeta = {
   name: string;
   type: Type<any>;
   value?: Type<any>;
-  mock?: {
-    perform: boolean;
-    customFactory?: <T = any>(
-      customMockers?: Record<string, Mocker>
-    ) => MockType<T>;
-    customMockers?: Record<string, Mocker>,
-  };
+  mock?: MockParams;
   unit?: UnitTestSchema;
 };
 
@@ -125,6 +128,7 @@ export type ServiceMeta = {
  *  ignore this parameter because it's used by TestSuite for internal operations
  * )
  * @param requests - array of requests(See RequestSchema).
+ * @param mock - override logic of the instance by given mock params
  */
 export type ControllerMeta = {
   name: string;
@@ -133,6 +137,7 @@ export type ControllerMeta = {
   value?: Type<any>;
   requests?: HttpRequestSchema[] | TcpRequestSchema[];
   unit?: UnitTestSchema;
+  mock?: MockParams;
 };
 
 export type RepositoryMeta ={
@@ -150,10 +155,10 @@ export type RepositoryMeta ={
  * that your providers used for to inject repository.
  */
 export type Importers = {
-  modules?: DynamicModule[],
   controllers: Record<string, ControllerMeta>;
   services: Record<string, ServiceMeta>;
   mockDependencies: {
+    modules?: DynamicModule[],
     repositories: RepositoryMeta[];
   };
 };
@@ -165,3 +170,5 @@ export type MockType<T> = {
 export type MockTargetFunction = (...args: any[]) => unknown;
 
 export type Mocker = MockTargetFunction | {};
+
+export type VerboseParam = boolean | {tcp?: boolean, http?: boolean};

@@ -75,8 +75,6 @@ export class FuseService extends PrimaryService {
 			return await this.dropManyProcessForever(processedPayload);
 		}
 
-		console.log('dropManyProcess', processedPayload);
-
 		return await utilsLoopAsync(processedPayload, (async (id) => {
 			if (this.withCache === true) {
 				this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'many', '*' ] });
@@ -91,11 +89,6 @@ export class FuseService extends PrimaryService {
 					id,
 				},
 			});
-
-			console.log('ORIGINAL repo:', this.repository.findOne());
-			console.log('DROP MANY ENTITY:', entity);
-			console.log('DROP MANY processedPayload:', processedPayload);
-			console.log('DROP MANY id:', id);
 
 			return entity.isDeleted
 				? await this.dropProcessForever(entity.id)

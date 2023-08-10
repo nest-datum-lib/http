@@ -21,8 +21,5 @@ export class AccessOptionService extends AccessOptionServiceBase {
 		protected readonly repositoryCache: CacheService,
 	) {
 		super();
-		console.log("suka 2step removal:", this.withTwoStepRemoval);
-		console.log("repo:", this.repository.findOne({}));
-		console.log("repoOption:", this.repositoryOption.findOne({}));
 	}
 }

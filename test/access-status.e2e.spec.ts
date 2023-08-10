@@ -6,11 +6,11 @@ import {
   ValueParam, 
 } from '@nest-datum/test/model';
 
-import { SettingHttpController } from '../src/api/setting/setting-http.controller';
-import { SettingHttpTcpController } from '../src/api/setting/setting-http-tcp.controller';
-import { SettingTcpController } from '../src/api/setting/setting-tcp.controller';
-import { SettingService } from '../src/api/setting/setting.service';
-import { Setting } from '../src/api/setting/setting.entity';
+import { AccessStatusHttpController } from '../src/api/access-status/access-status-http.controller';
+import { AccessStatusHttpTcpController } from '../src/api/access-status/access-status-http-tcp.controller';
+import { AccessStatusTcpController } from '../src/api/access-status/access-status-tcp.controller';
+import { AccessStatusService } from '../src/api/access-status/access-status.service';
+import { AccessStatus } from '../src/api/access-status/access-status.entity';
 import { defaultBodyParams } from './mock/default-body-params';
 
 const defaultBody = {
@@ -71,7 +71,7 @@ const defaultBody = {
   },
 } as Record<string, ValueParam>;
 
-const settingHttpRequests = [
+const accessOptionHttpRequests = [
   {
     type: 'http',
     endpoint: `/`,
@@ -114,11 +114,11 @@ const eventPatternsRequests = {
   },
 };
 
-const settingTcpRequests = [
+const accessOptionTcpRequests = [
   {
     type: 'tcp',
     message_pattern: {
-      cmd: 'setting.many',
+      cmd: 'accessStatus.many',
     },
     payload: {
       ...defaultBody,
@@ -132,38 +132,37 @@ const settingTcpRequests = [
   {
     type: 'tcp',
     message_pattern: {
-      cmd: 'setting.one',
+      cmd: 'accessStatus.one',
     },
     payload: {
       ...defaultBody,
       id: {
-        type: "custom",
-        value: 'someid',
+        type: 'custom',
+        value: 'some-access-status-id',
       },
     },
     expectedResponse: {
-      id: 'someid',
+      id: 'some-access-status-id',
     },
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.drop',
-    payload: eventPatternsRequests,
-    expectedResponse: true,
-  },
-  {
-    type: 'tcp',
-    event_pattern: 'setting.dropMany',
+    event_pattern: 'accessStatus.drop',
     payload: eventPatternsRequests,
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.create',
+    event_pattern: 'accessStatus.dropMany',
     payload: eventPatternsRequests,
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.update',
+    event_pattern: 'accessStatus.create',
+    payload: eventPatternsRequests,
+  },
+  {
+    type: 'tcp',
+    event_pattern: 'accessStatus.update',
     payload: eventPatternsRequests,
   }
 ] as TcpRequestSchema[];
@@ -171,43 +170,49 @@ const settingTcpRequests = [
 const name_module = 'AccessStatus Module';
 const importers: Importers = {
   controllers: {
-    settingHttpController: {
-      name: 'SettingHttpController',
-      type: SettingHttpController,
-      uri_root: `/${process.env.SERVICE_HTTP}/setting`,
-      requests: settingHttpRequests,
+    accessStatusHttpController: {
+      name: 'AccessStatusHttpController',
+      type: AccessStatusHttpController,
+      uri_root: `/${process.env.SERVICE_HTTP}/access-status`,
+      requests: accessOptionHttpRequests,
     },
-    settingHttpTcpController: {
-      name: 'SettingHttpTcpController',
-      type: SettingHttpTcpController,
-      uri_root: `/${process.env.SERVICE_HTTP}/setting`,
-      requests: settingHttpRequests,
+    accessStatusHttpTcpController: {
+      name: 'AccessStatusHttpTcpController',
+      type: AccessStatusHttpTcpController,
+      uri_root: `/${process.env.SERVICE_HTTP}/access-status`,
+      requests: accessOptionHttpRequests,
     },
-    settingTcpController: {
-      name: 'SettingTcpController',
-      type: SettingTcpController,
-      requests: settingTcpRequests,
+    accessStatusTcpController: {
+      name: 'AccessStatusTcpController',
+      type: AccessStatusTcpController,
+      requests: accessOptionTcpRequests,
     },
   },
   services: {
-    settingService: {
-      name: 'SettingService',
-      type: SettingService,
+    accessStatusService: {
+      name: 'AccessStatusService',
+      type: AccessStatusService,
+      mock: {
+        properties: {
+          withTwoStepRemoval: false,
+          withCache: false,
+        },
+      },
     },
   },
   mockDependencies: {
     repositories: [
       {
-        type: Setting,
+        type: AccessStatus,
         customMockers: {
           findOne: () => {
             return {
-              'id': 'someid',
+              'id': 'some-access-status-id',
             }
-          }
-        }
-      }
-    ]
+          },
+        },
+      },
+    ],
   },
 }
 

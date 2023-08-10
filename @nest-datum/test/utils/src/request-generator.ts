@@ -23,13 +23,14 @@ export default function generateRequest(bodySchema: RequestBodySchema) {
         return temp_result;
       }
 
-      if (key === 'endKey') {
+      if (key === 'envKey') {
         temp_result[key] = "HAPP_TEST_ENV_KEY";
         return temp_result;
       }
 
       if (!binds?.[autovalue.type])
         throw new Error(`Unkown type of field in body schema: ${autovalue.type}`);
+      
       temp_result[key] = binds[autovalue.type](
         autovalue?.['config']
       );

@@ -194,7 +194,12 @@ const importers: Importers = {
   services: {
     accessOptionService: {
       name: 'AccessOptionService',
-      type: AccessOptionService
+      type: AccessOptionService,
+      mock: {
+        properties: {
+          withTwoStepRemoval: false,
+        }
+      }
     },
   },
   mockDependencies: {

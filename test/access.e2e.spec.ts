@@ -147,7 +147,6 @@ const accessTcpRequests = [
     type: 'tcp',
     event_pattern: 'access.drop',
     payload: eventPatternsRequests,
-    expectedResponse: true,
   },
   {
     type: 'tcp',
@@ -191,6 +190,11 @@ const importers: Importers = {
     accessService: {
       name: 'AccessService',
       type: AccessService,
+      mock: {
+        properties: {
+          withTwoStepRemoval: false,
+        }
+      }
     },
     accessOptionService: {
       name: 'AccessOptionService',

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, INestMicroservice } from '@nestjs/common';
 import { 
   ClientsModule, 
   Transport, 
@@ -28,8 +28,10 @@ import {
   HttpRequestSchema, 
   TcpRequestSchema, 
   UnitTestBody,
+  VerboseParam,
 } from '../model/src/model.interface';
 import { Observable } from 'rxjs';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 require('dotenv').config();
 
@@ -78,7 +80,7 @@ export default class TestSuite {
   constructor(
     private readonly name: string,
     private readonly importers: Importers,
-    private readonly verbose: boolean,
+    private readonly verbose?: VerboseParam,
   ) {}
 
   /**
@@ -87,7 +89,7 @@ export default class TestSuite {
   public async perform() {
     describe(`Performing test suite for ${this.name}`, () => {
       describe('Initializing main components', () => {
-        beforeAll(async () => await this.prepare());
+        beforeAll(async () => await this.bootstrap());
         it('App should be defined', () => {
           expect(this.app).toBeDefined();
         });
@@ -108,7 +110,7 @@ export default class TestSuite {
    * Creates testing module in which injects providers, controllers
    * and other dependencies.
    */
-  private async prepare() {
+  private async bootstrap() {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
         ClientsModule.register([
@@ -120,6 +122,8 @@ export default class TestSuite {
           .map(controllerMeta => controllerMeta.type)),
       ],
       providers: [
+        ...this.prepareLoggers(),
+
         ...this.importers.mockDependencies.repositories.map(
           entityMeta => {
             return {
@@ -138,10 +142,6 @@ export default class TestSuite {
           )
         )
           .map(serviceMeta => {
-            console.log(JSON.stringify(serviceMeta.type.prototype, null, '\t'));
-            // serviceMeta.type.prototype.withTwoStepRemoval = false;
-            // Object.defineProperty(servi)
-
             if (serviceMeta?.mock && serviceMeta.mock.perform) {
               if (serviceMeta.mock.customFactory) {
                 return {
@@ -156,7 +156,6 @@ export default class TestSuite {
                 useValue: createMock<typeof serviceMeta.type>()
               };
             } else return serviceMeta.type;
-
           }),
       ],
     })
@@ -166,35 +165,92 @@ export default class TestSuite {
     await this.init();
   }
 
+  /**
+   * Prepare logger interceptors that will be injected to the root module.
+   * @returns array of loggers.
+   */
+  private prepareLoggers() {
+    const http_logger = {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpTestingLogger,
+    };
+    const tcp_logger = {
+      provide: APP_INTERCEPTOR,
+      useClass: TcpTestingLogger,
+    };
+
+    if (typeof this.verbose === 'object') {
+      const interceptors = [];
+      if (this.verbose.http)
+        interceptors.push(http_logger);
+      if (this.verbose.tcp)
+        interceptors.push(tcp_logger);
+      return interceptors;
+    } else if (typeof this.verbose === 'boolean') {
+      if (!this.verbose) return [];
+      else return [http_logger, tcp_logger];
+    }
+
+    return [];
+  }
+
+  /**
+   * Init root module and connect microservices.
+   * Assign all importers' instances to it's value in `this.importers`.
+   */
   private async init() {
     this.app.use(json());
 
-    const microservice = await this.app.connectMicroservice({
-      transport: Transport.TCP,
-    });
+    await this.app.connectMicroservice(
+      { transport: Transport.TCP },
+      { inheritAppConfig: true }
+    );
     
-    if (this.verbose) {
-      this.app.use(new HttpTestingLogger().use.bind(HttpTestingLogger));
-      microservice.useGlobalInterceptors(
-        new TcpTestingLogger()
-      );
-      // this.app.useGlobalInterceptors(new TcpTestingLogger());
-    }
-
     await this.app.startAllMicroservices();
     await this.app.init();
 
     Object.keys(this.importers).forEach(key => {
+      if (key === 'mockDependencies') return;
+
       Object.keys(this.importers[key]).forEach(importer => {
-        this.importers[key][importer].value = 
-          this.app.get<this.importers[key][importer].type>(
-            this.importers[key][importer].type
+        const importerMeta = this.importers[key][
+          importer
+        ] as ControllerMeta | ServiceMeta;
+        this.importers[key][importer].value = this.app.get<
+            typeof importerMeta.type
+          >(
+            importerMeta.type,
+            { strict: false }
           );
+        if (
+          importerMeta?.mock?.properties
+        ) this.overrideProperties(importerMeta);
       });
     });
 
     this.tcpClient = this.app.get('client');
     await this.tcpClient.connect();
+  }
+
+  /**
+   * Override importer properties of the initialized instance.
+   * Useful if you need to mock private variables.
+   * @param importer 
+   */
+  private overrideProperties(
+    importer: ServiceMeta | ControllerMeta,
+  ) {
+    if (!importer.value)
+      throw new Error(`Importer ${importer.name} is not initialized!`);
+    
+    const new_props = importer.mock.properties;
+    for (const [key, value] of Object.entries(new_props)) {
+      if (importer.value?.[key] === undefined)
+        throw new Error(
+          `Key ${key} cannot be overrided in ${importer.name}, because not found!`
+        );
+      importer.value[key] = value;
+    }
   }
 
   private validateUnitTestSchema(
@@ -324,7 +380,7 @@ export default class TestSuite {
       (Object.values(this.importers[key]) as ControllerMeta[])
         .forEach(controllerMeta => {
           if (!controllerMeta?.requests?.length) return;
-          const uri_root = controllerMeta.uri_root;
+          const uri_root = controllerMeta.uri_root ?? '';
           describe(`sending requests to ${controllerMeta.name} controller`, () => {
             for (const request of controllerMeta.requests)
               this.peformE2ETest(request, uri_root);
@@ -411,21 +467,21 @@ export default class TestSuite {
             request.message_pattern,
             generated_payload,
           );
-          response.subscribe(res => {
-            expect(res).toEqual(request.expectedResponse);
-            done();
-          });
         } else if (request.event_pattern) {
           response = this.tcpClient.emit(
             request.event_pattern,
             generated_payload,
           );
-          done();
         } else {
           throw new Error(
             'TCP Requests requires message or event pattern. Received - nothing!'
           );
         }
+
+        response.subscribe(res => {
+          expect(res).toEqual(request.expectedResponse);
+          setTimeout(() => done(), 500);
+        });
       }
     );
   }

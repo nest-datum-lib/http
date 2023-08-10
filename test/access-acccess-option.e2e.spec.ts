@@ -5,12 +5,11 @@ import {
   TcpRequestSchema, 
   ValueParam, 
 } from '@nest-datum/test/model';
-
-import { SettingHttpController } from '../src/api/setting/setting-http.controller';
-import { SettingHttpTcpController } from '../src/api/setting/setting-http-tcp.controller';
-import { SettingTcpController } from '../src/api/setting/setting-tcp.controller';
-import { SettingService } from '../src/api/setting/setting.service';
-import { Setting } from '../src/api/setting/setting.entity';
+import { AccessAccessOptionHttpController } from '../src/api/access-access-option/access-access-option-http.controller';
+import { AccessAccessOptionHttpTcpController } from '../src/api/access-access-option/access-access-option-http-tcp.controller';
+import { AccessAccessOptionTcpController } from '../src/api/access-access-option/access-access-option-tcp.controller';
+import { AccessAccessOptionService } from '../src/api/access-access-option/access-access-option.service';
+import { AccessAccessOption } from '../src/api/access-access-option/access-access-option.entity';
 import { defaultBodyParams } from './mock/default-body-params';
 
 const defaultBody = {
@@ -69,12 +68,24 @@ const defaultBody = {
       type: 'boolean',
     },
   },
+  accessId: {
+    type: 'auto',
+    value: {
+      type: 'uuid',
+    },
+  },
+  accessOptionId: {
+    type: 'auto',
+    value: {
+      type: 'uuid',
+    },
+  },
 } as Record<string, ValueParam>;
 
-const settingHttpRequests = [
+const accessAccessOptionHttpRequests = [
   {
     type: 'http',
-    endpoint: `/`,
+    endpoint: `/some-id`,
     method: 'post',
     expectedStatusCode: 201,
     bodySchema: {
@@ -118,7 +129,7 @@ const settingTcpRequests = [
   {
     type: 'tcp',
     message_pattern: {
-      cmd: 'setting.many',
+      cmd: 'accessOptionRelation.many',
     },
     payload: {
       ...defaultBody,
@@ -132,7 +143,7 @@ const settingTcpRequests = [
   {
     type: 'tcp',
     message_pattern: {
-      cmd: 'setting.one',
+      cmd: 'accessOptionRelation.one',
     },
     payload: {
       ...defaultBody,
@@ -147,58 +158,52 @@ const settingTcpRequests = [
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.drop',
-    payload: eventPatternsRequests,
-    expectedResponse: true,
-  },
-  {
-    type: 'tcp',
-    event_pattern: 'setting.dropMany',
+    event_pattern: 'accessOptionRelation.drop',
     payload: eventPatternsRequests,
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.create',
+    event_pattern: 'accessOptionRelation.dropMany',
     payload: eventPatternsRequests,
   },
   {
     type: 'tcp',
-    event_pattern: 'setting.update',
+    event_pattern: 'accessOptionRelation.create',
     payload: eventPatternsRequests,
-  }
+  },
 ] as TcpRequestSchema[];
 
-const name_module = 'Setting Module';
+const name_module = 'AccessAccessOption Module';
 const importers: Importers = {
   controllers: {
-    settingHttpController: {
-      name: 'SettingHttpController',
-      type: SettingHttpController,
-      uri_root: `/${process.env.SERVICE_HTTP}/setting`,
-      requests: settingHttpRequests,
+    accessAccessOptionHttpController: {
+      name: 'AccessAccessOptionHttpController',
+      type: AccessAccessOptionHttpController,
+      uri_root: `/${process.env.SERVICE_HTTP}/access/option`,
+      requests: accessAccessOptionHttpRequests,
     },
-    settingHttpTcpController: {
-      name: 'SettingHttpTcpController',
-      type: SettingHttpTcpController,
-      uri_root: `/${process.env.SERVICE_HTTP}/setting`,
-      requests: settingHttpRequests,
+    accessAccessOptionHttpTcpController: {
+      name: 'AccessAccessOptionHttpTcpController',
+      type: AccessAccessOptionHttpTcpController,
+      uri_root: `/${process.env.SERVICE_HTTP}/access/option`,
+      requests: accessAccessOptionHttpRequests,
     },
-    settingTcpController: {
-      name: 'SettingTcpController',
-      type: SettingTcpController,
+    accessAccessOptionTcpController: {
+      name: 'AccessAccessOptionTcpController',
+      type: AccessAccessOptionTcpController,
       requests: settingTcpRequests,
     },
   },
   services: {
-    settingService: {
-      name: 'SettingService',
-      type: SettingService,
+    accessAccessOptionService: {
+      name: 'AccessAccessOptionService',
+      type: AccessAccessOptionService,
     },
   },
   mockDependencies: {
     repositories: [
       {
-        type: Setting,
+        type: AccessAccessOption,
         customMockers: {
           findOne: () => {
             return {

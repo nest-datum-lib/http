@@ -149,7 +149,6 @@ const settingTcpRequests = [
     type: 'tcp',
     event_pattern: 'setting.drop',
     payload: eventPatternsRequests,
-    expectedResponse: true,
   },
   {
     type: 'tcp',
@@ -168,7 +167,7 @@ const settingTcpRequests = [
   }
 ] as TcpRequestSchema[];
 
-const name_module = 'RoleAccess Module';
+const name_module = 'Setting Module';
 const importers: Importers = {
   controllers: {
     settingHttpController: {
@@ -193,6 +192,11 @@ const importers: Importers = {
     settingService: {
       name: 'SettingService',
       type: SettingService,
+      mock: {
+        properties: {
+          withTwoStepRemoval: false,
+        }
+      }
     },
   },
   mockDependencies: {

@@ -274,7 +274,7 @@ export class SqlService extends ModelService {
 	protected async oneProcess(processedPayload: object, payload: object): Promise<any> {
 		if (this.withCache === true) {
 			const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'one', { id: processedPayload['id'] } ] });
-
+			
 			if (cachedData) {
 				return cachedData;
 			}
@@ -287,6 +287,7 @@ export class SqlService extends ModelService {
 		if (!output) {
 			return new NotFoundException('Entity is undefined.');
 		}
+
 		return output;
 	}
 

@@ -55,7 +55,7 @@ export class ModelService {
 
 		const processedPayload = await this.oneProperties(payload);
 		const output = await this.oneProcess(processedPayload, payload);
-		
+
 		return await this.oneOutput(processedPayload, await this.oneAfter(payload, processedPayload, output));
 	}
 

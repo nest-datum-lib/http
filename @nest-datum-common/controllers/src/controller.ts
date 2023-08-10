@@ -91,7 +91,7 @@ export class Controller {
 		const output = {
 			accessToken: options['accessToken'],
 			userId: user['id'],
-			id: options['id'],
+			...options,
 		};
 
 		if (utilsCheckExists(options['select'])) {
@@ -106,6 +106,7 @@ export class Controller {
 			}
 			output['relations'] = utilsFormatStrToObj(options['relations']);
 		}
+
 		return output;
 	}
 
