@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Observable } from "rxjs";
 
 /**
- * Logs every request & response for every endpoint.
+ * Logs every request & response for every endpoint of http controllers.
  */
 @Global()
 @Injectable()

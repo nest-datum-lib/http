@@ -8,6 +8,9 @@ import { Observable } from "rxjs";
 import { TcpContext } from "@nestjs/microservices";
 import { Global } from "@nestjs/common";
 
+/**
+ * Logs every request & response for every endpoint of tcp controllers.
+ */
 @Global()
 @Injectable()
 export default class TcpTestingLogger implements NestInterceptor {
