@@ -10,7 +10,7 @@ const buildQuery = (key: string, value: CustomValue | CustomValue[]) => {
 /**
  * Generate queries URI by specified query shemas.
  * @param querySchema see RequestQuerySchema type.
- * @returns string that contains generated queries
+ * @returns string that contains generated queries.
  */
 const generateQueries = (querySchema: RequestQuerySchema): string => {
   let result = [];
@@ -52,37 +52,5 @@ const generateQueries = (querySchema: RequestQuerySchema): string => {
   const final = '?' + result.join('&');
   return final;
 }
-
-/*
-const generateQueries = (querySchema: RequestQuerySchema): string => {
-  let result = [];
-
-  for (const [key, field] of Object.entries(querySchema)) {
-    if (field.type === 'custom') {
-      result.push(buildQuery(key, field.value));
-    } else if (field.type === 'auto') {
-      if (key === 'accessToken') {
-        result.push(buildQuery(key, generateAccessToken()));
-        continue;
-      }
-
-      if (key === 'envKey') {
-        result.push(buildQuery(key, "HAPP_TEST_ENV_KEY"));
-        continue;
-      }
-
-      const autovalue = field.value as unknown as AutoValue;
-      
-      if (!binds?.[autovalue.type])
-        throw new Error(`Unkown type of field in query schema: ${autovalue.type}`);
-      
-      result.push(buildQuery(key, binds[autovalue.type](
-        autovalue?.['config']
-      )));
-    } else throw new Error(`Unkown key type in query schema: ${field.type}`);
-  }
-  return `?${result.join('&')}`;
-}
-*/
 
 export default generateQueries;

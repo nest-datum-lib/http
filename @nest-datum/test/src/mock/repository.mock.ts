@@ -24,6 +24,12 @@ const defaultRepositoryMockers = {
   }
 };
 
+/**
+ * Repository mock factory, so that mocks all default functions and properties.
+ * @param customMockers Custom function or properties,
+ * which will overide them from default repository mockers.
+ * @returns mock factory.
+ */
 function repositoryMockFactory<EntityType extends EntityClassOrSchema>(
   customMockers: Record<string, Mocker> = {}
 ): MockType<Repository<EntityType>> {

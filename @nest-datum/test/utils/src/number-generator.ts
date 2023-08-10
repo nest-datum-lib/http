@@ -3,7 +3,7 @@ import { random } from "../index";
 /**
  * Generate random number with specific length
  * @param config 
- * @returns number
+ * @returns number.
  */
 const generateNumber = (
   config: {

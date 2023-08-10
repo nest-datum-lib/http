@@ -9,7 +9,7 @@ import { TcpContext } from "@nestjs/microservices";
 import { Global } from "@nestjs/common";
 
 /**
- * Logs every request & response for every endpoint of tcp controllers.
+ * Logs every requests and responses for every endpoint of tcp controllers.
  */
 @Global()
 @Injectable()

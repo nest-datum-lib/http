@@ -15,6 +15,12 @@ const defaultTransportMockers = {
   one: jest.fn(payload => payload),
 };
 
+/**
+ * TCP Transport mock factory, so that mocks all default functions and properties.
+ * @param customMockers Custom function or properties,
+ * which will overide them from default transport mockers.
+ * @returns mock factory.
+ */
 function transportServiceMockFactory<T extends ModelService>(
   customMockers: Record<string, Mocker> = {}
 ): MockType<T> {

@@ -12,8 +12,8 @@ export const rnd = (max: number, min: number = 0) => {
 
 /**
  * Returns chat at random position
- * @param str 
- * @returns string
+ * @param str string from which a random char will be returned.
+ * @returns a random char.
  */
 export const randomChar = (str: string): string | never => {
   if (str === undefined) 

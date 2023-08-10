@@ -5,20 +5,20 @@ import { ValueParam } from "@nest-datum/test/model";
 /**
  * Used for HttpRequestSchema and TcpRequestSchema.
  */
-export type RequestBodySchema = Record<string, ValueParam>;
+type RequestBodySchema = Record<string, ValueParam>;
 /**
  * Used for URI query parameters.
  */
-export type RequestQuerySchema = Record<string, ValueParam>;
+type RequestQuerySchema = Record<string, ValueParam>;
 
-export type URI = string;
+type URI = string;
 
-export type MessagePattern = {
+type MessagePattern = {
   [message_name: string]: string;
 };
-export type EventPattern = string;
+type EventPattern = string;
 
-export type HttpMethod =
+type HttpMethod =
 'get'     |
 'head'    |
 'post'    |
@@ -32,16 +32,15 @@ export type HttpMethod =
 /**
  * Schema of testing request that used for 
  * to send to specified http controllers.
- * Describes:
- *  - type should be http
- *  - endpoint URI
- *  - http method
- *  - request body schema
- *  - URI queries params
- *  - http status code expectation
- *  - response expectation
+ * @param type request type.
+ * @param endpoint reference to the specific resource of controller.
+ * @param method http method of the endpoint.
+ * @param bodySchema request body descriptions.
+ * @param querySchema URL query parameters descriptions.
+ * @param expectedStatusCode status code that should be received from the server.
+ * @param expectedResponse response that should be received from the server.
  */
-export type HttpRequestSchema = {
+type HttpRequestSchema = {
   type: 'http';
   endpoint: URI;
   method: HttpMethod;
@@ -54,14 +53,13 @@ export type HttpRequestSchema = {
 /**
  * Schema of testing request that used for 
  * to send to specified tcp controllers.
- * Describes:
- *  - type should be tcp
- *  - message pattern
- *  - event pattern
- *  - payload, the same as a bodySchema
- *  - response expectation
+ * @param type request type
+ * @param message_pattern RCP message pattern
+ * @param event_pattern RCP event pattern
+ * @param payload input data to the server
+ * @param expectedResponse response that should be received from the server.
  */
-export type TcpRequestSchema = {
+type TcpRequestSchema = {
   type: 'tcp';
   message_pattern?: MessagePattern;
   event_pattern?: EventPattern;
@@ -77,7 +75,7 @@ export type TcpRequestSchema = {
  * @param customImplementation mock implementation of function so 
  * that will return desired result. By default it's `() => true`.
  */
-export type UnitTestBody = {
+type UnitTestBody = {
   funcName: string;
   args?: any[];
   expectFuncName: string; 
@@ -88,11 +86,26 @@ export type UnitTestBody = {
 /**
  * Unit test schema for importers;
  */
-export type UnitTestSchema = {
+type UnitTestSchema = {
   [title:string]: UnitTestBody;
 };
 
-export type MockParams = {
+/**
+ * Mock descriptions for importers.
+ * If you want to mock some importer, you need to set `perform` to true.
+ * @param perform to mock importer or not
+ * @param customFactory user-specific mocker factory(
+ *  see examples in the src/mock/ dir.
+ * )
+ * @param customMockers custom functions that should be mocked(
+ *  used when you don't want to write own custom factory,
+ *  just to mock specific functions.
+ * )
+ * @param properties user-specifc properties of the importer(
+ *  used when you want to mock some private or public variables.
+ * )
+ */
+type MockParams = {
   perform?: boolean;
   customFactory?: <T = any>(
     customMockers?: Record<string, Mocker>
@@ -111,8 +124,9 @@ export type MockParams = {
  * @param mock - override logic of the instance by given mock params(
  *  recommended if just need to test controllers without performing any services logic
  * )
+ * @param unit - unit tests descriptions.
  */
-export type ServiceMeta = {
+type ServiceMeta = {
   name: string;
   type: Type<any>;
   value?: Type<any>;
@@ -129,8 +143,9 @@ export type ServiceMeta = {
  * )
  * @param requests - array of requests(See RequestSchema).
  * @param mock - override logic of the instance by given mock params
+ * @param unit - unit test descriptions.
  */
-export type ControllerMeta = {
+type ControllerMeta = {
   name: string;
   type: Type<any>;
   uri_root?: string;
@@ -140,7 +155,15 @@ export type ControllerMeta = {
   mock?: MockParams;
 };
 
-export type RepositoryMeta ={
+/**
+ * This is how you should describe repository modules for testing.
+ * @param type entity that should be injected as a repository.
+ * @param customMockers custom functions that should be mocked(
+ *  used when you don't want to write own custom factory,
+ *  just to mock specific functions.
+ * )
+ */
+type RepositoryMeta ={
   type: EntityClassOrSchema;
   customMockers?: Record<string, Mocker>;
 };
@@ -154,7 +177,7 @@ export type RepositoryMeta ={
  * In dependencies.repositories you should specify array of Entities,
  * that your providers used for to inject repository.
  */
-export type Importers = {
+type Importers = {
   controllers: Record<string, ControllerMeta>;
   services: Record<string, ServiceMeta>;
   mockDependencies: {
@@ -163,12 +186,40 @@ export type Importers = {
   };
 };
 
-export type MockType<T> = {
+type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}> | {};
 };
+type MockTargetFunction = (...args: any[]) => unknown;
+type Mocker = MockTargetFunction | {};
 
-export type MockTargetFunction = (...args: any[]) => unknown;
+/**
+ * Parameters used to specify should TestSuite module print out 
+ * requests that sends to controllers or not.
+ *  - You can specify it just as a boolean to print all requests or not.
+ *  - Or specify object that should contain at least tcp or http properties 
+ * with type boolean, so that TestSuite should log requests from TCP or HTTP controllers,
+ * or both of them.
+ */
+type VerboseParam = boolean | {tcp?: boolean, http?: boolean};
 
-export type Mocker = MockTargetFunction | {};
-
-export type VerboseParam = boolean | {tcp?: boolean, http?: boolean};
+export {
+  RequestBodySchema,
+  RequestQuerySchema,
+  URI,
+  MessagePattern,
+  EventPattern,
+  HttpMethod,
+  HttpRequestSchema,
+  TcpRequestSchema,
+  UnitTestBody,
+  UnitTestSchema,
+  MockParams,
+  ServiceMeta,
+  ControllerMeta,
+  RepositoryMeta,
+  Importers,
+  MockType,
+  MockTargetFunction,
+  Mocker,
+  VerboseParam,
+};

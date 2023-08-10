@@ -4,7 +4,7 @@ import { generateAccessToken } from '@nest-datum-common/jwt';
 
 /**
  * Mock request by specific request schema.
- * @param bodySchema 
+ * @param bodySchema Body descriptions.
  * @returns mocked request object
  */
 export default function generateRequest(bodySchema: RequestBodySchema) {
