@@ -59,7 +59,7 @@ export function ModelSqlEnvService(Base: any = Sample) {
 			for (id in propertiesProcessed._updateManyPrepareProperties) {
 				if (!utilsCheckStrEnv(propertiesProcessed._updateManyPrepareProperties[id]['envKey'])
 					&& utilsCheckStrName(propertiesProcessed._updateManyPrepareProperties[id]['name'])) {
-					propertiesProcessed['_createPrepareProperties']['envKey'] = await this.createEnvKeyByString(propertiesProcessed._updateManyPrepareProperties[id]['name']) || '';
+					propertiesProcessed['_updateManyPrepareProperties'][id]['envKey'] = await this.createEnvKeyByString(propertiesProcessed._updateManyPrepareProperties[id]['name']) || '';
 				}
 			}
 			return propertiesProcessed;

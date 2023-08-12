@@ -14,7 +14,8 @@ export function ModelSqlService(Base: any = Sample) {
 	class AbstractBase extends ModelService(Base) {
 		public readonly repository;
 		public readonly connectionService: Connection;
-		public readonly getManyAllDefaultLimit: number = 20;
+		public readonly getManyOrderByDefault: object;
+		public readonly getManyLimitDefault: number = 20;
 
 		/**
 		 * Concatenate strings from prepared "getMany" properties for query rows.
@@ -33,7 +34,7 @@ export function ModelSqlService(Base: any = Sample) {
 							? `\n\tORDER BY ${sqlQueryBuilderProperties['orderBy']}`
 							: ''}${(sqlQueryBuilderProperties['limit']
 								|| sqlQueryBuilderProperties['offset'])
-								? `LIMIT ${sqlQueryBuilderProperties['offset'] ? `${sqlQueryBuilderProperties['offset']},` : ''} ${sqlQueryBuilderProperties['limit'] || this.getManyAllDefaultLimit}`
+								? `LIMIT ${sqlQueryBuilderProperties['offset'] ? `${sqlQueryBuilderProperties['offset']},` : ''} ${sqlQueryBuilderProperties['limit'] || this.getManyLimitDefault}`
 								: ''};`;
 		}
 
@@ -301,7 +302,7 @@ export function ModelSqlService(Base: any = Sample) {
 		async getManyPreparePropertiesLimit(properties: object): Promise<string> {
 			return utilsCheckNumericInt(properties['limit'])
 				? `${properties['limit']}`
-				: `${this.getManyAllDefaultLimit || 20}`;
+				: `${this.getManyLimitDefault || 20}`;
 		}
 
 		/**
