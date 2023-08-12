@@ -1,3 +1,7 @@
+import { 
+	exists as utilsCheckExists,
+	strEnv as utilsCheckStrEnv, 
+} from '@nest-datum-utils/check';
 
 class Sample {
 }
@@ -5,38 +9,41 @@ class Sample {
 export function ModelEnvController(Base: any = Sample) {
 	class AbstractBase extends Base {
 		public readonly service;
-		public readonly createWithEnv: boolean;
-		public readonly updateManyWithEnv: boolean;
-		public readonly updateOneWithEnv: boolean;
-
-		async provideEnv(properties: object): Promise<object> {
-			return properties;
-		}
+		public readonly validateCreateEnvIsRequired: boolean;
+		public readonly validateUpdateManyEnvIsRequired: boolean;
+		public readonly validateUpdateOneEnvIsRequired: boolean;
 
 		async validateCreate(properties: object): Promise<object> {
-			return await super.validateCreate((this.createWithEnv ?? true)
-				? await this.provideEnv(properties)
-				: properties);
+			if ((this.validateCreateEnvIsRequired
+				|| utilsCheckExists(properties['envKey']))
+					&& !utilsCheckStrEnv(properties['envKey'])) {
+				throw new this.ExceptionBadRequest(`Property "envKey" "${properties['envKey']}" is bad format.`);
+			}
+			return await super.validateCreate(properties);
 		}
 
 		async validateUpdateMany(properties: object): Promise<object> {
-			return await super.validateUpdateMany((this.updateManyWithEnv ?? true)
-				? await this.provideEnv(properties)
-				: properties);
-		}
+			properties = await super.validateUpdateMany(properties);
 
-		async validateUpdateOne(properties: object): Promise<object> {
-			return await super.validateUpdateOne((this.updateOneWithEnv ?? true)
-				? await this.provideEnv(properties)
-				: properties);
-		}
+			let id;
 
-		async validateGetOneWithEnv(properties: object): Promise<object> {
+			for (id in properties['body']) {
+				if ((this.validateUpdateManyEnvIsRequired
+					|| utilsCheckExists(properties['body'][id]['envKey']))
+						&& !utilsCheckStrEnv(properties['body'][id]['envKey'])) {
+					throw new this.ExceptionBadRequest(`Property "envKey" "${properties['body'][id]['envKey']}" is bad format.`);
+				}
+			}
 			return properties;
 		}
 
-		async getOneWithEnv(envValue: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.getOneWithEnv(await this.validateGetOneWithEnv({ ...properties, envValue })));
+		async validateUpdateOne(properties: object): Promise<object> {
+			if ((this.validateUpdateOneEnvIsRequired
+				|| utilsCheckExists(properties['envKey']))
+					&& !utilsCheckStrEnv(properties['envKey'])) {
+				throw new this.ExceptionBadRequest(`Property "envKey" "${properties['envKey']}" is bad format.`);
+			}
+			return await super.validateUpdateOne(properties);
 		}
 	}
 

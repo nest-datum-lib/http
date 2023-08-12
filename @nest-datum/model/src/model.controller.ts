@@ -53,7 +53,7 @@ export function ModelController(Base: any = Sample) {
 				throw new this.ExceptionBadRequest(`Property "offset" "${offset}" is bad format.`);
 			}
 			if (utilsCheckExists(properties['limit'])
-				&& !((output['offset'] = Number(properties['limit'])) >= 1
+				&& !((output['limit'] = Number(properties['limit'])) >= 1
 					|| Number(properties['limit']) <= 99999999)) {
 				throw new this.ExceptionBadRequest(`Property "limit" "${properties['limit']}" is bad format.`);
 			}

@@ -1,6 +1,9 @@
 import objFilled from './src/obj/filled';
 import arrFilled from './src/arr/filled';
 import str from './src/str';
+import strEnv from './src/str/env';
+import strName from './src/str/name';
+import strDescription from './src/str/description';
 import strFilled from './src/str/filled';
 import strArr from './src/str/arr';
 import strArrFilled from './src/str/arrFilled';
@@ -16,6 +19,9 @@ export {
 	objFilled,
 	arrFilled,
 	str,
+	strEnv,
+	strName,
+	strDescription,
 	strFilled,
 	strArr,
 	strArrFilled,

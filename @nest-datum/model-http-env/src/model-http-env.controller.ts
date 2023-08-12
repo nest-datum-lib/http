@@ -10,9 +10,9 @@ class Sample {
 
 export function ModelHttpEnvController(Base: any = Sample) {
 	class AbstractBase extends ModelEnvController(Base) {
-		@Get('env/:envValue')
-		async getOneWithEnv(@Param('envValue') envValue: string, @Query() properties: object): Promise<object> {
-			return await super.getOneWithEnv(envValue, properties);
+		@Get('env/:envKey')
+		async getOneWithEnv(@Param('envKey') envKey: string, @Query() properties: object): Promise<object> {
+			return await super.getOneWithEnv(envKey, properties);
 		}
 	}
 
