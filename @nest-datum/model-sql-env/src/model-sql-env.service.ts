@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 import { ModelEnvService } from '@nest-datum/model-env';
 import {
 	strEnv as utilsCheckStrEnv,
@@ -12,6 +14,57 @@ export function ModelSqlEnvService(Base: any = Sample) {
 	class AbstractBase extends ModelEnvService(Base) {
 		async createEnvKeyByString(value: string): Promise<string> {
 			return utilsFormatStrToEnv(value);
+		}
+
+		async keyValuesListFromFile(): Promise<Array<string>> {
+			return fs
+				.readFileSync(`${process.env['PWD']}/.env`)
+				.toString()
+				.split(`\n`);
+		}
+
+		async writeNewDataToFile(envKeysList: Array<string>): Promise<boolean> {
+			return await (new Promise((resolve, reject) => {
+				fs.writeFile(`${process.env['PWD']}/.env`, envKeysList.join(`\n`), (err) => {
+					if (err) {
+						return reject(new Error(`Error while rewriting the ".env" file.`));
+					}
+					return true;
+				});
+			}));
+		}
+
+		// TODO: переместить в класс файловой системы
+		async addKeyValueValueToFile(envKey: string, dataValue: string): Promise<boolean> {
+			const envKeysList = await this.keyValuesListFromFile();
+			const envKeysListIndex = envKeysList.findIndex((keyValue) => keyValue.indexOf(envKey) === 0);
+
+			if (envKeysListIndex >= 0) {
+				envKeysList.splice(envKeysListIndex, 1);
+			}
+			envKeysList.push(`${envKey}=${dataValue}`);
+			
+			return await this.writeNewDataToFile(envKeysList);
+		}
+
+		async removeKeyValueValueFromFile(envKey: string): Promise<boolean> {
+			const envKeysList = fs
+				.readFileSync(`${process.env['PWD']}/.env`)
+				.toString()
+				.split(`\n`);
+			const envKeysListIndex = envKeysList.findIndex((keyValue) => keyValue.indexOf(envKey) === 0);
+
+			if (envKeysListIndex >= 0) {
+				envKeysList.splice(envKeysListIndex, 1);
+			}
+			return await (new Promise((resolve, reject) => {
+				fs.writeFile(`${process.env['PWD']}/.env`, envKeysList.join(`\n`), (err) => {
+					if (err) {
+						return reject(new Error(`Error while rewriting the ".env" file.`));
+					}
+					return true;
+				});
+			}));
 		}
 
 		async getManyAllowPreparePropertiesSelect(): Promise<Array<string>> {
@@ -38,11 +91,18 @@ export function ModelSqlEnvService(Base: any = Sample) {
 		async createPrepareProperties(properties: object): Promise<object> {
 			const propertiesProcessed = await super.createPrepareProperties(properties);
 			
-			if (!utilsCheckStrEnv(propertiesProcessed['_createPrepareProperties']['envKey'])
-				&& utilsCheckStrName(propertiesProcessed['_createPrepareProperties']['name'])) {
-				propertiesProcessed['_createPrepareProperties']['envKey'] = await this.createEnvKeyByString(propertiesProcessed['_createPrepareProperties']['name']) || '';
+			if (!utilsCheckStrEnv(propertiesProcessed['_updateOnePrepareProperties']['envKey'])
+				&& utilsCheckStrName(propertiesProcessed['_updateOnePrepareProperties']['name'])) {
+				propertiesProcessed['_updateOnePrepareProperties']['envKey'] = await this.createEnvKeyByString(propertiesProcessed['_updateOnePrepareProperties']['name']) || '';
 			}
 			return propertiesProcessed;
+		}
+
+		async createAfter(properties: object): Promise<object> {
+			if (properties['_createProcessResult']['envKey']) {
+				await this.addKeyValueValueToFile(properties['_createProcessResult']['envKey'], properties['_createProcessResult']['dataValue']);
+			}
+			return await super.createAfter(properties);
 		}
 
 		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
@@ -80,6 +140,31 @@ export function ModelSqlEnvService(Base: any = Sample) {
 				propertiesProcessed['_updateOnePrepareProperties']['envKey'] = await this.createEnvKeyByString(propertiesProcessed['_updateOnePrepareProperties']['name']) || '';
 			}
 			return propertiesProcessed;
+		}
+
+		async updateOneProcess(properties: object): Promise<object> {
+			const model = await this.repository.findOne({ 
+				select: {
+					id: true,
+					envKey: true,
+				}, 
+				where: { 
+					id: properties['id'], 
+				}, 
+			});
+
+			return await super.updateOneProcess({ ...properties, prevEnvKey: model['envKey'] });
+		}
+
+		async updateOneAfter(properties: object): Promise<object> {
+			if (properties['_updateOneProcessResult']['envKey']
+				&& properties['prevEnvKey'] !== properties['_updateOneProcessResult']['envKey']) {
+				await this.addKeyValueValueToFile(properties['_updateOneProcessResult']['envKey'], properties['_updateOneProcessResult']['dataValue']);
+			}
+			else if (properties['prevEnvKey']) {
+				await this.removeKeyValueValueFromFile(properties['prevEnvKey']);
+			}
+			return await super.updateOneAfter(properties);
 		}
 	}
 

@@ -8,6 +8,6 @@ import { ModelSqlDataValueService } from '@nest-datum/model-sql-data-value';
 import { ModelSqlRemovableService } from '@nest-datum/model-sql-removable';
 import { ModelSqlDatesService } from '@nest-datum/model-sql-dates';
 
-export class SettingSqlService extends ModelSqlDatesService(ModelSqlRemovableService(ModelSqlDataValueService(ModelSqlDataTypeService(ModelSqlCreatorService(ModelSqlEnvService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlService())))))))) {
+export class SettingSqlService extends ModelSqlDatesService(ModelSqlRemovableService(ModelSqlEnvService(ModelSqlDataValueService(ModelSqlDataTypeService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlService())))))))) {
 	public getManyAllowPreparePropertiesSelectDatesOn: boolean = true;
 }
