@@ -1,4 +1,4 @@
-
+import * as crypto from 'node:crypto';
 class Sample {
 }
 
@@ -13,6 +13,50 @@ export function ModelTokenController(Base: any = Sample) {
 		public readonly dropOneWithToken: boolean;
 
 		async provideToken(properties: object): Promise<object> {
+			const secret = process.env?.JWT_SECRET_ACCESS_KEY;
+			if (!secret || !secret.length)
+				throw new Error('JWT secret is not specified!');
+
+			const token = properties['accessToken'];
+			if (
+				!token || 
+				typeof token === 'undefined' || 
+				token === 'null'
+			) throw new Error('Token is not specified!');
+
+			let [ header, payload, signature ] = token.split('.');
+			if (
+				!header ||
+				!payload ||
+				!signature
+			) throw new Error('Token is not valid!');
+
+			const originalSignature = crypto.createHmac(
+				'sha256',
+				secret
+			).update(`${header}.${payload}`).digest();
+
+			if (originalSignature !== signature)
+				throw Error('Token is not valid!');
+			
+			header = JSON.parse(Buffer.from(
+				header,
+				'base64'
+			).toString());
+			payload = JSON.parse(Buffer.from(
+				payload,
+				'base64'
+			).toString());
+			
+			if (
+				payload.exp < new Date().getTime()
+			) throw new Error('Token is expired!');
+
+			properties['authedUserId'] = {
+				header,
+				payload,
+			};
+			
 			return properties;
 		}
 
