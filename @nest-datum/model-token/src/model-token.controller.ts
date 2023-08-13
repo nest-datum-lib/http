@@ -1,103 +1,73 @@
-import * as crypto from 'node:crypto';
+import { checkToken } from '@nest-datum/jwt';
+import { exists as utilsCheckExists } from '@nest-datum-utils/check';
+
 class Sample {
 }
 
 export function ModelTokenController(Base: any = Sample) {
 	class AbstractBase extends Base {
-		public readonly getManyWithToken: boolean;
-		public readonly getOneWithToken: boolean;
-		public readonly createWithToken: boolean;
-		public readonly updateManyWithToken: boolean;
-		public readonly updateOneWithToken: boolean;
-		public readonly dropManyWithToken: boolean;
-		public readonly dropOneWithToken: boolean;
+		public readonly validateGetManyTokenIsRequired: boolean;
+		public readonly validateGetOneTokenIsRequired: boolean;
+		public readonly validateCreateTokenIsRequired: boolean;
+		public readonly validateUpdateManyTokenIsRequired: boolean;
+		public readonly validateUpdateOneTokenIsRequired: boolean;
+		public readonly validateDropManyTokenIsRequired: boolean;
+		public readonly validateDropOneTokenIsRequired: boolean;
 
 		async provideToken(properties: object): Promise<object> {
-			const secret = process.env?.JWT_SECRET_ACCESS_KEY;
-			if (!secret || !secret.length)
-				throw new Error('JWT secret is not specified!');
+			if (!utilsCheckExists(properties['accessToken'])) {
+				throw new this.ExceptionBadRequest(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
+			}
+			let authedUser = {};
 
-			const token = properties['accessToken'];
-			if (
-				!token || 
-				typeof token === 'undefined' || 
-				token === 'null'
-			) throw new Error('Token is not specified!');
+			if (properties['accessToken']) {
+				authedUser = checkToken(properties['accessToken']);
 
-			let [ header, payload, signature ] = token.split('.');
-			if (
-				!header ||
-				!payload ||
-				!signature
-			) throw new Error('Token is not valid!');
-
-			const originalSignature = crypto.createHmac(
-				'sha256',
-				secret
-			).update(`${header}.${payload}`).digest();
-
-			if (originalSignature !== signature)
-				throw Error('Token is not valid!');
-			
-			header = JSON.parse(Buffer.from(
-				header,
-				'base64'
-			).toString());
-			payload = JSON.parse(Buffer.from(
-				payload,
-				'base64'
-			).toString());
-			
-			if (
-				payload.exp < new Date().getTime()
-			) throw new Error('Token is expired!');
-
-			properties['authedUserId'] = {
-				header,
-				payload,
-			};
-			
-			return properties;
+				if (!authedUser) {
+					throw new this.ExceptionUnauthorized(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
+				}
+			}
+			return { ...properties, authedUser };
 		}
 
 		async validateGetMany(properties: object): Promise<object> {
-			return await super.validateGetMany((this.getManyWithToken ?? true)
+			return await super.validateGetMany((this.validateGetManyTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateGetOne(properties: object): Promise<object> {
-			return await super.validateGetOne((this.getOneWithToken ?? true)
+			return await super.validateGetOne((this.validateGetOneTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateCreate(properties: object): Promise<object> {
-			return await super.validateCreate((this.createWithToken ?? true)
+			return await super.validateCreate((this.validateCreateTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateUpdateMany(properties: object): Promise<object> {
-			return await super.validateUpdateMany((this.updateManyWithToken ?? true)
+			return await super.validateUpdateMany((this.validateUpdateManyTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateUpdateOne(properties: object): Promise<object> {
-			return await super.validateUpdateOne((this.updateOneWithToken ?? true)
+			return await super.validateUpdateOne((this.validateUpdateOneTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateDropMany(properties: object): Promise<object> {
-			return await super.validateDropMany((this.dropManyWithToken ?? true)
+			return await super.validateDropMany((this.validateDropManyTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
 
 		async validateDropOne(properties: object): Promise<object> {
-			return await super.validateDropOne((this.dropOneWithToken ?? true)
+			return await super.validateDropOne((this.validateDropOneTokenIsRequired ?? true)
 				? await this.provideToken(properties)
 				: properties);
 		}
