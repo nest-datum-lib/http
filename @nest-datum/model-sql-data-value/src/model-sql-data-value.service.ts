@@ -12,6 +12,13 @@ export function ModelSqlDataValueService(Base: any = Sample) {
 			];
 		}
 
+		async getOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.getOneAllowPreparePropertiesSelect(), 
+				'dataValue',
+			];
+		}
+
 		async createAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.createAllowPrepareProperties(), 
@@ -19,8 +26,18 @@ export function ModelSqlDataValueService(Base: any = Sample) {
 			];
 		}
 
-		async createPrepareProperties(properties: object): Promise<object> {
-			return await super.createPrepareProperties({ dataValue: '', ...properties });
+		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateManyAllowPrepareProperties(), 
+				'dataValue',
+			];
+		}
+
+		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateOneAllowPrepareProperties(), 
+				'dataValue',
+			];
 		}
 	}
 

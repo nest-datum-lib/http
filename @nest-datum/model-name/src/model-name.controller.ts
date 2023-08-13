@@ -1,6 +1,6 @@
 import { 
 	exists as utilsCheckExists,
-	strFilled as utilsCheckStrFilled, 
+	strName as utilsCheckStrName, 
 } from '@nest-datum-utils/check';
 
 class Sample {
@@ -15,9 +15,8 @@ export function ModelNameController(Base: any = Sample) {
 		async validateCreate(properties: object): Promise<object> {
 			if ((this.validateCreateNameIsRequired
 				|| utilsCheckExists(properties['name']))
-					&& !(utilsCheckStrFilled(properties['name']) 
-						&& properties['name'].length <= 255)) {
-				throw new this.ExceptionBadRequest(`Property "name" "${name}" is bad format.`);
+					&& !utilsCheckStrName(properties['name'])) {
+				throw new this.ExceptionBadRequest(`Property "name" "${properties['name']}" is bad format.`);
 			}
 			return await super.validateCreate(properties);
 		}
@@ -30,7 +29,7 @@ export function ModelNameController(Base: any = Sample) {
 			for (id in properties['body']) {
 				if ((this.validateUpdateManyNameIsRequired
 					|| utilsCheckExists(properties['body'][id]['name']))
-						&& !utilsCheckStrFilled(properties['body'][id]['name'])) {
+						&& !utilsCheckStrName(properties['body'][id]['name'])) {
 					throw new this.ExceptionBadRequest(`Property "name" "${properties['body'][id]['name']}" is bad format.`);
 				}
 			}
@@ -40,9 +39,8 @@ export function ModelNameController(Base: any = Sample) {
 		async validateUpdateOne(properties: object): Promise<object> {
 			if ((this.validateUpdateOneNameIsRequired
 				|| utilsCheckExists(properties['name']))
-					&& !(utilsCheckStrFilled(properties['name']) 
-						&& properties['name'].length <= 255)) {
-				throw new this.ExceptionBadRequest(`Property "name" "${name}" is bad format.`);
+					&& !utilsCheckStrName(properties['name'])) {
+				throw new this.ExceptionBadRequest(`Property "name" "${properties['name']}" is bad format.`);
 			}
 			return await super.validateUpdateOne(properties);
 		}

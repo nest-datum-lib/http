@@ -12,9 +12,30 @@ export function ModelSqlNameService(Base: any = Sample) {
 			];
 		}
 
+		async getOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.getOneAllowPreparePropertiesSelect(), 
+				'name',
+			];
+		}
+
 		async createAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.createAllowPrepareProperties(), 
+				'name',
+			];
+		}
+
+		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateManyAllowPrepareProperties(), 
+				'name',
+			];
+		}
+
+		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateOneAllowPrepareProperties(), 
 				'name',
 			];
 		}
