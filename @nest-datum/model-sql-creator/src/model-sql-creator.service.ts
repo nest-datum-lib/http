@@ -1,4 +1,5 @@
 import { ModelCreatorService } from '@nest-datum/model-creator';
+import { objFilled as utilsCheckObjFilled } from '@nest-datum-utils/check';
 
 class Sample {
 }
@@ -27,7 +28,12 @@ export function ModelSqlCreatorService(Base: any = Sample) {
 		}
 
 		async createPrepareProperties(properties: object): Promise<object> {
-			return await super.createPrepareProperties({ ...properties, creatorId: properties['authedUserId'] });
+			return await super.createPrepareProperties({ 
+				...properties, 
+				...utilsCheckObjFilled(properties['authedUser'])
+					? { creatorId: properties['authedUser']['id'] }
+					: {},
+			});
 		}
 
 		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
@@ -42,7 +48,9 @@ export function ModelSqlCreatorService(Base: any = Sample) {
 			let id;
 
 			for (id in propertiesProcessed._updateManyPrepareProperties) {
-				propertiesProcessed['_updateManyPrepareProperties'][id]['creatorId'] = properties['authedUserId'];
+				if (utilsCheckObjFilled(properties['authedUser'])) {
+					propertiesProcessed['_updateManyPrepareProperties'][id]['creatorId'] = properties['authedUser']['id'];
+				}
 			}
 			return propertiesProcessed;
 		}
@@ -55,7 +63,12 @@ export function ModelSqlCreatorService(Base: any = Sample) {
 		}
 
 		async updateOnePrepareProperties(properties: object): Promise<object> {
-			return await super.updateOnePrepareProperties({ ...properties, creatorId: properties['authedUserId'] });
+			return await super.updateOnePrepareProperties({ 
+				...properties, 
+				...utilsCheckObjFilled(properties['authedUser'])
+					? { creatorId: properties['authedUser']['id'] }
+					: {},
+			});
 		}
 	}
 
