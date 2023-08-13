@@ -12,9 +12,30 @@ export function ModelSqlDataTypeService(Base: any = Sample) {
 			];
 		}
 
+		async getOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.getOneAllowPreparePropertiesSelect(), 
+				'dataTypeId',
+			];
+		}
+
 		async createAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.createAllowPrepareProperties(), 
+				'dataTypeId',
+			];
+		}
+
+		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateManyAllowPrepareProperties(), 
+				'dataTypeId',
+			];
+		}
+
+		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.updateOneAllowPrepareProperties(), 
 				'dataTypeId',
 			];
 		}
