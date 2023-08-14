@@ -2,9 +2,10 @@ import { ModelSqlService } from '@nest-datum/model-sql';
 import { ModelSqlCreatorService } from '@nest-datum/model-sql-creator';
 import { ModelSqlDatesService } from '@nest-datum/model-sql-dates';
 import { ModelSqlManyToOneService } from '@nest-datum/model-sql-many-to-one';
+import { ModelSqlAccessService } from '@nest-datum/model-sql-access';
 import { AccessService } from '@nest-datum/access';
 
-export class AccessSqlRoleService extends AccessService(ModelSqlDatesService(ModelSqlCreatorService(ModelSqlManyToOneService(ModelSqlService())))) {
+export class AccessSqlRoleService extends AccessService(ModelSqlAccessService(ModelSqlDatesService(ModelSqlCreatorService(ModelSqlManyToOneService(ModelSqlService()))))) {
 	async getManyAllowPreparePropertiesSelect(): Promise<Array<string>> {
 		return [ 
 			...await super.getManyAllowPreparePropertiesSelect(), 

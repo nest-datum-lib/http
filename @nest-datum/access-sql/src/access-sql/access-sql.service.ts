@@ -5,7 +5,8 @@ import { ModelSqlCreatorService } from '@nest-datum/model-sql-creator';
 import { ModelSqlRemovableService } from '@nest-datum/model-sql-removable';
 import { ModelSqlDatesService } from '@nest-datum/model-sql-dates';
 import { ModelSqlOneToManyService } from '@nest-datum/model-sql-one-to-many';
+import { ModelSqlAccessService } from '@nest-datum/model-sql-access';
 import { AccessService } from '@nest-datum/access';
 
-export class AccessSqlService extends AccessService(ModelSqlDatesService(ModelSqlRemovableService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlOneToManyService(ModelSqlService()))))))) {
+export class AccessSqlService extends AccessService(ModelSqlAccessService(ModelSqlDatesService(ModelSqlRemovableService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlOneToManyService(ModelSqlService())))))))) {
 }

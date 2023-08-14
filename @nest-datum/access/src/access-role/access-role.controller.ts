@@ -15,6 +15,14 @@ export function AccessRoleController(Base: any = Sample) {
 		public readonly validateUpdateOneAccessIdIsRequired: boolean = true;
 		public readonly validateUpdateOneRoleIdIsRequired: boolean = true;
 
+		public readonly validateGetManyAccessIsRequired: boolean = true;
+		public readonly validateGetOneAccessIsRequired: boolean = true;
+		public readonly validateCreateAccessIsRequired: boolean = true;
+		public readonly validateUpdateManyAccessIsRequired: boolean = true;
+		public readonly validateUpdateOneAccessIsRequired: boolean = true;
+		public readonly validateDropManyAccessIsRequired: boolean = true;
+		public readonly validateDropOneAccessIsRequired: boolean = true;
+
 		async validateCreate(properties: object): Promise<object> {
 			if ((this.validateCreateAccessIdIsRequired
 				|| utilsCheckExists(properties['accessId']))
