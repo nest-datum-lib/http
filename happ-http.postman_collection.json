@@ -7,6 +7,108 @@
 	},
 	"item": [
 		{
+			"name": "[Setting] Create replica name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Service name",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "The name of the service that will be processed in the pool of running replicas.",
+							"type": "text"
+						},
+						{
+							"key": "dataTypeId",
+							"value": "text",
+							"type": "text"
+						},
+						{
+							"key": "dataValue",
+							"value": "example value 1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Update replica name",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "replica-name",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Replica name",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting/2b6ca272-1be8-4e50-b783-e05953e5725b",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting",
+						"2b6ca272-1be8-4e50-b783-e05953e5725b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "[Setting] Select collection by pagination",
 			"request": {
 				"method": "GET",
@@ -164,65 +266,6 @@
 						{
 							"key": "accessToken",
 							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "[Setting] Create one model",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "accessToken",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
-							"type": "text"
-						},
-						{
-							"key": "name",
-							"value": "Service name",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "The name of the service that will be processed in the pool of running replicas.",
-							"type": "text"
-						},
-						{
-							"key": "dataTypeId",
-							"value": "text",
-							"type": "text"
-						},
-						{
-							"key": "dataValue",
-							"value": "example value 1",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8002/setting",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8002",
-					"path": [
-						"setting"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": "",
-							"disabled": true
 						}
 					]
 				}
