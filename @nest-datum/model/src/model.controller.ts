@@ -155,7 +155,7 @@ export function ModelController(Base: any = Sample) {
 		}
 
 		async validateDropMany(properties: object): Promise<object> {
-			return await this.validateDropMany(properties);
+			return await this.validateGetMany(properties);
 		}
 
 		async validateDropOne(properties: object): Promise<object> {
