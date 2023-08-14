@@ -137,17 +137,10 @@ export function ModelController(Base: any = Sample) {
 				|| !utilsCheckStrObjFilled(properties['body'])) {
 				throw new this.ExceptionBadRequest(`Property "body" "${properties['body']}" is bad format.`);
 			}
-			let id;
-
-			for (id in properties['body']) {
-				if (!utilsCheckStrId(id)) {
-					throw new this.ExceptionBadRequest(`Property "id" "${id}" is bad format.`);
-				}
-				if (!utilsCheckStrObjFilled(properties['body'][id])) {
-					throw new this.ExceptionBadRequest(`Property "body item" "${properties['body'][id]}" is bad format.`);
-				}
-			}
-			return properties;
+			return {
+				...await this.validateGetMany(properties),
+				body: properties['body'],
+			};
 		}
 
 		async validateUpdateOne(properties: object): Promise<object> {
@@ -162,13 +155,7 @@ export function ModelController(Base: any = Sample) {
 		}
 
 		async validateDropMany(properties: object): Promise<object> {
-			if (utilsCheckExists(properties['ids'])) {
-				if (!utilsCheckStrArrFilled(properties['ids'])) {
-					throw new this.ExceptionBadRequest(`Property "ids" "${properties['ids']}" is bad format.`);
-				}
-				return { ...properties, ids: (JSON.parse(properties['ids'] || '[]') || []) };
-			}
-			return properties;
+			return await this.validateDropMany(properties);
 		}
 
 		async validateDropOne(properties: object): Promise<object> {
