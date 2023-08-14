@@ -27,49 +27,70 @@ export function ModelTokenController(Base: any = Sample) {
 					throw new this.ExceptionUnauthorized(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
 				}
 			}
-			return { ...properties, authedUser };
+			return authedUser;
 		}
 
 		async validateGetMany(properties: object): Promise<object> {
-			return await super.validateGetMany((this.validateGetManyTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateGetMany(properties),
+				...(this.validateGetManyTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateGetOne(properties: object): Promise<object> {
-			return await super.validateGetOne((this.validateGetOneTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateGetOne(properties),
+				...(this.validateGetOneTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateCreate(properties: object): Promise<object> {
-			return await super.validateCreate((this.validateCreateTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateCreate(properties),
+				...(this.validateCreateTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateUpdateMany(properties: object): Promise<object> {
-			return await super.validateUpdateMany((this.validateUpdateManyTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateUpdateMany(properties),
+				...(this.validateUpdateManyTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateUpdateOne(properties: object): Promise<object> {
-			return await super.validateUpdateOne((this.validateUpdateOneTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateUpdateOne(properties),
+				...(this.validateUpdateOneTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateDropMany(properties: object): Promise<object> {
-			return await super.validateDropMany((this.validateDropManyTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateDropMany(properties),
+				...(this.validateDropManyTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 
 		async validateDropOne(properties: object): Promise<object> {
-			return await super.validateDropOne((this.validateDropOneTokenIsRequired ?? true)
-				? await this.provideToken(properties)
-				: properties);
+			return {
+				...await super.validateDropOne(properties),
+				...(this.validateDropOneTokenIsRequired ?? true)
+					? { authedUser: await this.provideToken(properties) }
+					: {},
+			};
 		}
 	}
 

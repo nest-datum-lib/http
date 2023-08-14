@@ -8,7 +8,8 @@ import { ModelHttpDataTypeController } from '@nest-datum/model-http-data-type';
 import { ModelHttpDataValueController } from '@nest-datum/model-http-data-value';
 import { ModelHttpRemovableController } from '@nest-datum/model-http-removable';
 import { ModelHttpDatesController } from '@nest-datum/model-http-dates';
+import { ModelHttpAccessController } from '@nest-datum/model-http-access';
 import { SettingController } from '@nest-datum/setting';
 
-export class SettingHttpController extends SettingController(ModelHttpDatesController(ModelHttpRemovableController(ModelHttpEnvController(ModelHttpDataTypeController(ModelHttpDataValueController(ModelHttpCreatorController(ModelHttpDescriptionController(ModelHttpNameController(ModelHttpTokenController(ModelHttpController())))))))))) {
+export class SettingHttpController extends SettingController(ModelHttpAccessController(ModelHttpDatesController(ModelHttpRemovableController(ModelHttpEnvController(ModelHttpDataTypeController(ModelHttpDataValueController(ModelHttpCreatorController(ModelHttpDescriptionController(ModelHttpNameController(ModelHttpTokenController(ModelHttpController()))))))))))) {
 }

@@ -16,4 +16,7 @@ export class AccessRole extends AccessSqlRole {
 		onUpdate: 'CASCADE',
 	})
 	public access: Access;
+
+	@Column()
+	public roleId: string;
 }

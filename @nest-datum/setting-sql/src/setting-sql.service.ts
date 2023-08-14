@@ -7,7 +7,8 @@ import { ModelSqlDataTypeService } from '@nest-datum/model-sql-data-type';
 import { ModelSqlDataValueService } from '@nest-datum/model-sql-data-value';
 import { ModelSqlRemovableService } from '@nest-datum/model-sql-removable';
 import { ModelSqlDatesService } from '@nest-datum/model-sql-dates';
+import { ModelSqlAccessService } from '@nest-datum/model-sql-access';
 import { SettingService } from '@nest-datum/setting';
 
-export class SettingSqlService extends SettingService(ModelSqlDatesService(ModelSqlRemovableService(ModelSqlEnvService(ModelSqlDataTypeService(ModelSqlDataValueService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlService()))))))))) {
+export class SettingSqlService extends SettingService(ModelSqlAccessService(ModelSqlDatesService(ModelSqlRemovableService(ModelSqlEnvService(ModelSqlDataTypeService(ModelSqlDataValueService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlService())))))))))) {
 }

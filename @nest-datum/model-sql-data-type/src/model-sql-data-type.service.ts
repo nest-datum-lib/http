@@ -14,7 +14,7 @@ export function ModelSqlDataTypeService(Base: any = Sample) {
 
 		async getOneAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
-				...await super.getOneAllowPreparePropertiesSelect(), 
+				...await super.getOneAllowPrepareProperties(), 
 				'dataTypeId',
 			];
 		}
