@@ -1,4 +1,5 @@
 import { ModelDataValueService } from '@nest-datum/model-data-value';
+import { exists as utilsCheckExists } from '@nest-datum-utils/check';
 
 class Sample {
 }
@@ -26,6 +27,15 @@ export function ModelSqlDataValueService(Base: any = Sample) {
 			];
 		}
 
+		async createPrepareProperties(properties: object): Promise<object> {
+			return await super.createPrepareProperties({ 
+				...properties,
+				dataValue: utilsCheckExists(properties['dataValue'])
+					? String(properties['dataValue'])
+					: '',
+			});
+		}
+
 		async updateManyAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.updateManyAllowPrepareProperties(), 
@@ -36,6 +46,20 @@ export function ModelSqlDataValueService(Base: any = Sample) {
 		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.updateOneAllowPrepareProperties(), 
+				'dataValue',
+			];
+		}
+
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropManyAllowPrepareProperties(), 
+				'dataValue',
+			];
+		}
+
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
 				'dataValue',
 			];
 		}

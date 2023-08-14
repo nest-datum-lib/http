@@ -39,6 +39,20 @@ export function ModelSqlDescriptionService(Base: any = Sample) {
 				'description',
 			];
 		}
+
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropManyAllowPrepareProperties(), 
+				'description',
+			];
+		}
+
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
+				'description',
+			];
+		}
 	}
 
 	return AbstractBase;

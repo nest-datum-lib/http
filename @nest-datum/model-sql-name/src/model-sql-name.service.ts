@@ -33,9 +33,16 @@ export function ModelSqlNameService(Base: any = Sample) {
 			];
 		}
 
-		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
-				...await super.updateOneAllowPrepareProperties(), 
+				...await super.dropManyAllowPrepareProperties(), 
+				'name',
+			];
+		}
+
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
 				'name',
 			];
 		}

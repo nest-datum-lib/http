@@ -12,6 +12,7 @@ import {
 	Param,
 	Body,
 } from '@nestjs/common';
+import { FormDataRequest } from 'nestjs-form-data';
 import { ModelController } from '@nest-datum/model';
 import { 
 	ExceptionHttp,
@@ -49,6 +50,7 @@ export function ModelHttpController(Base: any = Sample) {
 		}
 
 		@Post()
+		@FormDataRequest()
 		async create(@Body() properties: object): Promise<object> {
 			return await super.create(properties);
 		}

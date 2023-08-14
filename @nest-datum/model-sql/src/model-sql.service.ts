@@ -4,6 +4,7 @@ import {
 	objFilled as utilsCheckObjFilled,
 	arrFilled as utilsCheckArrFilled,
 	strFilled as utilsCheckStrFilled,
+	strSqlEntity as utilsCheckStrSqlEntity,
 	numericInt as utilsCheckNumericInt,
 } from '@nest-datum-utils/check';
 
@@ -14,6 +15,7 @@ export function ModelSqlService(Base: any = Sample) {
 	class AbstractBase extends ModelService(Base) {
 		public readonly repository;
 		public readonly connectionService: Connection;
+		public readonly getManySelectWithPrefix: boolean;
 		public readonly getManyOrderByDefault: object;
 		public readonly getManyLimitDefault: number = 20;
 
@@ -24,18 +26,26 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<string>}
 		 */
 		async getManyListQueryString(properties: object, sqlQueryBuilderProperties: object): Promise<string> {
-			return `\nSELECT ${sqlQueryBuilderProperties['select']}\nFROM ${this.repository.metadata.tableName}\n${sqlQueryBuilderProperties['join']
-				? `${sqlQueryBuilderProperties['join']}`
-				: ''}${sqlQueryBuilderProperties['where']
-					? `\n\tWHERE \n\t${sqlQueryBuilderProperties['where']}`
-					: ''}${sqlQueryBuilderProperties['groupBy']
-						? `\n\tGROUP BY ${sqlQueryBuilderProperties['groupBy']}`
-						: ''}${sqlQueryBuilderProperties['orderBy']
-							? `\n\tORDER BY ${sqlQueryBuilderProperties['orderBy']}`
-							: ''}${(sqlQueryBuilderProperties['limit']
-								|| sqlQueryBuilderProperties['offset'])
-								? `LIMIT ${sqlQueryBuilderProperties['offset'] ? `${sqlQueryBuilderProperties['offset']},` : ''} ${sqlQueryBuilderProperties['limit'] || this.getManyLimitDefault}`
-								: ''};`;
+			return ([
+				`SELECT ${sqlQueryBuilderProperties['select']}`,
+				`FROM ${this.repository.metadata.tableName}`,
+				...sqlQueryBuilderProperties['join']
+					? [ sqlQueryBuilderProperties['join'] ]
+					: [],
+				...sqlQueryBuilderProperties['where']
+					? [ `WHERE \n\t${sqlQueryBuilderProperties['where']}` ]
+					: [],
+				...sqlQueryBuilderProperties['groupBy']
+					? [ `GROUP BY \n\t${sqlQueryBuilderProperties['groupBy']}` ]
+					: [],
+				...sqlQueryBuilderProperties['orderBy']
+					? [ `ORDER BY \n\t${sqlQueryBuilderProperties['orderBy']}` ]
+					: [],
+				...(sqlQueryBuilderProperties['limit']
+					|| sqlQueryBuilderProperties['offset'])
+					? [ `LIMIT ${sqlQueryBuilderProperties['offset'] ? `${sqlQueryBuilderProperties['offset']},` : ''} ${sqlQueryBuilderProperties['limit'] || this.getManyLimitDefault}` ]
+					: [],
+			]).join(`\n`);
 		}
 
 		/**
@@ -45,15 +55,22 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<string>}
 		 */
 		async getManyTotalQueryString(properties: object, sqlQueryBuilderProperties: object): Promise<string> {
-			return `\nSELECT COUNT(DISTINCT \`${this.repository.metadata.tableName}\`.\`id\`) AS \`total\`, ${sqlQueryBuilderProperties['select']}\nFROM ${this.repository.metadata.tableName}\n${sqlQueryBuilderProperties['join']
-				? `${sqlQueryBuilderProperties['join']}`
-				: ''}${sqlQueryBuilderProperties['where']
-					? `\n\tWHERE \n\t${sqlQueryBuilderProperties['where']}`
-					: ''}${sqlQueryBuilderProperties['groupBy']
-						? `\n\tGROUP BY ${sqlQueryBuilderProperties['groupBy']}`
-						: ''}${sqlQueryBuilderProperties['orderBy']
-							? `\n\tORDER BY ${sqlQueryBuilderProperties['orderBy']}`
-							: ''};`;
+			return ([
+				`SELECT COUNT(DISTINCT \`${this.repository.metadata.tableName}\`.\`id\`) AS \`total\`${sqlQueryBuilderProperties['select'] !== '*' ? `, ${sqlQueryBuilderProperties['select']}` : ''}`,
+				`FROM ${this.repository.metadata.tableName}`,
+				...sqlQueryBuilderProperties['join']
+					? [ sqlQueryBuilderProperties['join'] ]
+					: [],
+				...sqlQueryBuilderProperties['where']
+					? [ `WHERE \n\t${sqlQueryBuilderProperties['where']}` ]
+					: [],
+				...sqlQueryBuilderProperties['groupBy']
+					? [ `GROUP BY \n\t${sqlQueryBuilderProperties['groupBy']}` ]
+					: [],
+				...sqlQueryBuilderProperties['orderBy']
+					? [ `ORDER BY \n\t${sqlQueryBuilderProperties['orderBy']}` ]
+					: [],
+			]).join(`\n`);
 		}
 
 		/**
@@ -74,26 +91,45 @@ export function ModelSqlService(Base: any = Sample) {
 			const columnsSelectAllow = await this.getManyAllowPreparePropertiesSelect();
 			const columnsJoinAllow = await this.getManyAllowPreparePropertiesJoin();
 
-			return (columnsSelectAllow.length <= 0)
+			return (columnsSelectRequest.length <= 0)
 				? '*'
 				: (() => {
-					const columnsSelectAllowFiltered = columnsSelectAllow.filter((column) => columnsSelectRequest.indexOf(column) >= -1);
+					const columnsSelectAllowFiltered = columnsSelectRequest.filter((column) => columnsSelectAllow.indexOf(column) >= -1);
 					let i = 0,
-						output = [];
+						output = [],
+						withPrefix = this.getManySelectWithPrefix;
+
+					if (!withPrefix) {
+						while (i < columnsSelectAllowFiltered.length) {
+							const column = columnsSelectAllowFiltered[i];
+							const columnSplit = column.split('.');
+
+							if (columnSplit.length === 2
+								&& utilsCheckStrSqlEntity(columnSplit[0])
+								&& utilsCheckStrSqlEntity(columnSplit[1])) {
+								withPrefix = true;
+							}
+							i++;
+						}
+					}
+					i = 0;
 
 					while (i < columnsSelectAllowFiltered.length) {
 						const column = columnsSelectAllowFiltered[i];
 						const columnSplit = column.split('.');
 
 						if (columnSplit.length === 2
-							&& utilsCheckStrFilled(columnSplit[1])
-							&& (columnSplit[0] === this.repository.metadata.tableName
-								|| columnsJoinAllow.includes(columnSplit[0]))) {
+							&& utilsCheckStrSqlEntity(columnSplit[0])
+							&& utilsCheckStrSqlEntity(columnSplit[1])) {
 							output.push(`\`${columnSplit[0]}\`.\`${columnSplit[1]}\` AS \`${columnSplit[0]}${(columnSplit[1].charAt(0).toUpperCase() + columnSplit[1].slice(1))}\``);
 						}
-						else if (columnSplit.length === 1
-							&& columnsSelectAllow.includes(columnSplit[0])) {
-							output.push(`\`${this.repository.metadata.tableName}\`.\`${columnSplit[0]}\` AS \`${this.repository.metadata.tableName}${(columnSplit[0].charAt(0).toUpperCase() + columnSplit[0].slice(1))}\``);
+						else if (columnSplit.length === 1) {
+							let columnProcessed = column;
+
+							if (withPrefix) {
+								columnProcessed = `${this.repository.metadata.tableName}${(column.charAt(0).toUpperCase() + column.slice(1))}`;
+							}
+							output.push(`\`${this.repository.metadata.tableName}\`.\`${columnSplit[0]}\` AS \`${columnProcessed}\``);
 						}
 						i++;
 					}
@@ -238,9 +274,12 @@ export function ModelSqlService(Base: any = Sample) {
 								&& joinRequest.includes(keySplit[0]))) {
 						output.push(`\n\`${keySplit[0]}\`.\`${keySplit[1]}\` ${value}`);
 					}
+					else if (keySplit.length === 1) {
+						output.push(`\`${keySplit[0]}\` ${value}`);
+					}
 				}
 			}
-			return output.join(`,`);
+			return output.join(`\n,`);
 		}
 
 		/**
@@ -468,7 +507,7 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
-		 * Parse the input parameters and prepare the data for the updating many models.
+		 * Parse the input parameters and prepare the data for updating many models.
 		 * @param {object} properties
 		 * @return {Promise<object>}
 		 */
@@ -541,7 +580,7 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
-		 * Parse the input parameters and prepare the data for the updating one model.
+		 * Parse the input parameters and prepare the data for updating one model.
 		 * @param {object} properties
 		 * @return {Promise<object>}
 		 */
@@ -578,6 +617,31 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
+		 * List of allowed fields that the client can view after drop many models from database.
+		 * @return Promise<Array<string>>
+		 */
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 'id' ];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for deleting many models.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async dropManyPrepareProperties(properties: object): Promise<object> {
+			const columnsByAllow = await this.dropManyAllowPrepareProperties();
+			let i = 0,
+				select = {};
+
+			while (i < columnsByAllow.length) {
+				select[columnsByAllow[i]] = true;
+				i++;
+			}
+			return { ...properties, _dropManyPrepareProperties: select };
+		}
+
+		/**
 		 * Method that directly deleting many models from database.
 		 * @param {object} properties
 		 * @return {Promise<object>}
@@ -589,8 +653,16 @@ export function ModelSqlService(Base: any = Sample) {
 				output = [];
 
 			while (i < rows.length) {
-				if (await this.repository.delete({ id: rows[i]['id'] })) {
-					output.push(rows[i]);
+				const model = await this.repository.findOne({
+					select: properties['_dropManyPrepareProperties'],
+					where: {
+						id: rows[i]['id'],
+					},
+				})
+
+				if (model
+					&& await this.repository.delete({ id: rows[i]['id'] })) {
+					output.push(model);
 				}
 				i++;
 			}
@@ -605,6 +677,38 @@ export function ModelSqlService(Base: any = Sample) {
 		 */
 		async dropManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput['_dropManyProcessResult'];
+		}
+
+		/**
+		 * List of allowed fields that the client can view after drop one model from database.
+		 * @return Promise<Array<string>>
+		 */
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 'id' ];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for deleting one model.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async dropOnePrepareProperties(properties: object): Promise<object> {
+			const columnsByAllow = await this.dropOneAllowPrepareProperties();
+			let i = 0,
+				select = {};
+
+			while (i < columnsByAllow.length) {
+				select[columnsByAllow[i]] = true;
+				i++;
+			}
+			const model = await this.repository.findOne({ 
+				select, 
+				where: { 
+					id: properties['id'], 
+				}, 
+			});
+
+			return { ...properties, _dropOnePrepareProperties: model };
 		}
 
 		/**
@@ -623,7 +727,7 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async dropOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
-			return propertiesOutput['_dropOneProcessResult'];
+			return propertiesOutput['_dropOnePrepareProperties'];
 		}
 	}
 

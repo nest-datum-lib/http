@@ -11,7 +11,7 @@ import strArrFilled from './src/str/arrFilled';
 import strObj from './src/str/obj';
 import strObjFilled from './src/str/objFilled';
 import strId from './src/str/id';
-import strSqlOperator from './src/str/sql/operator';
+import strSqlEntity from './src/str/sql/entity';
 import numeric from './src/numeric';
 import numericInt from './src/numeric/int';
 import bool from './src/bool';
@@ -31,7 +31,7 @@ export {
 	strObj,
 	strObjFilled,
 	strId,
-	strSqlOperator,
+	strSqlEntity,
 	numeric,
 	numericInt,
 	bool,

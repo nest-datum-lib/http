@@ -23,9 +23,10 @@ export function ModelDataValueController(Base: any = Sample) {
 			let id;
 
 			for (id in properties['body']) {
-				if (this.validateUpdateManyDataValueIsRequired
-					&& !utilsCheckExists(properties['body'][id]['dataValue'])) {
-					throw new this.ExceptionBadRequest(`Property "dataValue" "${properties['body'][id]['dataValue']}" is bad format.`);
+				if (this.validateUpdateManyDataValueIsRequired) {
+					if (!utilsCheckExists(properties['body'][id]['dataValue'])) {
+						throw new this.ExceptionBadRequest(`Property "dataValue" "${properties['body'][id]['dataValue']}" is bad format.`);
+					}
 				}
 			}
 			return properties;

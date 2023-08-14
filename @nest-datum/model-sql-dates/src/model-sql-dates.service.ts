@@ -7,9 +7,27 @@ export function ModelSqlDatesService(Base: any = Sample) {
 	class AbstractBase extends ModelDatesService(Base) {
 		public readonly getManyOrderByDefault: object = { createdAt: 'DESC' };
 
+		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
+			return await super.getManyPreparePropertiesOrderBy({ 
+				...properties, 
+				orderBy: { 
+					...properties['orderBy'], 
+					...this.getManyOrderByDefault,
+				}, 
+			});
+		}
+
 		async getManyAllowPreparePropertiesSelect(): Promise<Array<string>> {
 			return [ 
 				...await super.getManyAllowPreparePropertiesSelect(), 
+				'createdAt',
+				'updatedAt',
+			];
+		}
+
+		async getManyAllowPreparePropertiesOrderBy(): Promise<Array<string>> {
+			return [
+				...await super.getManyAllowPreparePropertiesOrderBy(), 
 				'createdAt',
 				'updatedAt',
 			];
@@ -47,15 +65,20 @@ export function ModelSqlDatesService(Base: any = Sample) {
 			];
 		}
 
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropManyAllowPrepareProperties(), 
+				'createdAt',
+				'updatedAt',
+			];
+		}
 
-		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
-			return await super.getManyPreparePropertiesOrderBy({ 
-				...properties, 
-				orderBy: { 
-					...properties['orderBy'], 
-					...this.getManyOrderByDefault,
-				}, 
-			});
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
+				'createdAt',
+				'updatedAt',
+			];
 		}
 	}
 

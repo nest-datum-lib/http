@@ -39,6 +39,20 @@ export function ModelSqlDataTypeService(Base: any = Sample) {
 				'dataTypeId',
 			];
 		}
+
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropManyAllowPrepareProperties(), 
+				'dataTypeId',
+			];
+		}
+
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
+				'dataTypeId',
+			];
+		}
 	}
 
 	return AbstractBase;

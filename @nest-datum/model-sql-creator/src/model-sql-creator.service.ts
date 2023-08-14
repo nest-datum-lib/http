@@ -70,6 +70,20 @@ export function ModelSqlCreatorService(Base: any = Sample) {
 					: {},
 			});
 		}
+
+		async dropManyAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropManyAllowPrepareProperties(), 
+				'creatorId',
+			];
+		}
+
+		async dropOneAllowPrepareProperties(): Promise<Array<string>> {
+			return [ 
+				...await super.dropOneAllowPrepareProperties(), 
+				'creatorId',
+			];
+		}
 	}
 
 	return AbstractBase;

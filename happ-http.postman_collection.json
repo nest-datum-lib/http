@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "d8c85224-b836-4be8-bec3-0b5e295c27e0",
+		"name": "happ-http",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5175230"
+	},
+	"item": [
+		{
+			"name": "[Setting] Select collection by pagination",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting/?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&limit=5&page=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting",
+						""
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select collection with specified columns",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&select=[\"id\",\"name\",\"description\",\"envKey\",\"createdAt\",\"updatedAt\"]",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "select",
+							"value": "[\"id\",\"name\",\"description\",\"envKey\",\"createdAt\",\"updatedAt\"]"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select all collection",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "test9",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "Setting test9 name",
+							"type": "default"
+						},
+						{
+							"key": "description",
+							"value": "Setting test9 description",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "=",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Delete one model",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting/test1?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting",
+						"test1"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Create one model",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Service name",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "The name of the service that will be processed in the pool of running replicas.",
+							"type": "text"
+						},
+						{
+							"key": "dataTypeId",
+							"value": "text",
+							"type": "text"
+						},
+						{
+							"key": "dataValue",
+							"value": "example value 1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8002/setting",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -9,5 +9,7 @@ import { ModelHttpDataValueController } from '@nest-datum/model-http-data-value'
 import { ModelHttpRemovableController } from '@nest-datum/model-http-removable';
 import { ModelHttpDatesController } from '@nest-datum/model-http-dates';
 
-export class SettingHttpController extends ModelHttpDatesController(ModelHttpRemovableController(ModelHttpEnvController(ModelHttpDataValueController(ModelHttpDataTypeController(ModelHttpCreatorController(ModelHttpDescriptionController(ModelHttpNameController(ModelHttpTokenController(ModelHttpController()))))))))) {
+export class SettingHttpController extends ModelHttpDatesController(ModelHttpRemovableController(ModelHttpEnvController(ModelHttpDataTypeController(ModelHttpDataValueController(ModelHttpCreatorController(ModelHttpDescriptionController(ModelHttpNameController(ModelHttpTokenController(ModelHttpController()))))))))) {
+	public readonly validateCreateNameIsRequired: boolean = true;
+	public readonly validateCreateDataTypeIdIsRequired: boolean = true;
 }
