@@ -154,6 +154,10 @@ export function ModelController(Base: any = Sample) {
 			if (!utilsCheckStrId(properties['id'])) {
 				throw new this.ExceptionBadRequest(`Property "id" "${properties['id']}" is bad format.`);
 			}
+			if (utilsCheckExists(properties['newId'])
+				&& !utilsCheckStrId(properties['newId'])) {
+				throw new this.ExceptionBadRequest(`Property "newId" "${properties['newId']}" is bad format.`);
+			}
 			return properties;
 		}
 
@@ -191,7 +195,7 @@ export function ModelController(Base: any = Sample) {
 		}
 
 		async updateOne(id: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.updateOne(await this.validateUpdateOne({ ...properties, id })));
+			return await this.errorHandler(async () => await this.service.updateOne(await this.validateUpdateOne({ ...properties, id, newId: properties['id'] })));
 		}
 
 		async dropMany(properties: object): Promise<object> {

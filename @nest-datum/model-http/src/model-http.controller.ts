@@ -56,11 +56,13 @@ export function ModelHttpController(Base: any = Sample) {
 		}
 
 		@Patch()
+		@FormDataRequest()
 		async updateMany(@Body() properties: object): Promise<object> {
 			return await super.updateMany(properties);
 		}
 
 		@Patch(':id')
+		@FormDataRequest()
 		async updateOne(@Param('id') id: string, @Body() properties: object): Promise<object> {
 			return await super.updateOne(id, properties);
 		}

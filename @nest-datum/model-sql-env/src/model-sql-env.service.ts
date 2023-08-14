@@ -147,15 +147,15 @@ export function ModelSqlEnvService(Base: any = Sample) {
 			return await super.updateOneProcess({ ...properties, prevEnvKey: model['envKey'] });
 		}
 
-		async updateOneAfter(properties: object): Promise<object> {
-			if ((properties['_updateOneProcessResult'] || {})['envKey']
-				&& properties['prevEnvKey'] !== (properties['_updateOneProcessResult'] || {})['envKey']) {
-				await this.addKeyValueValueToFile(properties['_updateOneProcessResult']['envKey'], (properties['_updateOneProcessResult'] || {})['dataValue']);
+		async updateOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			const propertiesProcessed = await super.updateOneResult(propertiesInput, propertiesOutput);
+
+			if (propertiesProcessed['envKey']
+				&& propertiesOutput['prevEnvKey'] !== propertiesProcessed['envKey']) {
+				await this.removeKeyValueValueFromFile(propertiesOutput['prevEnvKey']);
+				await this.addKeyValueValueToFile(propertiesProcessed['envKey'], propertiesProcessed['dataValue']);
 			}
-			else if (properties['prevEnvKey']) {
-				await this.removeKeyValueValueFromFile(properties['prevEnvKey']);
-			}
-			return await super.updateOneAfter(properties);
+			return propertiesProcessed;
 		}
 
 		async dropManyAllowPrepareProperties(): Promise<Array<string>> {

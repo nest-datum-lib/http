@@ -43,32 +43,11 @@ export function ModelSqlCreatorService(Base: any = Sample) {
 			];
 		}
 
-		async updateManyPrepareProperties(properties: object): Promise<object> {
-			const propertiesProcessed = await super.updateManyPrepareProperties(properties);
-			let id;
-
-			for (id in propertiesProcessed._updateManyPrepareProperties) {
-				if (utilsCheckObjFilled(properties['authedUser'])) {
-					propertiesProcessed['_updateManyPrepareProperties'][id]['creatorId'] = properties['authedUser']['id'];
-				}
-			}
-			return propertiesProcessed;
-		}
-
 		async updateOneAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
 				...await super.updateOneAllowPrepareProperties(), 
 				'creatorId',
 			];
-		}
-
-		async updateOnePrepareProperties(properties: object): Promise<object> {
-			return await super.updateOnePrepareProperties({ 
-				...properties, 
-				...utilsCheckObjFilled(properties['authedUser'])
-					? { creatorId: properties['authedUser']['id'] }
-					: {},
-			});
 		}
 
 		async dropManyAllowPrepareProperties(): Promise<Array<string>> {

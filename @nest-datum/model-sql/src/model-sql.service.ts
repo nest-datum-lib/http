@@ -3,6 +3,7 @@ import { ModelService } from '@nest-datum/model';
 import {
 	objFilled as utilsCheckObjFilled,
 	arrFilled as utilsCheckArrFilled,
+	strId as utilsCheckStrId,
 	strFilled as utilsCheckStrFilled,
 	strSqlEntity as utilsCheckStrSqlEntity,
 	numericInt as utilsCheckNumericInt,
@@ -594,7 +595,10 @@ export function ModelSqlService(Base: any = Sample) {
 					output[column] = properties[column];
 				}
 			}
-			return { ...properties, _updateOnePrepareProperties: output };
+			return { 
+				...properties, 
+				_updateOnePrepareProperties: output,
+			};
 		}
 
 		/**
@@ -603,7 +607,22 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateOneProcess(properties: object): Promise<object> {
-			return await super.updateOneProcess({ ...properties, _updateOneProcessResult: await this.repository.update({ id: properties['id'] }, properties['_updateOnePrepareProperties']) });
+			const _updateOnePrepareProperties = {
+				...properties['_updateOnePrepareProperties'],
+				...utilsCheckStrId(properties['newId'])
+					? { id: properties['newId'] }
+					: {},
+			};
+
+			delete _updateOnePrepareProperties['newId'];
+
+			return await super.updateOneProcess({
+				...properties,
+				_updateOneProcessResult: await this.repository.update({
+					id: properties['id'],
+				}, _updateOnePrepareProperties),
+				_updateOnePrepareProperties,
+			});
 		}
 
 		/**
@@ -613,7 +632,19 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
-			return propertiesOutput['_updateOneProcessResult'];
+			let column,
+				select = {};
+
+			for (column in propertiesOutput['_updateOnePrepareProperties']) {
+				select[column] = true;
+			}
+			const model = await this.repository.findOne({
+				select,
+				where: {
+					id: propertiesOutput['_updateOnePrepareProperties']['id'],
+				},
+			});
+			return model;
 		}
 
 		/**
