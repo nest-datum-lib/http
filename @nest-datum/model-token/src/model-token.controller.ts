@@ -15,19 +15,19 @@ export function ModelTokenController(Base: any = Sample) {
 		public readonly validateDropOneTokenIsRequired: boolean;
 
 		async provideToken(properties: object): Promise<object> {
-			if (!utilsCheckExists(properties['accessToken'])) {
-				throw new this.ExceptionBadRequest(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
-			}
-			let authedUser = {};
+			// if (!utilsCheckExists(properties['accessToken'])) {
+			// 	throw new this.ExceptionBadRequest(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
+			// }
+			// let authedUser = {};
 
-			if (properties['accessToken']) {
-				authedUser = checkToken(properties['accessToken']);
+			// if (properties['accessToken']) {
+			// 	authedUser = checkToken(properties['accessToken']);
 
-				if (!authedUser) {
-					throw new this.ExceptionUnauthorized(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
-				}
-			}
-			return { ...properties, authedUser };
+			// 	if (!authedUser) {
+			// 		throw new this.ExceptionUnauthorized(`Property "accessToken" "${properties['accessToken']}" is not valid.`);
+			// 	}
+			// }
+			return { ...properties };
 		}
 
 		async validateGetMany(properties: object): Promise<object> {
