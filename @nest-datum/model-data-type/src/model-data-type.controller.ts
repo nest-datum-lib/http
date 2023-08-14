@@ -24,14 +24,10 @@ export function ModelDataTypeController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyDataTypeIdIsRequired
-					|| utilsCheckExists(properties['body'][id]['dataTypeId']))
-						&& !utilsCheckStrId(properties['body'][id]['dataTypeId'])) {
-					throw new this.ExceptionBadRequest(`Property "dataTypeId" "${properties['body'][id]['dataTypeId']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyDataTypeIdIsRequired
+				|| utilsCheckExists((properties['body'] || {})['dataTypeId']))
+					&& !utilsCheckStrId((properties['body'] || {})['dataTypeId'])) {
+				throw new this.ExceptionBadRequest(`Property "dataTypeId" "${(properties['body'] || {})['dataTypeId']}" is bad format.`);
 			}
 			return properties;
 		}

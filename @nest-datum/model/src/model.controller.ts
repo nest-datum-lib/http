@@ -33,10 +33,6 @@ export function ModelController(Base: any = Sample) {
 			this.ExceptionNotFound = ExceptionNotFound();
 		}
 
-		async errorHandler(callback: Function) {
-			return await callback();
-		}
-
 		async validateGetMany(properties: object): Promise<object> {
 			const offset = properties['offset'] ?? properties['page'];
 			const output = {
@@ -166,31 +162,66 @@ export function ModelController(Base: any = Sample) {
 		}
 
 		async getMany(properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.getMany(await this.validateGetMany(properties)));
+			try {
+				return await this.service.getMany(await this.validateGetMany(properties));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async getOne(id: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.getOne(await this.validateGetOne({ ...properties, id })));
+			try {
+				return await this.service.getOne(await this.validateGetOne({ ...properties, id }));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async create(properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.create(await this.validateCreate(properties)));
+			try {
+				return await this.service.create(await this.validateCreate(properties));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async updateMany(properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.updateMany(await this.validateUpdateMany(properties)));
+			try {
+				return await this.service.updateMany(await this.validateUpdateMany(properties));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async updateOne(id: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.updateOne(await this.validateUpdateOne({ ...properties, id, newId: properties['id'] })));
+			try {
+				return await this.service.updateOne(await this.validateUpdateOne({ ...properties, id, newId: properties['id'] }));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async dropMany(properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.dropMany(await this.validateDropMany(properties)));
+			try {
+				return await this.service.dropMany(await this.validateDropMany(properties));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async dropOne(id: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.dropOne(await this.validateDropOne({ ...properties, id })));
+			try {
+				return await this.service.dropOne(await this.validateDropOne({ ...properties, id }));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 	}
 

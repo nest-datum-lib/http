@@ -24,14 +24,10 @@ export function ModelDescriptionController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyDescriptionIsRequired
-					|| utilsCheckExists(properties['body'][id]['description']))
-						&& !utilsCheckStrDescription(properties['body'][id]['description'])) {
-					throw new this.ExceptionBadRequest(`Property "description" "${properties['body'][id]['description']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyDescriptionIsRequired
+				|| utilsCheckExists((properties['body'] || {})['description']))
+					&& !utilsCheckStrDescription((properties['body'] || {})['description'])) {
+				throw new this.ExceptionBadRequest(`Property "description" "${(properties['body'] || {})['description']}" is bad format.`);
 			}
 			return properties;
 		}

@@ -24,14 +24,10 @@ export function ModelCreatorController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyCreatorIdIsRequired
-					|| utilsCheckExists(properties['body'][id]['creatorId']))
-						&& !utilsCheckStrId(properties['body'][id]['creatorId'])) {
-					throw new this.ExceptionBadRequest(`Property "creatorId" "${properties['body'][id]['creatorId']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyCreatorIdIsRequired
+				|| utilsCheckExists((properties['body'] || {})['creatorId']))
+					&& !utilsCheckStrId((properties['body'] || {})['creatorId'])) {
+				throw new this.ExceptionBadRequest(`Property "creatorId" "${(properties['body'] || {})['creatorId']}" is bad format.`);
 			}
 			return properties;
 		}
