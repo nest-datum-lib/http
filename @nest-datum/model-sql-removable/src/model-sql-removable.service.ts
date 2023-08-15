@@ -73,12 +73,18 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 					},
 				});
 
-				console.log("MANY MODEL:", model, properties);
+				let _dropOneProcessResult = null;
 
-				if (model
-					&& await this.repository.delete({ id: rows[i]['id'] })) {
-					output.push(model);
+				if (model && !model.isNotDelete) {
+					if (model.isDeleted) {
+						_dropOneProcessResult = await this.dropProcessForever(model['id']);
+					} else {
+						_dropOneProcessResult = await this.dropProcessPrepare(model['id']);
+					}
+					
+					output.push(_dropOneProcessResult);
 				}
+
 				i++;
 			}
 			return { ...properties, _dropManyProcessResult: output };
@@ -111,15 +117,18 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 		}
 
 		async dropProcessForever(id): Promise<any> {
+			if (!id)
+				throw new this.Exception(`Field "id" is undefined for drop forever!`);
 			return await this.connectionService.query(
-				`DELETE FROM ${this.repository.metadata.tableName} WHERE id="${id}"`
+				`DELETE FROM ${this.repository.metadata.tableName} WHERE id="${id}";`
 			);
 		}
 	
 		async dropProcessPrepare(id: string): Promise<any> {
-			await this.repository.save({ id, isDeleted: true });
+			if (!id)
+				throw new this.Exception(`Field "id" is undefined for drop prepare!`);
 			return await this.connectionService.query(
-				`SELECT * FROM ${this.repository.metadata.tableName} WHERE id="${id}"`
+				`UPDATE ${this.repository.metadata.tableName} SET isDeleted=1 WHERE id="${id}";`
 			);
 		}
 	}

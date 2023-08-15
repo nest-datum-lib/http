@@ -69,7 +69,6 @@ export function ModelHttpController(Base: any = Sample) {
 
 		@Delete()
 		async dropMany(@Query() properties: object): Promise<object> {
-			console.log("", properties);
 			return await super.dropMany(properties);
 		}
 

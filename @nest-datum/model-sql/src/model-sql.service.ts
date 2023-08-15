@@ -379,15 +379,15 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async getManyProcess(properties: object): Promise<object> {
-			console.log("first query", properties);
-			console.log("connection service", this.connectionService);
-			return await super.getManyProcess({ 
+			const many_props = await super.getManyProcess({ 
 				...properties, 
 				_getManyProcessResult: {
 					rows: await this.connectionService.query(properties['_getManyQueryString']),
 					total: Number(((await this.connectionService.query(properties['_getManyQueryTotal']))[0] || {})['total']),
 				}, 
 			});
+
+			return many_props;
 		}
 
 		/**
@@ -664,6 +664,7 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async dropManyPrepareProperties(properties: object): Promise<object> {
+			const getManyPreparedProperties = await this.getManyPrepareProperties(properties);
 			const columnsByAllow = await this.dropManyAllowPrepareProperties();
 			let i = 0,
 				select = {};
@@ -672,7 +673,12 @@ export function ModelSqlService(Base: any = Sample) {
 				select[columnsByAllow[i]] = true;
 				i++;
 			}
-			return { ...properties, _dropManyPrepareProperties: select };
+			return { 
+				...properties, 
+				_dropManyPrepareProperties: select,
+				_getManyQueryString: getManyPreparedProperties['_getManyQueryString'],
+				_getManyQueryTotal: getManyPreparedProperties['_getManyQueryTotal'],
+			};
 		}
 
 		/**
