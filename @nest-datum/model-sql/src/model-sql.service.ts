@@ -379,13 +379,15 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async getManyProcess(properties: object): Promise<object> {
-			return await super.getManyProcess({ 
+			const many_props = await super.getManyProcess({ 
 				...properties, 
 				_getManyProcessResult: {
 					rows: await this.connectionService.query(properties['_getManyQueryString']),
 					total: Number(((await this.connectionService.query(properties['_getManyQueryTotal']))[0] || {})['total']),
 				}, 
 			});
+
+			return many_props;
 		}
 
 		/**
@@ -438,6 +440,7 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async getOneProcess(properties: object): Promise<object> {
+			console.log("second query");
 			return await super.getOneProcess({ 
 				...properties, 
 				_getOneProcessResult: ((await this.connectionService.query(properties['_getOneQueryString'])) || [])[0], 
@@ -661,6 +664,7 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async dropManyPrepareProperties(properties: object): Promise<object> {
+			const getManyPreparedProperties = await this.getManyPrepareProperties(properties);
 			const columnsByAllow = await this.dropManyAllowPrepareProperties();
 			let i = 0,
 				select = {};
@@ -669,7 +673,12 @@ export function ModelSqlService(Base: any = Sample) {
 				select[columnsByAllow[i]] = true;
 				i++;
 			}
-			return { ...properties, _dropManyPrepareProperties: select };
+			return { 
+				...properties, 
+				_dropManyPrepareProperties: select,
+				_getManyQueryString: getManyPreparedProperties['_getManyQueryString'],
+				_getManyQueryTotal: getManyPreparedProperties['_getManyQueryTotal'],
+			};
 		}
 
 		/**
@@ -689,7 +698,7 @@ export function ModelSqlService(Base: any = Sample) {
 					where: {
 						id: rows[i]['id'],
 					},
-				})
+				});
 
 				if (model
 					&& await this.repository.delete({ id: rows[i]['id'] })) {

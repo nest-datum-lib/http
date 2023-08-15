@@ -144,7 +144,11 @@ export function ModelSqlEnvService(Base: any = Sample) {
 				}, 
 			});
 
-			return await super.updateOneProcess({ ...properties, prevEnvKey: model['envKey'] });
+			return await super.updateOneProcess(
+				{ ...properties,
+					...(() => (model ? { prevEnvKey: model['envKey'] } : {}))(),
+				}
+			);
 		}
 
 		async updateOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {

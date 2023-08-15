@@ -166,7 +166,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.getMany(await this.validateGetMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -175,7 +175,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.getOne(await this.validateGetOne({ ...properties, id }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -184,7 +184,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.create(await this.validateCreate(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -193,7 +193,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.updateMany(await this.validateUpdateMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -202,7 +202,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.updateOne(await this.validateUpdateOne({ ...properties, id, newId: properties['id'] }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -211,7 +211,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.dropMany(await this.validateDropMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -220,7 +220,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.dropOne(await this.validateDropOne({ ...properties, id }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 	}
