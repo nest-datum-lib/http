@@ -7,6 +7,7 @@ import { ModelSqlDataType } from '@nest-datum/model-sql-data-type';
 import { ModelSqlDataValue } from '@nest-datum/model-sql-data-value';
 import { ModelSqlRemovable } from '@nest-datum/model-sql-removable';
 import { ModelSqlDates } from '@nest-datum/model-sql-dates';
+import { ModelSqlAccess } from '@nest-datum/model-sql-access';
 
-export class SettingSql extends ModelSql(ModelSqlEnv(ModelSqlDescription(ModelSqlName(ModelSqlCreator(ModelSqlDataType(ModelSqlDataValue(ModelSqlRemovable(ModelSqlDates())))))))) {
+export class SettingSql extends ModelSql(ModelSqlAccess(ModelSqlEnv(ModelSqlDescription(ModelSqlName(ModelSqlCreator(ModelSqlDataType(ModelSqlDataValue(ModelSqlRemovable(ModelSqlDates()))))))))) {
 }

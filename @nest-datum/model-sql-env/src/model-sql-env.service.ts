@@ -67,7 +67,7 @@ export function ModelSqlEnvService(Base: any = Sample) {
 
 		async getOneAllowPrepareProperties(): Promise<Array<string>> {
 			return [ 
-				...await super.getOneAllowPreparePropertiesSelect(), 
+				...await super.getOneAllowPrepareProperties(), 
 				'envKey',
 			];
 		}
