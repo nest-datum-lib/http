@@ -24,14 +24,10 @@ export function ModelNameController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyNameIsRequired
-					|| utilsCheckExists(properties['body'][id]['name']))
-						&& !utilsCheckStrName(properties['body'][id]['name'])) {
-					throw new this.ExceptionBadRequest(`Property "name" "${properties['body'][id]['name']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyNameIsRequired
+				|| utilsCheckExists((properties['body'] || {})['name']))
+					&& !utilsCheckStrName((properties['body'] || {})['name'])) {
+				throw new this.ExceptionBadRequest(`Property "name" "${(properties['body'] || {})['name']}" is bad format.`);
 			}
 			return properties;
 		}

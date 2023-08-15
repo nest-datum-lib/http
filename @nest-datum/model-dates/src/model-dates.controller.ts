@@ -33,19 +33,15 @@ export function ModelDatesController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyCreatedAtIsRequired
-					|| utilsCheckExists(properties['body'][id]['createdAt']))
-						&& !utilsCheckStrDate(properties['body'][id]['createdAt'])) {
-					throw new this.ExceptionBadRequest(`Property "createdAt" "${properties['body'][id]['createdAt']}" is bad format.`);
-				}
-				if ((this.validateUpdateManyUpdatedAtIsRequired
-					|| utilsCheckExists(properties['body'][id]['updatedAt']))
-						&& !utilsCheckStrDate(properties['body'][id]['updatedAt'])) {
-					throw new this.ExceptionBadRequest(`Property "updatedAt" "${properties['body'][id]['updatedAt']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyCreatedAtIsRequired
+				|| utilsCheckExists((properties['body'] || {})['createdAt']))
+					&& !utilsCheckStrDate((properties['body'] || {})['createdAt'])) {
+				throw new this.ExceptionBadRequest(`Property "createdAt" "${(properties['body'] || {})['createdAt']}" is bad format.`);
+			}
+			if ((this.validateUpdateManyUpdatedAtIsRequired
+				|| utilsCheckExists((properties['body'] || {})['updatedAt']))
+					&& !utilsCheckStrDate((properties['body'] || {})['updatedAt'])) {
+				throw new this.ExceptionBadRequest(`Property "updatedAt" "${(properties['body'] || {})['updatedAt']}" is bad format.`);
 			}
 			return properties;
 		}

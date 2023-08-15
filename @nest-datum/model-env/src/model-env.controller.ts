@@ -25,14 +25,10 @@ export function ModelEnvController(Base: any = Sample) {
 		async validateUpdateMany(properties: object): Promise<object> {
 			properties = await super.validateUpdateMany(properties);
 
-			let id;
-
-			for (id in properties['body']) {
-				if ((this.validateUpdateManyEnvIsRequired
-					|| utilsCheckExists(properties['body'][id]['envKey']))
-						&& !utilsCheckStrEnv(properties['body'][id]['envKey'])) {
-					throw new this.ExceptionBadRequest(`Property "envKey" "${properties['body'][id]['envKey']}" is bad format.`);
-				}
+			if ((this.validateUpdateManyEnvIsRequired
+				|| utilsCheckExists((properties['body'] || {})['envKey']))
+					&& !utilsCheckStrEnv((properties['body'] || {})['envKey'])) {
+				throw new this.ExceptionBadRequest(`Property "envKey" "${(properties['body'] || {})['envKey']}" is bad format.`);
 			}
 			return properties;
 		}

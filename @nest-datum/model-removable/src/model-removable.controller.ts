@@ -35,11 +35,21 @@ export function ModelRemovableController(Base: any = Sample) {
 		}
 
 		async restoreMany(properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.restoreMany(await this.validateRestoreMany(properties)));
+			try {
+				return await this.service.restoreMany(await this.validateRestoreMany(properties));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 
 		async restoreOne(id: string, properties: object): Promise<object> {
-			return await this.errorHandler(async () => await this.service.restoreOne(await this.validateRestoreOne({ ...properties, id })));
+			try {
+				return await this.service.restoreOne(await this.validateRestoreOne({ ...properties, id }));
+			}
+			catch (err) {
+				this.ExceptionError(err.message);
+			}
 		}
 	}
 
