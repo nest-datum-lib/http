@@ -90,6 +90,8 @@ export function ModelSqlService(Base: any = Sample) {
 		async getManyPreparePropertiesSelect(properties: object): Promise<string> {
 			const columnsSelectRequest = properties['select'] || [];
 			const columnsSelectAllow = await this.getManyAllowPreparePropertiesSelect();
+			console.log("columnsSelectRequest:", columnsSelectRequest);
+			console.log("columnsSelectAllow:", columnsSelectAllow);
 			const columnsJoinAllow = await this.getManyAllowPreparePropertiesJoin();
 
 			return (columnsSelectRequest.length <= 0)
@@ -155,19 +157,39 @@ export function ModelSqlService(Base: any = Sample) {
 			const whereRequest = properties['where'];
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
+			console.log("joinRequest:", joinRequest);
+			console.log("joinAllow:", joinAllow);
 			let key,
 				output = [];
 
 			for (key in joinRequest) {
-				if (joinAllow.includes(key)) {
-					const value = joinRequest[key];
-					const valueSplit = value.split('=');
+				console.log("join key:", key);
+				if (this.isKeyAllowed(key, joinAllow)) {
+					let value = joinRequest[key];
+					let join_result = `LEFT JOIN \`${key}\`\nON `;
 
-					output.push(`LEFT JOIN \`${key}\`\nON \`${valueSplit[0]
-						.split('.')
-						.join(`\`.\``)}\` = \`${valueSplit[1]
-						.split('.')
-						.join(`\`.\``)}\``);
+					if (Array.isArray(value)) {
+						const joiner_columns = [];
+						for (const joiner of value) {
+							const [from, to] = joiner.split('=');
+							joiner_columns.push(`\`${from
+								.split('.')
+								.join('\`.\`')}\` = \`${to
+										.split('.')
+										.join('\`.\`')}\``);
+						}
+						join_result += joiner_columns.join(' AND ');
+					} else {
+						const [from, to] = value.split('=');
+						join_result += `\`${from
+							.split('.')
+							.join(`\`.\``)}\` = \`${to
+							.split('.')
+							.join(`\`.\``)}\``;
+					}
+
+					console.log('result join:', join_result);
+					output.push(join_result);
 				}
 			}
 			return output.join(`\n`);
@@ -180,22 +202,24 @@ export function ModelSqlService(Base: any = Sample) {
 		 */
 		async getManyPreparePropertiesWhereGroupAnd(allProperties: object): Promise<Function> {
 			return async (whereProperties: object): Promise<string> => {
-				let column,
+				let column_name,
 					output = [];
 
-				for (column in whereProperties) {
-					const value = whereProperties[column];
+				for (column_name in whereProperties) {
+					const value = whereProperties[column_name];
+					console.log("where column:", column_name, value);
 
 					if (utilsCheckObjFilled(value)) {
 						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`);
 					}
 					else if (utilsCheckArrFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(value)})`);
+						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(column_name, value)})`);
 					}
 					else if (utilsCheckStrFilled(value)) {
-						output.push(value);
+						output.push(`${column_name}="${value}"`);
 					}
 				}
+				console.log("WHERE OUTPUT: ", output);
 				return output.join(` AND `);
 			};
 		}
@@ -206,22 +230,27 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<Function>}
 		 */
 		async getManyPreparePropertiesWhereGroupOr(allProperties: object): Promise<Function> {
-			return async (whereProperties: Array<any>): Promise<string> => {
+			return async (column_name: string, whereProperties: Array<any>): Promise<string> => {
+				console.log("where properties:", whereProperties);
 				let i = 0,
 					output = [];
 
 				while (i < whereProperties.length) {
 					const value = whereProperties[i];
+					let result;
 
 					if (utilsCheckObjFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`);
+						result = `(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`;
 					}
 					else if (utilsCheckArrFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(value)})`);
+						result = `(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(column_name, value)})`;
 					}
 					else if (utilsCheckStrFilled(value)) {
-						output.push(value);
+						result = value;
 					}
+
+					result = `${column_name}=${result}`;
+					output.push(result);
 					i++;
 				}
 				return output.join(` OR `);
@@ -254,24 +283,27 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<string>}
 		 */
 		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
-			const orderByRequest = properties['orderBy'] || {};
+			let orderByRequest = properties['orderBy'] || {};
 			const orderByAllow = await this.getManyAllowPreparePropertiesOrderBy();
+			console.log("orderByRequest:", orderByRequest);
+			console.log("orderByAllow:", orderByAllow);
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
 			let key,
 				output = [];
 
 			for (key in orderByRequest) {
+				console.log("orderBy key", key);
 				const value = String(orderByRequest[key]).toUpperCase();
 
-				if (orderByAllow.includes(key)
+				if (this.isKeyAllowed(key, orderByAllow)
 					&& (value === 'DESC'
 						|| value === 'ASC')) {
 					const keySplit = key.split('.');
 
 					if (keySplit.length === 2
 						&& (keySplit[0] === this.repository.metadata.tableName
-							|| (joinAllow.includes(keySplit[0]))
+							|| (this.isKeyAllowed(keySplit[0], joinAllow))
 								&& joinRequest.includes(keySplit[0]))) {
 						output.push(`\n\`${keySplit[0]}\`.\`${keySplit[1]}\` ${value}`);
 					}
@@ -299,24 +331,27 @@ export function ModelSqlService(Base: any = Sample) {
 		async getManyPreparePropertiesGroupBy(properties: object): Promise<string> {
 			const groupByRequest = properties['groupBy'] || [];
 			const groupByAllow = await this.getManyAllowPreparePropertiesGroupBy();
+			console.log("groupByRequest:", groupByRequest);
+			console.log("groupByAllow:", groupByAllow);
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
 			let key,
 				output = [];
 
-			for (key in groupByRequest) {
-				if (groupByAllow.includes(key)
-					&& groupByRequest.includes(key)) {
+			for (key of groupByRequest) {
+				if (this.isKeyAllowed(key, groupByAllow)) {
+					console.log("GROUP BY USED", key);
 					const keySplit = key.split('.');
 
 					if (keySplit.length === 2
 						&& (keySplit[0] === this.repository.metadata.tableName
-							|| (joinAllow.includes(keySplit[0])
+							|| (this.isKeyAllowed(keySplit[0], joinAllow)
 								&& joinRequest.includes(keySplit[0])))) {
 						output.push(`\n\t\`${keySplit[0]}\`.\`${keySplit[1]}\``);
 					}
 				}
 			}
+			console.log(" group by output:", output);
 			return output.join(`,`);
 		}
 
@@ -360,6 +395,7 @@ export function ModelSqlService(Base: any = Sample) {
 				offset: await this.getManyPreparePropertiesOffset(properties),
 				limit: await this.getManyPreparePropertiesLimit(properties),
 			};
+			console.log("_getManyProcessQuery", _getManyProcessQuery);
 			const output = { 
 				...properties, 
 				_getManyQueryString: await this.getManyListQueryString(properties, _getManyProcessQuery),
@@ -473,7 +509,7 @@ export function ModelSqlService(Base: any = Sample) {
 				output = {};
 
 			for (column in properties) {
-				if (columnsByAllow.includes(column)) {
+				if (this.isKeyAllowed(column, columnsByAllow)) {
 					output[column] = properties[column];
 				}
 			}
@@ -525,7 +561,7 @@ export function ModelSqlService(Base: any = Sample) {
 				if (utilsCheckObjFilled(newValues)) {
 					Object
 						.keys(newValues)
-						.filter((column) => columnsByAllow.includes(column))
+						.filter((column) => this.isKeyAllowed(column, columnsByAllow))
 						.forEach((column) => {
 							if (!output[id]) {
 								output[id] = {};
@@ -591,7 +627,7 @@ export function ModelSqlService(Base: any = Sample) {
 				output = {};
 
 			for (column in properties) {
-				if (columnsByAllow.includes(column)) {
+				if (this.isKeyAllowed(column, columnsByAllow)) {
 					output[column] = properties[column];
 				}
 			}
@@ -760,6 +796,64 @@ export function ModelSqlService(Base: any = Sample) {
 		async dropOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput['_dropOnePrepareProperties'];
 		}
+
+		/**
+		 * @param {string} key `${tableName}.${columnName}` (
+		 * 	note that if you specify just columnName without separated `.`,
+		 * 	the table name of the working repository will be placed automatically!
+		 * )
+		 * @param {string[]} allowList list of allowed columns.
+		 * @returns {boolean}
+		 * @example key
+		 * 'someTableName.columnName'
+		 * OR
+		 * 'columnName'(here table name will be entered by default)
+		 * @example allowList
+		 * ['*.columnName', 'exampleTableName.columnName2']
+		 * @description
+		 * ## Check is the given field is allowed for SQL Query.
+		 * ### Features:
+		 *  - Check is provided key includes in allowList.
+		 * 	- allowList can contain wildcard "*". For example:
+		 * 	`['*.someField1','*.someField2', ...]`
+		 * 		So here, we can provide someTableName.someField1 or another table name, and it will pass.
+		 * 	- Provided column name can be strong matched with allowList so that
+		 * 		if you provide key tableName.someField, then this key should be in allowList array respectively.
+		 */
+		isKeyAllowed(key: string, allowList: string[]) {
+			if (allowList.includes(key)) return true;
+			let [
+				providedTableName,
+				providedColumnName
+			] = key.split('.');
+			
+			if (
+				!providedTableName &&
+				!providedColumnName
+			) return false;
+			else if(providedTableName) {
+				providedColumnName = `${providedTableName}`;
+				providedTableName = this.repository.metadata.tableName;
+			} else return false;
+
+			const wildcard_allow_key = allowList.find((allowKey: string) => {
+				const [
+					allowedTableName, 
+					allowedColumnName
+				] = allowKey.split('.');
+
+				if (!allowedTableName) return key === allowedColumnName;
+
+				if (allowedTableName === '*') {
+					console.log(allowedColumnName, providedColumnName, allowedColumnName === providedColumnName)
+					return allowedColumnName === providedColumnName;
+				} else return (providedTableName === allowedTableName) 
+						&& (providedColumnName === allowedColumnName)
+			});
+
+			return !!wildcard_allow_key;
+		}
+		
 	}
 
 	return AbstractBase;

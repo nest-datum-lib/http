@@ -60,7 +60,10 @@ export function ModelController(Base: any = Sample) {
 				output['select'] = JSON.parse(properties['select']);
 			}
 			if (utilsCheckExists(properties['join'])) {
-				if (!utilsCheckStrArr(properties['join'])) {
+				if (
+					!utilsCheckStrObj(properties['join'])
+					&& !utilsCheckStrObjFilled(properties['join'])
+				) {
 					throw new this.ExceptionBadRequest(`Property "join" "${properties['join']}" is bad format.`);
 				}
 				output['join'] = JSON.parse(properties['join']);
@@ -72,9 +75,11 @@ export function ModelController(Base: any = Sample) {
 				output['groupBy'] = JSON.parse(properties['groupBy']);
 			}
 			if (utilsCheckExists(properties['orderBy'])) {
-				if (!utilsCheckStrArr(properties['orderBy'])) {
+				if (!utilsCheckStrObj(properties['orderBy'])) {
+					console.log("properties['orderBy']", utilsCheckStrObj(properties['orderBy']), properties['orderBy'][0], properties['orderBy'][properties['orderBy'].length - 1]);
 					throw new this.ExceptionBadRequest(`Property "orderBy" "${properties['orderBy']}" is bad format.`);
 				}
+				console.log(properties['orderBy']);
 				output['orderBy'] = JSON.parse(properties['orderBy']);
 			}
 			if (utilsCheckExists(properties['where'])) {
@@ -166,7 +171,8 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.getMany(await this.validateGetMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				console.error(err);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -175,7 +181,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.getOne(await this.validateGetOne({ ...properties, id }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -184,7 +190,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.create(await this.validateCreate(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -193,7 +199,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.updateMany(await this.validateUpdateMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -202,7 +208,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.updateOne(await this.validateUpdateOne({ ...properties, id, newId: properties['id'] }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -211,7 +217,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.dropMany(await this.validateDropMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -220,7 +226,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.dropOne(await this.validateDropOne({ ...properties, id }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 	}

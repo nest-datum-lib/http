@@ -21,6 +21,7 @@ export function ModelTokenController(Base: any = Sample) {
 			let authedUser = {};
 
 			if (properties['accessToken']) {
+				console.log('PROVIDE TOKEN PROPS:', properties);
 				authedUser = checkToken(properties['accessToken']);
 
 				if (!authedUser) {

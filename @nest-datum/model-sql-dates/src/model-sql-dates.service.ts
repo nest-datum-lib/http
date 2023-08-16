@@ -5,14 +5,19 @@ class Sample {
 
 export function ModelSqlDatesService(Base: any = Sample) {
 	class AbstractBase extends ModelDatesService(Base) {
-		public readonly getManyOrderByDefault: object = { createdAt: 'DESC' };
+
+		public get getManyOrderByDefault() {
+			return { 
+				[`${this.repository.metadata.tableName}.createdAt`]: 'DESC' 
+			};
+		}
 
 		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
 			return await super.getManyPreparePropertiesOrderBy({ 
 				...properties, 
 				orderBy: { 
-					...properties['orderBy'], 
 					...this.getManyOrderByDefault,
+					...properties['orderBy'], 
 				}, 
 			});
 		}

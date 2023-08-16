@@ -9,7 +9,7 @@ export function ModelSqlRemovable(Base: any = Sample) {
 		public isDeleted: boolean = false;
 
 		@Column('boolean', { default: false })
-		public isNotDeleted: boolean = false;
+		public isNotDelete: boolean = false;
 	}
 
 	return AbstractBase;

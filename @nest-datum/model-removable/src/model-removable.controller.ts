@@ -19,7 +19,7 @@ export function ModelRemovableController(Base: any = Sample) {
 				return await this.service.restoreMany(await this.validateRestoreMany(properties));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 
@@ -28,7 +28,7 @@ export function ModelRemovableController(Base: any = Sample) {
 				return await this.service.restoreOne(await this.validateRestoreOne({ ...properties, id }));
 			}
 			catch (err) {
-				this.ExceptionError(err.message);
+				throw new this.ExceptionError(err.message);
 			}
 		}
 	}

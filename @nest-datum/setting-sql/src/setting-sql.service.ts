@@ -10,5 +10,53 @@ import { ModelSqlDatesService } from '@nest-datum/model-sql-dates';
 import { ModelSqlAccessService } from '@nest-datum/model-sql-access';
 import { SettingService } from '@nest-datum/setting';
 
-export class SettingSqlService extends SettingService(ModelSqlAccessService(ModelSqlDatesService(ModelSqlRemovableService(ModelSqlEnvService(ModelSqlDataTypeService(ModelSqlDataValueService(ModelSqlCreatorService(ModelSqlDescriptionService(ModelSqlNameService(ModelSqlService())))))))))) {
+export class SettingSqlService extends SettingService(
+  ModelSqlAccessService(
+    ModelSqlDatesService(
+      ModelSqlRemovableService(
+        ModelSqlEnvService(
+          ModelSqlDataTypeService(
+            ModelSqlDataValueService(
+              ModelSqlCreatorService(
+                ModelSqlDescriptionService(
+                  ModelSqlNameService(
+                    ModelSqlService()
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+) {
+  getManyAllowPreparePropertiesGroupBy() {
+    return [
+      '*.id', 
+      '*.envKey', 
+      '*.description', 
+      '*.name',
+      '*.creatorId',
+      '*.dataTypeId',
+      '*.dataValue',
+      '*.isNotDelete',
+      '*.isDeleted',
+      '*.updatedAt',
+      '*.createdAt',
+    ];
+  }
+
+  getManyAllowPreparePropertiesJoin() {
+    return [
+      'access',
+    ];
+  }
+
+  getManyAllowPreparePropertiesOrderBy() {
+    return [
+      '*.createdAt',
+      '*.updatedAt',
+    ];
+  }
 }
