@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "d8c85224-b836-4be8-bec3-0b5e295c27e0",
+		"_postman_id": "ddf44b69-b2fe-4f03-886a-2bb61a613c46",
 		"name": "happ-http",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5175230"
+		"_exporter_id": "28052752",
+		"_collection_link": "https://cloudy-station-865414.postman.co/workspace/054ca439-3d95-4bd3-9107-15cc311ae962/collection/28052752-ddf44b69-b2fe-4f03-886a-2bb61a613c46?action=share&creator=28052752&source=collection_link"
 	},
 	"item": [
 		{
@@ -266,6 +267,134 @@
 						{
 							"key": "accessToken",
 							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select collection in ascending order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&orderBy={\"createdAt\": \"ASC\"}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "orderBy",
+							"value": "{\"createdAt\": \"ASC\"}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select collection with WERE filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&where={\n\"isDeleted\": [\"1\", \"0\"],\n\"dataTypeId\": \"test\"\n}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "where",
+							"value": "{\n\"isDeleted\": [\"1\", \"0\"],\n\"dataTypeId\": \"test\"\n}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select collection with JOIN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&join={ \"access\": [\n\"access.id=setting.id\",\n\"access.description=access.description\"\n] }",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "join",
+							"value": "{ \"access\": [\n\"access.id=setting.id\",\n\"access.description=access.description\"\n] }"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Select collection with GROUP BY",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&groupBy=[\"setting.id\"]",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "groupBy",
+							"value": "[\"setting.id\"]"
 						}
 					]
 				}
