@@ -140,7 +140,7 @@ export function ModelController(Base: any = Sample) {
 			}
 			return {
 				...await this.validateGetMany(properties),
-				body: properties['body'],
+				body: JSON.parse(properties['body']),
 			};
 		}
 
@@ -199,6 +199,7 @@ export function ModelController(Base: any = Sample) {
 				return await this.service.updateMany(await this.validateUpdateMany(properties));
 			}
 			catch (err) {
+				console.log("update err:", err);
 				throw new this.ExceptionError(err.message);
 			}
 		}

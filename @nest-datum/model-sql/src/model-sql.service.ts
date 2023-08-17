@@ -249,7 +249,7 @@ export function ModelSqlService(Base: any = Sample) {
 						result = value;
 					}
 
-					result = `${column_name}=${result}`;
+					result = `${column_name}="${result}"`;
 					output.push(result);
 					i++;
 				}
@@ -415,11 +415,22 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async getManyProcess(properties: object): Promise<object> {
+			console.log("getManyProcess:", properties);
+			const _getManyQueryString = properties['_getManyQueryString'];
+			const _getManyQueryTotal = properties['_getManyQueryTotal'];
+
+			if (
+				!_getManyQueryString ||
+				!_getManyQueryTotal
+			) throw new Error(
+				'Violated getMany flow! _getManyQueryString or _getManyQueryTotal has wrong format!'
+			);
+
 			return await super.getManyProcess({ 
 				...properties, 
 				_getManyProcessResult: {
-					rows: await this.connectionService.query(properties['_getManyQueryString']),
-					total: Number(((await this.connectionService.query(properties['_getManyQueryTotal']))[0] || {})['total']),
+					rows: await this.connectionService.query(_getManyQueryString),
+					total: Number(((await this.connectionService.query(_getManyQueryTotal))[0] || {})['total']),
 				}, 
 			});
 		}
@@ -549,12 +560,17 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyPrepareProperties(properties: object): Promise<object> {
-			const getManyPreparedProperties = await this.getManyPrepareProperties(properties);
 			const columnsByAllow = await this.updateManyAllowPrepareProperties();
+			const getManyPreparedProperties = await this.getManyPrepareProperties({
+				...properties,
+				where: {
+					id: Object.keys(properties['body'])
+				}
+			});
 			const columnsByRequest = properties['body'];
 			let id,
 				output = {};
-
+			
 			for (id in columnsByRequest) {
 				const newValues = columnsByRequest[id];
 
@@ -563,19 +579,24 @@ export function ModelSqlService(Base: any = Sample) {
 						.keys(newValues)
 						.filter((column) => this.isKeyAllowed(column, columnsByAllow))
 						.forEach((column) => {
+							console.log("is allowed column", column);
 							if (!output[id]) {
 								output[id] = {};
 							}
 							output[id][column] = newValues[column];
 						});
-				}
+						console.log("output", output);
+					}
 			}
-			return { 
+
+			const result = { 
 				...properties, 
 				_updateManyPrepareProperties: output, 
 				_getManyQueryString: getManyPreparedProperties['_getManyQueryString'],
 				_getManyQueryTotal: getManyPreparedProperties['_getManyQueryTotal'],
 			};
+			console.log("update prepare params:", result);
+			return result;
 		}
 
 		/**
@@ -584,18 +605,38 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyProcess(properties: object): Promise<object> {
-			const newProperties = await this.getManyProcess(properties);
-			const rows = newProperties['_getManyProcessResult']['rows'];
-			let i = 0,
-				output = [];
+			console.log('update process props:', properties);
+			const newProperties = properties['_updateManyPrepareProperties'];
+			const allowProperties = await this.updateManyAllowPrepareProperties();
+			let output = [];
 
-			while (i < rows.length) {
-				if (await this.repository.update({ id: rows[i]['id'] }, properties[rows[i]['id']])) {
-					output.push({ ...rows[i], ...properties[rows[i]['id']] });
-				}
-				i++;
+			const foundRows = (await this.getManyProcess(properties))[
+				'_getManyProcessResult'
+			]['rows'];
+
+			if (!Array.isArray(foundRows) || !foundRows.length) {
+				throw new Error('Cannot find elements with given ids.');
 			}
-			return { ...properties, _dropManyProcessResult: output };
+			console.log("found rows", foundRows);
+
+			console.log('update many new properties:', newProperties);
+			for (const id in newProperties) {
+				const foundOldTarget = foundRows.find(row => row.id === id);
+				const foundNewTarget = newProperties[id];
+				if (!foundOldTarget) {
+					output.push({[id]: {'_error': 'not found!'}});
+					continue;
+					// throw new Error(`Cannot update element with "${id}", not found!`);
+				}
+
+				if (await this.repository.update({ id }, foundNewTarget)) {
+					output.push({ [id]: foundNewTarget });
+				}
+			}
+
+			console.log("update many output:", output);
+			
+			return { ...properties, _updateManyProcessResult: output };
 		}
 
 		/**
