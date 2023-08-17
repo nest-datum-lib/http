@@ -49,7 +49,13 @@ export function ModelHttpController(Base: any = Sample) {
 			return await super.getOne(id, properties);
 		}
 
-		@Post()
+		@Post('many')
+		@FormDataRequest()
+		async createMany(@Body() properties: object): Promise<object> {
+			return await super.createMany(properties);
+		}
+
+		@Post('one')
 		@FormDataRequest()
 		async create(@Body() properties: object): Promise<object> {
 			return await super.create(properties);

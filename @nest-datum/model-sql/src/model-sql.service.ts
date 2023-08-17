@@ -502,6 +502,56 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
+		 * List of allowed fields that the client can add to the created models.
+		 * @return Promise<Array<string>>
+		 */
+		async createManyAllowPrepareProperties(): Promise<Array<string>> {
+			return ['id'];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for the new models.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async createManyPrepareProperties(properties: object): Promise<object> {
+			const columnsByAllow = await this.createAllowPrepareProperties();
+			const output = [];
+
+			for (const row of properties['body']) {
+				if (utilsCheckObjFilled(row)) {
+					for (const key in row) {
+						if (!this.isKeyAllowed(key, columnsByAllow)) 
+							delete row[key];
+						if (!utilsCheckObjFilled(row)) continue;
+					}
+					
+					output.push(row);
+				}
+			}
+
+			return { ...properties, _createManyPrepareProperties: output };
+		}
+
+		/**
+		 * Method that directly adds new data to database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async createManyProcess(properties: object): Promise<object> {
+			const preparedRecords = properties['_createManyPrepareProperties'];
+			console.log('preparedRecords', preparedRecords);
+			return { 
+				...properties, 
+				_createManyProcessResult: this.repository.save(preparedRecords),  
+			};
+		}
+
+		async createManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_createManyProcessResult'];
+		}
+
+		/**
 		 * List of allowed fields that the client can add to the created model.
 		 * @return Promise<Array<string>>
 		 */

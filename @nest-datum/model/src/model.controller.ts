@@ -125,7 +125,20 @@ export function ModelController(Base: any = Sample) {
 			return properties;
 		}
 
-		async validateCreate(properties: object): Promise<object> {
+		async validateCreateMany(properties: object): Promise<object> {
+			console.log(properties)
+			if (
+				!utilsCheckExists(properties['body']) ||
+				!utilsCheckStrArrFilled(properties['body'])
+			)
+				throw new this.ExceptionBadRequest(`Property "body" "${properties['body']}" is bad format.`);
+			return {
+				...properties,
+				body: JSON.parse(properties['body']),
+			};
+		}
+
+		async validateCreateOne(properties: object): Promise<object> {
 			if (utilsCheckExists(properties['id'])
 				&& !utilsCheckStrId(properties['id'])) {
 				throw new this.ExceptionBadRequest(`Property "id" "${properties['id']}" is bad format.`);
@@ -185,9 +198,17 @@ export function ModelController(Base: any = Sample) {
 			}
 		}
 
+		async createMany(properties: object): Promise<object> {
+			try {
+				return this.service.createMany(await this.validateCreateMany(properties));
+			} catch (err) {
+				throw new this.ExceptionError(err.message);
+			}
+		}
+
 		async create(properties: object): Promise<object> {
 			try {
-				return await this.service.create(await this.validateCreate(properties));
+				return await this.service.create(await this.validateCreateOne(properties));
 			}
 			catch (err) {
 				throw new this.ExceptionError(err.message);
@@ -224,7 +245,7 @@ export function ModelController(Base: any = Sample) {
 
 		async dropOne(id: string, properties: object): Promise<object> {
 			try {
-				return await this.service.dropOne(await this.validateDropOne({ ...properties, id }));
+				return await this.service.dropOne(await this.validateDropOne({...properties, id}));
 			}
 			catch (err) {
 				throw new this.ExceptionError(err.message);

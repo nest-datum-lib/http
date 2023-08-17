@@ -100,6 +100,30 @@ export function ModelService(Base: any = Sample) {
 			return await this.createResult(properties, await this.createAfter(await this.createProcess(await this.createPrepareProperties(await this.createBefore(properties)))));
 		}
 
+		async createManyBefore(properties: object): Promise<object> { 
+			return await this.before(properties);
+		}
+
+		async createManyPrepareProperties(properties: object): Promise<object> {
+			return properties;
+		}
+
+		async createManyProcess(properties: object): Promise<object> {
+			return properties;
+		}
+
+		async createManyAfter(properties: object): Promise<object> {
+			return await this.after(properties);
+		}
+
+		async createManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput;
+		}
+
+		async createMany(properties: object): Promise<object> {
+			return await this.createManyResult(properties, await this.createManyAfter(this.createManyProcess(await this.createManyPrepareProperties(await this.createManyBefore(properties)))));
+		}
+
 		async updateManyBefore(properties: object): Promise<object> {
 			return await this.before(properties);
 		}
