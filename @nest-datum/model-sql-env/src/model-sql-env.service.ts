@@ -143,6 +143,10 @@ export function ModelSqlEnvService(Base: any = Sample) {
 					id: properties['id'], 
 				}, 
 			});
+			console.log("model", model);
+
+			if (!model)
+				throw new Error(`Model with id "${properties['id']}" is not found!`);
 
 			return await super.updateOneProcess({ ...properties, prevEnvKey: model['envKey'] });
 		}
