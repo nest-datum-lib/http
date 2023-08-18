@@ -781,7 +781,10 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async dropManyProcess(properties: object): Promise<object> {
-			const newProperties = await this.getManyProcess(properties);
+			const newProperties = await this.getManyProcess({
+				...properties,
+				...(await this.getManyPrepareProperties(properties)),
+			});
 			const rows = newProperties['_getManyProcessResult']['rows'];
 			let i = 0,
 				output = [];

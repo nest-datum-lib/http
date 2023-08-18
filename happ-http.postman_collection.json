@@ -4,7 +4,7 @@
 		"name": "happ-http",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28052752",
-		"_collection_link": "https://cloudy-station-865414.postman.co/workspace/054ca439-3d95-4bd3-9107-15cc311ae962/collection/28052752-ddf44b69-b2fe-4f03-886a-2bb61a613c46?action=share&creator=28052752&source=collection_link"
+		"_collection_link": "https://cloudy-station-865414.postman.co/workspace/happ~054ca439-3d95-4bd3-9107-15cc311ae962/collection/28052752-ddf44b69-b2fe-4f03-886a-2bb61a613c46?action=share&source=collection_link&creator=28052752"
 	},
 	"item": [
 		{
@@ -67,6 +67,37 @@
 			"response": []
 		},
 		{
+			"name": "[Setting] createMany",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a\",\n  \"body\": \"[{\\\"id\\\":\\\"test-title-111\\\",\\\"description\\\":\\\"this is updated description for test title 1\\\", \\\"dataValue\\\": \\\"TEST\\\"}, {\\\"id\\\":\\\"test-title-222\\\",\\\"description\\\":\\\"this is updated description for test tittle 2\\\", \\\"dataValue\\\": \\\"TEST\\\"}]\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "[Setting] Update replica name",
 			"request": {
 				"method": "PATCH",
@@ -104,6 +135,108 @@
 					"path": [
 						"setting",
 						"2b6ca272-1be8-4e50-b783-e05953e5725b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] updateMany",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a\",\n  \"body\":  \"{\\\"name\\\": \\\"UPDATED NAME1\\\"}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&where={\n\"id\": [\"1\", \"0\"]\n}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "where",
+							"value": "{\n\"id\": [\"1\", \"0\"]\n}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] Delete one model",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting/780ff9ab-2360-42c5-a398-14f0cc037f7e?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting",
+						"780ff9ab-2360-42c5-a398-14f0cc037f7e"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[Setting] dropMany",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/setting?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a&where={\"id\": \"bf98a887-9df2-47d2-8085-d746d0562d8c\"}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"setting"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
+						},
+						{
+							"key": "where",
+							"value": "{\"id\": \"bf98a887-9df2-47d2-8085-d746d0562d8c\"}"
+						}
 					]
 				}
 			},
@@ -238,35 +371,6 @@
 							"key": "",
 							"value": "",
 							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "[Setting] Delete one model",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:8002/setting/test1?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8002",
-					"path": [
-						"setting",
-						"test1"
-					],
-					"query": [
-						{
-							"key": "accessToken",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiI2MDAwMCIsImlkIjoiaGFwcC1zc28tdXNlci1hZG1pbiIsImVtYWlsIjoiaWhvci5iaWVsY2hlbmtvQGdtYWlsLmNvbSIsInJvbGVJZCI6ImhhcHAtc3NvLXJvbGUtYWRtaW4iLCJpYXQiOjE2OTE5NjM0NTE3MTZ9.d0ad81bd129ff7a66189e1d9ff33668c2db446448d24cdd19bd690bcfd33996a"
 						}
 					]
 				}
