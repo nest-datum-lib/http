@@ -89,6 +89,15 @@ export function ModelController(Base: any = Sample) {
 				}
 				output['where'] = JSON.parse(properties['where']);
 			}
+
+			const isFiltersEmpty = !(new Boolean(Object.values(output).filter(value => {
+				const str = JSON.stringify(value);
+				return utilsCheckStrArrFilled(str) ||
+					utilsCheckStrObjFilled(str);
+			}).length).valueOf());
+			if (isFiltersEmpty)
+				throw new this.ExceptionBadRequest(`Filters was not specified.`);
+
 			return output;
 		}
 
