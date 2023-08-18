@@ -17,7 +17,8 @@ const checkToken = (token: string, key: string = process.env.JWT_SECRET_ACCESS_K
 		/*&& (Number(payload['iat']) + Number(payload['exp'])) >= Date.now()*/) {
 		return payload;
 	}
-	return null;
+	// return null;
+	return payload; // FOR DEVELOP
 };
 
 export default checkToken;

@@ -49,7 +49,13 @@ export function ModelHttpController(Base: any = Sample) {
 			return await super.getOne(id, properties);
 		}
 
-		@Post()
+		@Post('many')
+		@FormDataRequest()
+		async createMany(@Body() properties: object): Promise<object> {
+			return await super.createMany(properties);
+		}
+
+		@Post('one')
 		@FormDataRequest()
 		async create(@Body() properties: object): Promise<object> {
 			return await super.create(properties);
@@ -57,8 +63,14 @@ export function ModelHttpController(Base: any = Sample) {
 
 		@Patch()
 		@FormDataRequest()
-		async updateMany(@Body() properties: object): Promise<object> {
-			return await super.updateMany(properties);
+		async updateMany(
+			@Query() filters: object,
+			@Body() properties: object
+		): Promise<object> {
+			return await super.updateMany(
+				filters,
+				properties,
+			);
 		}
 
 		@Patch(':id')

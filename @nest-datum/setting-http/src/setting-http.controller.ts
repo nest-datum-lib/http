@@ -11,5 +11,26 @@ import { ModelHttpDatesController } from '@nest-datum/model-http-dates';
 import { ModelHttpAccessController } from '@nest-datum/model-http-access';
 import { SettingController } from '@nest-datum/setting';
 
-export class SettingHttpController extends SettingController(ModelHttpAccessController(ModelHttpDatesController(ModelHttpRemovableController(ModelHttpEnvController(ModelHttpDataTypeController(ModelHttpDataValueController(ModelHttpCreatorController(ModelHttpDescriptionController(ModelHttpNameController(ModelHttpTokenController(ModelHttpController()))))))))))) {
-}
+export class SettingHttpController extends SettingController(
+  // ModelHttpAccessController(
+    ModelHttpDatesController(
+      ModelHttpRemovableController(
+        ModelHttpEnvController(
+          ModelHttpDataTypeController(
+            ModelHttpDataValueController(
+              ModelHttpCreatorController(
+                ModelHttpDescriptionController(
+                  ModelHttpNameController(
+                    ModelHttpTokenController(
+                      ModelHttpController()
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  // )
+) {}

@@ -90,6 +90,8 @@ export function ModelSqlService(Base: any = Sample) {
 		async getManyPreparePropertiesSelect(properties: object): Promise<string> {
 			const columnsSelectRequest = properties['select'] || [];
 			const columnsSelectAllow = await this.getManyAllowPreparePropertiesSelect();
+			console.log("columnsSelectRequest:", columnsSelectRequest);
+			console.log("columnsSelectAllow:", columnsSelectAllow);
 			const columnsJoinAllow = await this.getManyAllowPreparePropertiesJoin();
 
 			return (columnsSelectRequest.length <= 0)
@@ -155,19 +157,39 @@ export function ModelSqlService(Base: any = Sample) {
 			const whereRequest = properties['where'];
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
+			console.log("joinRequest:", joinRequest);
+			console.log("joinAllow:", joinAllow);
 			let key,
 				output = [];
 
 			for (key in joinRequest) {
-				if (joinAllow.includes(key)) {
-					const value = joinRequest[key];
-					const valueSplit = value.split('=');
+				console.log("join key:", key);
+				if (this.isKeyAllowed(key, joinAllow)) {
+					let value = joinRequest[key];
+					let join_result = `LEFT JOIN \`${key}\`\nON `;
 
-					output.push(`LEFT JOIN \`${key}\`\nON \`${valueSplit[0]
-						.split('.')
-						.join(`\`.\``)}\` = \`${valueSplit[1]
-						.split('.')
-						.join(`\`.\``)}\``);
+					if (Array.isArray(value)) {
+						const joiner_columns = [];
+						for (const joiner of value) {
+							const [from, to] = joiner.split('=');
+							joiner_columns.push(`\`${from
+								.split('.')
+								.join('\`.\`')}\` = \`${to
+										.split('.')
+										.join('\`.\`')}\``);
+						}
+						join_result += joiner_columns.join(' AND ');
+					} else {
+						const [from, to] = value.split('=');
+						join_result += `\`${from
+							.split('.')
+							.join(`\`.\``)}\` = \`${to
+							.split('.')
+							.join(`\`.\``)}\``;
+					}
+
+					console.log('result join:', join_result);
+					output.push(join_result);
 				}
 			}
 			return output.join(`\n`);
@@ -180,22 +202,24 @@ export function ModelSqlService(Base: any = Sample) {
 		 */
 		async getManyPreparePropertiesWhereGroupAnd(allProperties: object): Promise<Function> {
 			return async (whereProperties: object): Promise<string> => {
-				let column,
+				let column_name,
 					output = [];
 
-				for (column in whereProperties) {
-					const value = whereProperties[column];
+				for (column_name in whereProperties) {
+					const value = whereProperties[column_name];
+					console.log("where column:", column_name, value);
 
 					if (utilsCheckObjFilled(value)) {
 						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`);
 					}
 					else if (utilsCheckArrFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(value)})`);
+						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(column_name, value)})`);
 					}
 					else if (utilsCheckStrFilled(value)) {
-						output.push(value);
+						output.push(`${column_name}="${value}"`);
 					}
 				}
+				console.log("WHERE OUTPUT: ", output);
 				return output.join(` AND `);
 			};
 		}
@@ -206,22 +230,27 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<Function>}
 		 */
 		async getManyPreparePropertiesWhereGroupOr(allProperties: object): Promise<Function> {
-			return async (whereProperties: Array<any>): Promise<string> => {
+			return async (column_name: string, whereProperties: Array<any>): Promise<string> => {
+				console.log("where properties:", whereProperties);
 				let i = 0,
 					output = [];
 
 				while (i < whereProperties.length) {
 					const value = whereProperties[i];
+					let result;
 
 					if (utilsCheckObjFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`);
+						result = `(${await (await this.getManyPreparePropertiesWhereGroupAnd(allProperties))(value)})`;
 					}
 					else if (utilsCheckArrFilled(value)) {
-						output.push(`(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(value)})`);
+						result = `(${await (await this.getManyPreparePropertiesWhereGroupOr(allProperties))(column_name, value)})`;
 					}
 					else if (utilsCheckStrFilled(value)) {
-						output.push(value);
+						result = value;
 					}
+
+					result = `${column_name}="${result}"`;
+					output.push(result);
 					i++;
 				}
 				return output.join(` OR `);
@@ -254,24 +283,27 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<string>}
 		 */
 		async getManyPreparePropertiesOrderBy(properties: object): Promise<string> {
-			const orderByRequest = properties['orderBy'] || {};
+			let orderByRequest = properties['orderBy'] || {};
 			const orderByAllow = await this.getManyAllowPreparePropertiesOrderBy();
+			console.log("orderByRequest:", orderByRequest);
+			console.log("orderByAllow:", orderByAllow);
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
 			let key,
 				output = [];
 
 			for (key in orderByRequest) {
+				console.log("orderBy key", key);
 				const value = String(orderByRequest[key]).toUpperCase();
 
-				if (orderByAllow.includes(key)
+				if (this.isKeyAllowed(key, orderByAllow)
 					&& (value === 'DESC'
 						|| value === 'ASC')) {
 					const keySplit = key.split('.');
 
 					if (keySplit.length === 2
 						&& (keySplit[0] === this.repository.metadata.tableName
-							|| (joinAllow.includes(keySplit[0]))
+							|| (this.isKeyAllowed(keySplit[0], joinAllow))
 								&& joinRequest.includes(keySplit[0]))) {
 						output.push(`\n\`${keySplit[0]}\`.\`${keySplit[1]}\` ${value}`);
 					}
@@ -299,24 +331,27 @@ export function ModelSqlService(Base: any = Sample) {
 		async getManyPreparePropertiesGroupBy(properties: object): Promise<string> {
 			const groupByRequest = properties['groupBy'] || [];
 			const groupByAllow = await this.getManyAllowPreparePropertiesGroupBy();
+			console.log("groupByRequest:", groupByRequest);
+			console.log("groupByAllow:", groupByAllow);
 			const joinRequest = properties['join'] || {};
 			const joinAllow = await this.getManyAllowPreparePropertiesJoin();
 			let key,
 				output = [];
 
-			for (key in groupByRequest) {
-				if (groupByAllow.includes(key)
-					&& groupByRequest.includes(key)) {
+			for (key of groupByRequest) {
+				if (this.isKeyAllowed(key, groupByAllow)) {
+					console.log("GROUP BY USED", key);
 					const keySplit = key.split('.');
 
 					if (keySplit.length === 2
 						&& (keySplit[0] === this.repository.metadata.tableName
-							|| (joinAllow.includes(keySplit[0])
+							|| (this.isKeyAllowed(keySplit[0], joinAllow)
 								&& joinRequest.includes(keySplit[0])))) {
 						output.push(`\n\t\`${keySplit[0]}\`.\`${keySplit[1]}\``);
 					}
 				}
 			}
+			console.log(" group by output:", output);
 			return output.join(`,`);
 		}
 
@@ -360,6 +395,7 @@ export function ModelSqlService(Base: any = Sample) {
 				offset: await this.getManyPreparePropertiesOffset(properties),
 				limit: await this.getManyPreparePropertiesLimit(properties),
 			};
+			console.log("_getManyProcessQuery", _getManyProcessQuery);
 			const output = { 
 				...properties, 
 				_getManyQueryString: await this.getManyListQueryString(properties, _getManyProcessQuery),
@@ -379,11 +415,22 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async getManyProcess(properties: object): Promise<object> {
+			console.log("getManyProcess:", properties);
+			const _getManyQueryString = properties['_getManyQueryString'];
+			const _getManyQueryTotal = properties['_getManyQueryTotal'];
+
+			if (
+				!_getManyQueryString ||
+				!_getManyQueryTotal
+			) throw new Error(
+				'Violated getMany flow! _getManyQueryString or _getManyQueryTotal has wrong format!'
+			);
+
 			return await super.getManyProcess({ 
 				...properties, 
 				_getManyProcessResult: {
-					rows: await this.connectionService.query(properties['_getManyQueryString']),
-					total: Number(((await this.connectionService.query(properties['_getManyQueryTotal']))[0] || {})['total']),
+					rows: await this.connectionService.query(_getManyQueryString),
+					total: Number(((await this.connectionService.query(_getManyQueryTotal))[0] || {})['total']),
 				}, 
 			});
 		}
@@ -455,6 +502,56 @@ export function ModelSqlService(Base: any = Sample) {
 		}
 
 		/**
+		 * List of allowed fields that the client can add to the created models.
+		 * @return Promise<Array<string>>
+		 */
+		async createManyAllowPrepareProperties(): Promise<Array<string>> {
+			return ['id'];
+		}
+
+		/**
+		 * Parse the input parameters and prepare the data for the new models.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async createManyPrepareProperties(properties: object): Promise<object> {
+			const columnsByAllow = await this.createAllowPrepareProperties();
+			const output = [];
+
+			for (const row of properties['body']) {
+				if (utilsCheckObjFilled(row)) {
+					for (const key in row) {
+						if (!this.isKeyAllowed(key, columnsByAllow)) 
+							delete row[key];
+						if (!utilsCheckObjFilled(row)) continue;
+					}
+
+					output.push(row);
+				}
+			}
+
+			return { ...properties, _createManyPrepareProperties: output };
+		}
+
+		/**
+		 * Method that directly adds new data to database.
+		 * @param {object} properties
+		 * @return {Promise<object>}
+		 */
+		async createManyProcess(properties: object): Promise<object> {
+			const preparedRecords = properties['_createManyPrepareProperties'];
+			console.log('preparedRecords', preparedRecords);
+			return { 
+				...properties, 
+				_createManyProcessResult: this.repository.save(preparedRecords),  
+			};
+		}
+
+		async createManyResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
+			return propertiesOutput['_createManyProcessResult'];
+		}
+
+		/**
 		 * List of allowed fields that the client can add to the created model.
 		 * @return Promise<Array<string>>
 		 */
@@ -473,7 +570,7 @@ export function ModelSqlService(Base: any = Sample) {
 				output = {};
 
 			for (column in properties) {
-				if (columnsByAllow.includes(column)) {
+				if (this.isKeyAllowed(column, columnsByAllow)) {
 					output[column] = properties[column];
 				}
 			}
@@ -513,33 +610,30 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyPrepareProperties(properties: object): Promise<object> {
-			const getManyPreparedProperties = await this.getManyPrepareProperties(properties);
+			console.log('updateManyPrepareProperties', properties);
 			const columnsByAllow = await this.updateManyAllowPrepareProperties();
+			const getManyPreparedProperties = await this.getManyPrepareProperties({
+				...properties,
+			});
 			const columnsByRequest = properties['body'];
-			let id,
-				output = {};
+			const output = {};
 
-			for (id in columnsByRequest) {
-				const newValues = columnsByRequest[id];
+			console.log('columns:', columnsByRequest);
 
-				if (utilsCheckObjFilled(newValues)) {
-					Object
-						.keys(newValues)
-						.filter((column) => columnsByAllow.includes(column))
-						.forEach((column) => {
-							if (!output[id]) {
-								output[id] = {};
-							}
-							output[id][column] = newValues[column];
-						});
-				}
-			}
-			return { 
+			Object.keys(columnsByRequest)
+				.filter(column => this.isKeyAllowed(column, columnsByAllow))
+				.forEach(column => {
+					output[column] = columnsByRequest[column];
+				});
+
+			const result = { 
 				...properties, 
 				_updateManyPrepareProperties: output, 
 				_getManyQueryString: getManyPreparedProperties['_getManyQueryString'],
 				_getManyQueryTotal: getManyPreparedProperties['_getManyQueryTotal'],
 			};
+			console.log("update prepare params:", result);
+			return result;
 		}
 
 		/**
@@ -548,18 +642,27 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyProcess(properties: object): Promise<object> {
-			const newProperties = await this.getManyProcess(properties);
-			const rows = newProperties['_getManyProcessResult']['rows'];
-			let i = 0,
-				output = [];
+			const newProperties = properties['_updateManyPrepareProperties'];
+			let output = [];
 
-			while (i < rows.length) {
-				if (await this.repository.update({ id: rows[i]['id'] }, properties[rows[i]['id']])) {
-					output.push({ ...rows[i], ...properties[rows[i]['id']] });
-				}
-				i++;
+			const foundRows = (await this.getManyProcess(properties))[
+				'_getManyProcessResult'
+			]['rows'];
+
+			if (!Array.isArray(foundRows) || !foundRows.length) {
+				throw new Error('Cannot find elements with given params.');
 			}
-			return { ...properties, _dropManyProcessResult: output };
+
+			for (const row of foundRows) {
+				const id = row['id'];
+				if (await this.repository.update({ id }, newProperties)) {
+					output.push({ [id]: newProperties });
+				}
+			}
+
+			console.log("update many output:", output);
+			
+			return { ...properties, _updateManyProcessResult: output };
 		}
 
 		/**
@@ -591,7 +694,7 @@ export function ModelSqlService(Base: any = Sample) {
 				output = {};
 
 			for (column in properties) {
-				if (columnsByAllow.includes(column)) {
+				if (this.isKeyAllowed(column, columnsByAllow)) {
 					output[column] = properties[column];
 				}
 			}
@@ -678,7 +781,10 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async dropManyProcess(properties: object): Promise<object> {
-			const newProperties = await this.getManyProcess(properties);
+			const newProperties = await this.getManyProcess({
+				...properties,
+				...(await this.getManyPrepareProperties(properties)),
+			});
 			const rows = newProperties['_getManyProcessResult']['rows'];
 			let i = 0,
 				output = [];
@@ -760,6 +866,64 @@ export function ModelSqlService(Base: any = Sample) {
 		async dropOneResult(propertiesInput: object, propertiesOutput: object): Promise<object> {
 			return propertiesOutput['_dropOnePrepareProperties'];
 		}
+
+		/**
+		 * @param {string} key `${tableName}.${columnName}` (
+		 * 	note that if you specify just columnName without separated `.`,
+		 * 	the table name of the working repository will be placed automatically!
+		 * )
+		 * @param {string[]} allowList list of allowed columns.
+		 * @returns {boolean}
+		 * @example key
+		 * 'someTableName.columnName'
+		 * OR
+		 * 'columnName'(here table name will be entered by default)
+		 * @example allowList
+		 * ['*.columnName', 'exampleTableName.columnName2']
+		 * @description
+		 * ## Check is the given field is allowed for SQL Query.
+		 * ### Features:
+		 *  - Check is provided key includes in allowList.
+		 * 	- allowList can contain wildcard "*". For example:
+		 * 	`['*.someField1','*.someField2', ...]`
+		 * 		So here, we can provide someTableName.someField1 or another table name, and it will pass.
+		 * 	- Provided column name can be strong matched with allowList so that
+		 * 		if you provide key tableName.someField, then this key should be in allowList array respectively.
+		 */
+		isKeyAllowed(key: string, allowList: string[]) {
+			if (allowList.includes(key)) return true;
+			let [
+				providedTableName,
+				providedColumnName
+			] = key.split('.');
+			
+			if (
+				!providedTableName &&
+				!providedColumnName
+			) return false;
+			else if(providedTableName) {
+				providedColumnName = `${providedTableName}`;
+				providedTableName = this.repository.metadata.tableName;
+			} else return false;
+
+			const wildcard_allow_key = allowList.find((allowKey: string) => {
+				const [
+					allowedTableName, 
+					allowedColumnName
+				] = allowKey.split('.');
+
+				if (!allowedTableName) return key === allowedColumnName;
+
+				if (allowedTableName === '*') {
+					console.log(allowedColumnName, providedColumnName, allowedColumnName === providedColumnName)
+					return allowedColumnName === providedColumnName;
+				} else return (providedTableName === allowedTableName) 
+						&& (providedColumnName === allowedColumnName)
+			});
+
+			return !!wildcard_allow_key;
+		}
+		
 	}
 
 	return AbstractBase;

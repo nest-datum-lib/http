@@ -9,7 +9,7 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 			return [ 
 				...await super.getManyAllowPreparePropertiesSelect(), 
 				'isDeleted',
-				'isNotDeleted',
+				'isNotDelete',
 			];
 		}
 
@@ -17,7 +17,7 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 			return [ 
 				...await super.createAllowPrepareProperties(), 
 				'isDeleted',
-				'isNotDeleted',
+				'isNotDelete',
 			];
 		}
 	}
