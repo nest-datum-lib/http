@@ -73,17 +73,7 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 					},
 				});
 
-				let _dropOneProcessResult = null;
-
-				if (model && !model.isNotDelete) {
-					if (model.isDeleted) {
-						_dropOneProcessResult = await this.dropProcessForever(model['id']);
-					} else {
-						_dropOneProcessResult = await this.dropProcessPrepare(model['id']);
-					}
-					
-					output.push(_dropOneProcessResult);
-				}
+				output.push(await this.dropResult(model));
 
 				i++;
 			}
@@ -97,23 +87,27 @@ export function ModelSqlRemovableService(Base: any = Sample) {
 					id: properties['id'],
 				},
 			});
-
-			let _dropOneProcessResult = null;
-
-			if (model && !model.isNotDelete) {
-				if (model.isDeleted) {
-					_dropOneProcessResult = await this.dropProcessForever(properties['id']);
-				} else {
-					_dropOneProcessResult = await this.dropProcessPrepare(properties['id']);
-				}
-			}
 			
 			return await super.updateOneProcess(
 				{ 
 					...properties, 
-					_dropOneProcessResult
+					_dropOneProcessResult: await this.dropResult(model),
 				}
 			);
+		}
+
+		async dropResult(model: object) {
+			let result = null;
+
+			if (model && !model['isNotDelete']) {
+				if (model['isDeleted']) {
+					result = await this.dropProcessForever(model['id']);
+				} else {
+					result = await this.dropProcessPrepare(model['id']);
+				}
+			}
+
+			return result;
 		}
 
 		async dropProcessForever(id): Promise<any> {
