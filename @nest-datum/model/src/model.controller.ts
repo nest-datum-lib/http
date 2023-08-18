@@ -215,9 +215,12 @@ export function ModelController(Base: any = Sample) {
 			}
 		}
 
-		async updateMany(properties: object): Promise<object> {
+		async updateMany(filters: object, properties: object): Promise<object> {
 			try {
-				return await this.service.updateMany(await this.validateUpdateMany(properties));
+				return await this.service.updateMany(await this.validateUpdateMany({
+					...filters,
+					...properties,
+				}));
 			}
 			catch (err) {
 				console.log("update err:", err);

@@ -63,8 +63,14 @@ export function ModelHttpController(Base: any = Sample) {
 
 		@Patch()
 		@FormDataRequest()
-		async updateMany(@Body() properties: object): Promise<object> {
-			return await super.updateMany(properties);
+		async updateMany(
+			@Query() filters: object,
+			@Body() properties: object
+		): Promise<object> {
+			return await super.updateMany(
+				filters,
+				properties,
+			);
 		}
 
 		@Patch(':id')

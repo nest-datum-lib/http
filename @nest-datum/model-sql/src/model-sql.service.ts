@@ -525,7 +525,7 @@ export function ModelSqlService(Base: any = Sample) {
 							delete row[key];
 						if (!utilsCheckObjFilled(row)) continue;
 					}
-					
+
 					output.push(row);
 				}
 			}
@@ -610,34 +610,21 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyPrepareProperties(properties: object): Promise<object> {
+			console.log('updateManyPrepareProperties', properties);
 			const columnsByAllow = await this.updateManyAllowPrepareProperties();
 			const getManyPreparedProperties = await this.getManyPrepareProperties({
 				...properties,
-				where: {
-					id: Object.keys(properties['body'])
-				}
 			});
 			const columnsByRequest = properties['body'];
-			let id,
-				output = {};
-			
-			for (id in columnsByRequest) {
-				const newValues = columnsByRequest[id];
+			const output = {};
 
-				if (utilsCheckObjFilled(newValues)) {
-					Object
-						.keys(newValues)
-						.filter((column) => this.isKeyAllowed(column, columnsByAllow))
-						.forEach((column) => {
-							console.log("is allowed column", column);
-							if (!output[id]) {
-								output[id] = {};
-							}
-							output[id][column] = newValues[column];
-						});
-						console.log("output", output);
-					}
-			}
+			console.log('columns:', columnsByRequest);
+
+			Object.keys(columnsByRequest)
+				.filter(column => this.isKeyAllowed(column, columnsByAllow))
+				.forEach(column => {
+					output[column] = columnsByRequest[column];
+				});
 
 			const result = { 
 				...properties, 
@@ -655,9 +642,7 @@ export function ModelSqlService(Base: any = Sample) {
 		 * @return {Promise<object>}
 		 */
 		async updateManyProcess(properties: object): Promise<object> {
-			console.log('update process props:', properties);
 			const newProperties = properties['_updateManyPrepareProperties'];
-			const allowProperties = await this.updateManyAllowPrepareProperties();
 			let output = [];
 
 			const foundRows = (await this.getManyProcess(properties))[
@@ -665,22 +650,13 @@ export function ModelSqlService(Base: any = Sample) {
 			]['rows'];
 
 			if (!Array.isArray(foundRows) || !foundRows.length) {
-				throw new Error('Cannot find elements with given ids.');
+				throw new Error('Cannot find elements with given params.');
 			}
-			console.log("found rows", foundRows);
 
-			console.log('update many new properties:', newProperties);
-			for (const id in newProperties) {
-				const foundOldTarget = foundRows.find(row => row.id === id);
-				const foundNewTarget = newProperties[id];
-				if (!foundOldTarget) {
-					output.push({[id]: {'_error': 'not found!'}});
-					continue;
-					// throw new Error(`Cannot update element with "${id}", not found!`);
-				}
-
-				if (await this.repository.update({ id }, foundNewTarget)) {
-					output.push({ [id]: foundNewTarget });
+			for (const row of foundRows) {
+				const id = row['id'];
+				if (await this.repository.update({ id }, newProperties)) {
+					output.push({ [id]: newProperties });
 				}
 			}
 
