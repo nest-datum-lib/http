@@ -869,8 +869,8 @@ export function ModelSqlService(Base: any = Sample) {
 
 		/**
 		 * @param {string} key `${tableName}.${columnName}` (
-		 * 	note that if you specify just columnName without separated `.`,
-		 * 	the table name of the working repository will be placed automatically!
+		 *	Note that if you just specify columnName without the `.` separator, 
+		 *	the table name of the working repository will be placed automatically!
 		 * )
 		 * @param {string[]} allowList list of allowed columns.
 		 * @returns {boolean}
@@ -887,8 +887,9 @@ export function ModelSqlService(Base: any = Sample) {
 		 * 	- allowList can contain wildcard "*". For example:
 		 * 	`['*.someField1','*.someField2', ...]`
 		 * 		So here, we can provide someTableName.someField1 or another table name, and it will pass.
-		 * 	- Provided column name can be strong matched with allowList so that
-		 * 		if you provide key tableName.someField, then this key should be in allowList array respectively.
+		 * 	- Provided column name can be strongly matched with allowList, 
+		 * 		so if you provide a key 'tableName.someField', 
+		 * 		then that key should be in the allowList array.
 		 */
 		isKeyAllowed(key: string, allowList: string[]) {
 			if (allowList.includes(key)) return true;
